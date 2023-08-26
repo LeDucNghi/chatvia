@@ -8,7 +8,7 @@ router.get("/all", async (req, res) => {
 
   const respsonse = await UserModel.findOne({ username }).select("-password");
 
-  return res.status(200).send({ ...respsonse });
+  return res.json({ ...respsonse });
 });
 
 module.exports = router;
