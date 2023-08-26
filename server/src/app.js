@@ -2,17 +2,15 @@ const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const { Server } = require("socket.io");
-const http = require("http");
 const mongoose = require("mongoose");
 
 require("dotenv").config();
 
-const middlewares = require("./middlewares");
+const middlewares = require("./middleware/errorHandler");
 const api = require("./api");
 
 const app = express();
-const server = http.createServer(app);
+const io = require("./config/socket");
 
 app.use(helmet());
 app.use(cors());
@@ -21,20 +19,13 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000/",
-    methods: ["GET", "POST"],
-  },
-});
-
 app.get("/", (req, res) => {
   res.json({
     message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
   });
 });
 
-app.use("/api/v1", api);
+app.use("/api", api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
