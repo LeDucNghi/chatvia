@@ -24,7 +24,8 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.5",
     "morgan": "^1.10.0",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "vercel": "^32.1.0"
   },
   "devDependencies": {
     "eslint": "^8.42.0",

@@ -55,7 +55,11 @@ io.on("connection", (socket) => {
 });
 
 mongoose.connect(
-  "mongodb+srv://ducnghi:0972647481Nghi@cluster0.zuv1ih0.mongodb.net/Cluster0?retryWrites=true&w=majority"
+  "mongodb+srv://ducnghi:0972647481Nghi@cluster0.zuv1ih0.mongodb.net/Cluster0?retryWrites=true&w=majority",
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  }
 );
 
 module.exports = app;
