@@ -1,44 +1,26 @@
 "use client";
 
+import * as React from "react";
 import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
-import React, { useEffect } from "react";
+import { signin, signup } from "@/lib";
 import { socket, specialAndSpace } from "@/constants";
 
 import { AuthLayout } from "@/components/layouts/AuthLayout/AuthLayout";
 import Button from "@mui/material/Button";
 import { Checkboxes } from "@/components/common/Checkbox/Checkbox";
 import Link from "next/link";
-import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from "@mui/icons-material/Save";
-import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { UserProfile } from "@/models";
 import { io } from "socket.io-client";
-import { signin } from "@/lib";
-import { useRouter } from "next/navigation";
 
-type Props = {};
+export interface IpageProps {}
 
-export default function SignIn({}: Props) {
-  const joinRoom = () => {
-    socket.emit("join_room");
-  };
-
-  const router = useRouter();
-
+export default function page(props: IpageProps) {
   const initialValue = {
     username: "",
     password: "",
-  };
-
-  const handleSignIn = async (values: UserProfile) => {
-    const res = await signin(values);
-
-    if (res) {
-      router.push("/dashboard");
-    }
+    email: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -50,14 +32,16 @@ export default function SignIn({}: Props) {
     password: Yup.string()
       .min(5, "Password must be at least 5 characters")
       .required("Password is required!!"),
+
+    email: Yup.string().email().required("Email is required!!"),
   });
 
   return (
-    <AuthLayout page="isSignIn">
+    <AuthLayout page="isSignUp">
       <div className="p-4">
         <Formik
           initialValues={initialValue}
-          onSubmit={(values) => handleSignIn(values)}
+          onSubmit={(values) => signup(values)}
           validationSchema={validationSchema}
         >
           {(formikProps) => {
@@ -74,7 +58,6 @@ export default function SignIn({}: Props) {
               <Form>
                 <div className="flex flex-col">
                   <TextField
-                    type="text"
                     fullWidth
                     id="outlined-error"
                     label="Username"
@@ -87,7 +70,6 @@ export default function SignIn({}: Props) {
                     error={touched.username && Boolean(errors.username)}
                   />
                   <TextField
-                    type="password"
                     fullWidth
                     id="outlined-error"
                     label="Password"
@@ -100,7 +82,20 @@ export default function SignIn({}: Props) {
                     error={touched.password && Boolean(errors.password)}
                   />
 
-                  <div className="container my-2 flex items-center justify-between">
+                  <TextField
+                    fullWidth
+                    id="outlined-error"
+                    label="Email"
+                    // defaultValue="Hello World"
+                    className="mb-4"
+                    name="email"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    helperText={touched.email && errors.email}
+                    error={touched.email && Boolean(errors.email)}
+                  />
+
+                  <div className="container my-3 flex items-center justify-between">
                     <Checkboxes
                       name="Remember me"
                       value="Remember me"
@@ -114,29 +109,24 @@ export default function SignIn({}: Props) {
                     </Link>
                   </div>
 
-                  <p className="container my-2 flex-center font-semibold text-gray-600">
-                    Do not have an account? &nbsp;
+                  <p className="container my-3 flex-center font-semibold text-gray-600">
+                    Already have an account? &nbsp;
                     <Link
-                      href="/signup"
+                      href="/signin"
                       className="text-indigo-700 font-semibold"
                     >
-                      Sign Up Now
+                      Sign In
                     </Link>
                   </p>
 
-                  <LoadingButton
-                    className={`bg-indigo-400 ${
-                      !dirty || !isValid || isSubmitting
-                        ? "cursor-not-allowed"
-                        : ""
-                    }`}
+                  <Button
+                    className="bg-indigo-400"
                     type="submit"
                     variant="contained"
-                    disabled={!dirty || !isValid}
-                    loading={isSubmitting}
+                    disabled={!dirty || !isValid || isSubmitting}
                   >
                     Sign in
-                  </LoadingButton>
+                  </Button>
                 </div>
               </Form>
             );

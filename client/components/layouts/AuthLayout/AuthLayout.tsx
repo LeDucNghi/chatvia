@@ -40,7 +40,9 @@ export function AuthLayout({ children, page, style }: IAppProps) {
                   : "Forgot your password"}{" "}
               </h4>
               <p className="text-gray-400 text-center text-base">
-                Sign in to continue to Chatvia
+                {page === "isSignIn"
+                  ? "Sign in to continue to Chatvia"
+                  : "Get your Chatvia account now."}
               </p>
             </div>
 

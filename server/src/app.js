@@ -3,14 +3,18 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const middlewares = require("./middleware/errorHandler");
+const api = require("./api");
+const http = require("http");
+const socket = require("socket.io");
 
 require("dotenv").config();
 
-const middlewares = require("./middleware/errorHandler");
-const api = require("./api");
-
 const app = express();
-const io = require("./config/socket");
+const server = http.createServer(app);
+const io = socket(server, {
+  cors: "http://localhost:3000/",
+});
 
 app.use(helmet());
 app.use(cors());
@@ -19,38 +23,16 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
-  });
-});
-
 app.use("/api", api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
 io.on("connection", (socket) => {
-  console.log(`user connected:`, socket.id, socket.handshake.query.userId);
-
-  const userId = socket.handshake.query.userId;
-
-  socket.userId = userId;
-
-  console.log(`UserId ${userId}`);
-
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`user with id: ${socket.id} joined room: ${data}`);
-  });
-
-  socket.on("send_message", (data) => {
-    console.log(`message data:`, data);
-    socket.to(data.room).emit("receive_message", data);
-  });
+  console.log("A user connected");
 
   socket.on("disconnect", () => {
-    console.log(`user disconnected`, socket.id);
+    console.log("A user disconnected");
   });
 });
 
@@ -61,5 +43,13 @@ mongoose.connect(
     useNewUrlParser: true,
   }
 );
+
+const port = process.env.PORT || 5000;
+
+server.listen(port, () => {
+  /* eslint-disable no-console */
+  console.log(`Listening: http://localhost:${port}`);
+  /* eslint-enable no-console */
+});
 
 module.exports = app;
