@@ -1,3 +1,7 @@
 .flex-center {
     @apply flex justify-center items-center;
 }
+
+.mx-auto {
+    margin: 0 auto;
+}

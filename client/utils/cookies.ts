@@ -7,9 +7,11 @@ export const cookies = {
 
   getCookie(name: string) {
     const cookie = Cookies.get(name)!;
+
     if (cookie) {
       return JSON.parse(Cookies.get(name)!);
     }
+
     return undefined;
   },
 

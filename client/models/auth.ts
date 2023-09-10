@@ -5,3 +5,7 @@ export interface UserProfile {
   token?: string;
   message?: string;
 }
+
+export interface AuthState {
+  isSignedIn: boolean;
+}

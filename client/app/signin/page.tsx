@@ -3,29 +3,20 @@
 import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
-import React, { useEffect } from "react";
-import { socket, specialAndSpace } from "@/constants";
 
-import { AuthLayout } from "@/components/layouts/AuthLayout/AuthLayout";
-import Button from "@mui/material/Button";
-import { Checkboxes } from "@/components/common/Checkbox/Checkbox";
+import { AuthLayout } from "@/components/layouts/Auth/AuthLayout";
 import Link from "next/link";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from "@mui/icons-material/Save";
-import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { UserProfile } from "@/models";
-import { io } from "socket.io-client";
+import { cookies } from "@/utils";
 import { signin } from "@/lib";
+import { specialAndSpace } from "@/constants";
 import { useRouter } from "next/navigation";
 
 type Props = {};
 
 export default function SignIn({}: Props) {
-  const joinRoom = () => {
-    socket.emit("join_room");
-  };
-
   const router = useRouter();
 
   const initialValue = {
@@ -37,6 +28,7 @@ export default function SignIn({}: Props) {
     const res = await signin(values);
 
     if (res) {
+      console.log("🚀 ~ file: page.tsx:30 ~ handleSignIn ~ res:", res);
       router.push("/dashboard");
     }
   };
@@ -101,15 +93,18 @@ export default function SignIn({}: Props) {
                   />
 
                   <div className="container my-2 flex items-center justify-between">
-                    <Checkboxes
+                    {/* <Checkboxes
                       name="Remember me"
                       value="Remember me"
                       handleChange={handleChange}
                       type="checkbox"
                       className="text-sm flex items-center"
-                    />
+                    /> */}
 
-                    <Link href="/forgot" className="text-sm text-gray-400">
+                    <Link
+                      href="/forgot"
+                      className="text-sm mx-auto text-gray-400"
+                    >
                       Forget your password
                     </Link>
                   </div>

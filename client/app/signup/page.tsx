@@ -7,7 +7,7 @@ import { Form, Formik } from "formik";
 import { signin, signup } from "@/lib";
 import { socket, specialAndSpace } from "@/constants";
 
-import { AuthLayout } from "@/components/layouts/AuthLayout/AuthLayout";
+import { AuthLayout } from "@/components/layouts/Auth/AuthLayout";
 import Button from "@mui/material/Button";
 import { Checkboxes } from "@/components/common/Checkbox/Checkbox";
 import Link from "next/link";
@@ -96,15 +96,18 @@ export default function page(props: IpageProps) {
                   />
 
                   <div className="container my-3 flex items-center justify-between">
-                    <Checkboxes
+                    {/* <Checkboxes
                       name="Remember me"
                       value="Remember me"
                       handleChange={handleChange}
                       type="checkbox"
                       className="text-sm flex items-center"
-                    />
+                    /> */}
 
-                    <Link href="/forgot" className="text-sm text-gray-400">
+                    <Link
+                      href="/forgot"
+                      className="text-sm mx-auto text-gray-400"
+                    >
                       Forget your password
                     </Link>
                   </div>

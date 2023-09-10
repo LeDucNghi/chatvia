@@ -1,3 +1,7 @@
+"use client";
+
+import "./AuthLayout.scss";
+
 import * as React from "react";
 
 import Card from "@mui/material/Card";
@@ -5,6 +9,10 @@ import CardContent from "@mui/material/CardContent";
 import Image from "next/image";
 import { Images } from "@/constants";
 import Link from "next/link";
+import { cookies } from "@/utils";
+import { redirect } from "next/navigation";
+import { signinStatus } from "@/store/features/auth";
+import { useAppDispatch } from "@/store/store";
 
 export interface IAppProps {
   children: React.ReactNode;
@@ -15,13 +23,24 @@ export interface IAppProps {
 }
 
 export function AuthLayout({ children, page, style }: IAppProps) {
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    const user = cookies.getCookie("user");
+
+    if (user) {
+      dispatch(signinStatus(true));
+      redirect("/dashboard");
+    }
+  }, [dispatch]);
+
   return (
     <div
-      className="w-full flex-center container"
+      className="w-full flex-center container auth-layout"
       style={{ ...style, height: "100vh" }}
     >
       <div className="w-4/5 flex-center wrapper font-bold">
-        <Card className="text-black w-2/4 rounded-md" elevation={10}>
+        <Card className="text-black w-2/4 rounded-md auth-card" elevation={10}>
           <CardContent>
             <div className="w-full mb-6">
               <Link className="w-full h-8 flex justify-center mb-10" href="/">
@@ -42,7 +61,9 @@ export function AuthLayout({ children, page, style }: IAppProps) {
               <p className="text-gray-400 text-center text-base">
                 {page === "isSignIn"
                   ? "Sign in to continue to Chatvia"
-                  : "Get your Chatvia account now."}
+                  : page === "isSignUp"
+                  ? "Get your Chatvia account now."
+                  : "Reset Password with Chatvia"}
               </p>
             </div>
 

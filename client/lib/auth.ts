@@ -1,7 +1,7 @@
+import { alert, cookies } from "@/utils";
+
 import { UserProfile } from "@/models";
-import { alert } from "@/utils";
 import { authService } from "@/api-client";
-import { useRouter } from "next/navigation";
 
 export const signin = async (params: UserProfile) => {
   try {
@@ -11,6 +11,8 @@ export const signin = async (params: UserProfile) => {
       position: "top-center",
       type: "success",
     });
+
+    cookies.setCookie("user", res);
 
     return res;
   } catch (error: any) {
@@ -39,4 +41,9 @@ export const signup = async (params: UserProfile) => {
       type: "error",
     });
   }
+};
+
+export const getUser = async (id: number) => {
+  try {
+  } catch (error) {}
 };
