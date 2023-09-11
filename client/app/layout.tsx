@@ -1,5 +1,6 @@
 import "@/app/global.css";
 import "@/public/styles/main.scss";
+import "@/assets/styles/index.scss";
 import "react-toastify/ReactToastify.css";
 
 import type { Metadata } from "next";

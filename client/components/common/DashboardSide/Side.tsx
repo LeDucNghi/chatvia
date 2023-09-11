@@ -1,4 +1,4 @@
-import "@/components/layouts/Dashboard/Dashboard.scss";
+import "./Side.scss";
 
 import * as React from "react";
 

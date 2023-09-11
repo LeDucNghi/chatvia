@@ -1,0 +1,8 @@
+@mixin image($width, $height, $objectFit: contain, $radius: 50%) {
+    width: $width;
+    height: $height;
+
+    object-fit: $objectFit;
+
+    border-radius: $radius;
+}

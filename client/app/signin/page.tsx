@@ -68,9 +68,8 @@ export default function SignIn({}: Props) {
                   <TextField
                     type="text"
                     fullWidth
-                    id="outlined-error"
+                    
                     label="Username"
-                    // defaultValue="Hello World"
                     className="mb-4"
                     name="username"
                     onChange={handleChange}
@@ -81,9 +80,8 @@ export default function SignIn({}: Props) {
                   <TextField
                     type="password"
                     fullWidth
-                    id="outlined-error"
+                    
                     label="Password"
-                    // defaultValue="Hello World"
                     className="mb-4"
                     name="password"
                     onChange={handleChange}
@@ -93,13 +91,7 @@ export default function SignIn({}: Props) {
                   />
 
                   <div className="container my-2 flex items-center justify-between">
-                    {/* <Checkboxes
-                      name="Remember me"
-                      value="Remember me"
-                      handleChange={handleChange}
-                      type="checkbox"
-                      className="text-sm flex items-center"
-                    /> */}
+
 
                     <Link
                       href="/forgot"

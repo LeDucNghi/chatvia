@@ -20,8 +20,11 @@ export interface ISideMenuProps {
 }
 
 export function SideMenu({ setSide }: ISideMenuProps) {
+  const [isSelected, setIsSelected] = React.useState<Sides>("profile");
+
   const handleChangeSide = (side: Sides) => {
     setSide(side);
+    setIsSelected(side);
   };
 
   return (
@@ -39,7 +42,10 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               key={key}
               title={menu.title}
               placement="left"
-              sx={{ color: "#000" }}
+              onClick={() => handleChangeSide(menu.value as Sides)}
+              sx={{
+                color: isSelected === menu.value ? "#7269ef" : "#000",
+              }}
             >
               <Button variant="text">{menu.icon}</Button>
             </Tooltip>
@@ -72,26 +78,31 @@ const sideMenu = [
     id: 1,
     icon: <PersonIcon fontSize="small" />,
     title: "Profile",
+    value: "profile",
   },
   {
     id: 2,
     icon: <MessageIcon fontSize="small" />,
     title: "Chat",
+    value: "chat",
   },
   {
     id: 3,
     icon: <PeopleOutlineIcon fontSize="small" />,
     title: "Group",
+    value: "group",
   },
   {
     id: 4,
     icon: <ConnectWithoutContactIcon fontSize="small" />,
     title: "Contacts",
+    value: "contact",
   },
   {
     id: 5,
     icon: <SettingsIcon fontSize="small" />,
     title: "Settings",
+    value: "settings",
   },
   {
     id: 6,

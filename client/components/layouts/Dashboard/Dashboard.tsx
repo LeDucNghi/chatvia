@@ -7,6 +7,7 @@ import * as React from "react";
 import { Sides, UserProfile } from "@/models";
 
 import { AuthenticatedLayout } from "../Auth/Authenticate";
+import { Chat } from "@/components/common/Chat/Chat";
 import { Side } from "@/components/common/DashboardSide/Side";
 import { SideMenu } from "@/components/common/DashboardSide/MenuSide";
 
@@ -32,7 +33,7 @@ export function Dashboard({ window, children, user }: IDashboardProps) {
           <Side sides={side} />
         </div>
 
-        <div className="dashboard-chat">chat side</div>
+        <Chat />
       </div>
     </AuthenticatedLayout>
   );
