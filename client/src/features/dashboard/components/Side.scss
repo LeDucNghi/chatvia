@@ -1,0 +1,93 @@
+@import "../../../assets/styles/index.scss";
+
+.side-info {
+    position: relative;
+
+    width: 85%;
+    height: 100%;
+
+    padding: 1.5rem;
+
+    background-color: #f5f7fb;
+
+    .side-header {
+        text-transform: capitalize;
+
+        h4 {
+            font-size: 1.3rem;
+        }
+    }
+
+    .side-content {
+        padding: 1rem;
+    }
+
+    .profile-info {
+        padding: 1.5rem;
+
+        display: flex;
+        flex-direction: column;
+
+        img {
+            width: 5.9rem;
+            height: 5.9rem;
+
+            border-radius: 50%;
+        }
+
+        h5 {
+            margin-top: 1.5rem;
+            font-weight: 600;
+            line-height: 1.2rem;
+        }
+
+        p {
+            color: #7a7f9a;
+            font-size: 1rem;
+
+            .info-icon {
+                color: aquamarine;
+            }
+        }
+    }
+
+    .profile-about {
+        padding: 1.5rem;
+
+        width: 100%;
+        height: 22rem;
+
+        overflow: auto;
+    }
+}
+
+.chat-recent {
+    .chat-recent-list {
+        height: 23rem;
+        overflow: auto;
+
+        .chat-recent-item {
+            background: transparent;
+
+            padding: 0.9rem 0.5rem;
+
+            .recent-msg {
+                padding: 0 1rem;
+
+                text-transform: none;
+
+                h5 {
+                    font-size: 0.9rem;
+
+                    @include line-clamp;
+                }
+
+                p {
+                    font-size: 0.8rem;
+
+                    @include line-clamp;
+                }
+            }
+        }
+    }
+}

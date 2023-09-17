@@ -1,0 +1,30 @@
+.carousel {
+    padding: 1rem 0;
+
+    .swiper-slide {
+        width: auto;
+
+        cursor: pointer;
+
+        .carousel-item {
+            position: relative;
+
+            top: 1rem;
+
+            border-radius: 1rem;
+
+            background: #e6ebf5;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .MuiBadge-root {
+                position: relative;
+
+                top: -1rem;
+            }
+        }
+    }
+}

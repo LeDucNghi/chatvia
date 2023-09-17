@@ -63,4 +63,10 @@ router.post("/signin", async (req, res) => {
 
 router.post("/generateToken", async (req, res) => {});
 
+router.post("/getUser", async (req, res) => {
+  const token = req.headers.authorization;
+
+  return res.status(200).send({ token });
+});
+
 module.exports = router;
