@@ -2,21 +2,19 @@ import * as React from "react";
 import * as Yup from "yup";
 
 import { Avatar, Button, IconButton } from "@mui/material";
-import { ContactInvite, Dropdown } from "../../../models";
 import { Form, Formik } from "formik";
 
 import { BaseItemLoader } from "../../../components/common/Loader/BaseItemLoader";
-import BlockIcon from "@mui/icons-material/Block";
 import ClearIcon from "@mui/icons-material/Clear";
+import { ContactInvite } from "../../../models";
 import { CustomMenu } from "../../../components/common/Menu/Menu";
 import CustomModal from "../../../components/common/Modal/Modal";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { InputField } from "../../../components/common/InputField/InputField";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
-import ShareIcon from "@mui/icons-material/Share";
 import { SideWrapper } from "./SideWrapper";
+import { contactOptions } from "../../../constants";
 import { selectFetching } from "../dashboardSlice";
 import { useAppSelector } from "../../../app/store";
 import { users } from "../../../mock";
@@ -180,21 +178,3 @@ export function ContactSide() {
     </SideWrapper>
   );
 }
-
-const contactOptions: Dropdown[] = [
-  {
-    id: 1,
-    name: "share",
-    icon: <ShareIcon />,
-  },
-  {
-    id: 2,
-    name: "block",
-    icon: <BlockIcon />,
-  },
-  {
-    id: 3,
-    name: "remove",
-    icon: <DeleteOutlineIcon />,
-  },
-];

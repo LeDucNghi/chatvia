@@ -3,6 +3,7 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import { Dropdown } from "../../../models";
+import { Icon } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -58,7 +59,7 @@ export function CustomMenu({
           aria-expanded={open ? "true" : undefined}
         >
           {icon ? (
-            icon
+            <Icon>{icon}</Icon>
           ) : img ? (
             <Avatar sx={{ width: 32, height: 32 }} src={img} />
           ) : null}
@@ -128,7 +129,9 @@ export function CustomMenu({
                   </div>
                 )}
                 <p className="text-left">{item.name}</p>{" "}
-                <div className="icon ml-4">{item.icon}</div>
+                <div className="icon ml-4">
+                  <Icon> {item.icon} </Icon>
+                </div>
               </div>
             </MenuItem>
           );

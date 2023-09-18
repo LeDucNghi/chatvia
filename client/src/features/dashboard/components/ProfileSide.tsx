@@ -1,13 +1,12 @@
 import "../pages/Dashboard.scss";
 
+import { Images, profileMenu } from "../../../constants";
+
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 import { Button } from "@mui/material";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { CustomAccordion } from "../../../components/common/Accordion/Accordion";
 import { CustomMenu } from "../../../components/common/Menu/Menu";
-import { Dropdown } from "../../../models";
-import { Images } from "../../../constants";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import { SideWrapper } from "./SideWrapper";
@@ -26,7 +25,7 @@ export function ProfileSide() {
         />
       }
     >
-      <div className="profile-info flex-center">
+      <div className="profile-info flex-center capitalize">
         <Button component="label" variant="text" href="#file-upload">
           <img src={Images.avatar1} alt="avatar" />
           <VisuallyHiddenInput type="file" />
@@ -66,14 +65,6 @@ export function ProfileSide() {
     </SideWrapper>
   );
 }
-
-const profileMenu: Dropdown[] = [
-  {
-    id: 1,
-    name: "Edit",
-    icon: <ModeEditIcon />,
-  },
-];
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);

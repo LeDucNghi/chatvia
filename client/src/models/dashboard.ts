@@ -1,4 +1,3 @@
-import React from "react";
 import { UserProfile } from "./auth";
 
 export type Sides = "profile" | "chat" | "group" | "contact" | "setting";
@@ -43,7 +42,7 @@ export interface Groups {
 
 export interface Dropdown {
   id: number;
-  icon?: React.ReactNode;
+  icon?: string;
   name: string;
   img?: string;
 }

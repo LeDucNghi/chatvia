@@ -27,6 +27,7 @@ export default function Dashboard() {
             "Chatvia - Your gateway to global communication. Video chat, instant messaging, and voice calls to anyone, anywhere. Stay connected with the world through Chatvia.",
         }}
       />
+
       <div className="dashboard-container relative w-full flex max-h-screen">
         <div className="dashboard-side">
           <SideMenu setSide={setSide} />
