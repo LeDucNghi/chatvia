@@ -9,7 +9,7 @@ export function BaseItemLoader({ listToRender }: IBaseItemLoaderProps) {
 
   return (
     <>
-      {loader.map((item, index) => {
+      {loader.map((_item, index) => {
         return (
           <div className="p-3 w-full flex items-center" key={index}>
             <Skeleton variant="circular">

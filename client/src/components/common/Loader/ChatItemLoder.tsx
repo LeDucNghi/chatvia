@@ -9,7 +9,7 @@ export function ChatItemLoader({ listToRender }: IChatItemLoaderProps) {
 
   return (
     <>
-      {loader.map((items, key) => {
+      {loader.map((_items, key) => {
         return (
           <div key={key} className="relative w-full flex items-end p-2">
             <div className="relative">
