@@ -12,10 +12,14 @@ export interface IMenuProps {
 
   img?: string;
 
+  isActive?: boolean;
+
   direction: "rtl" | "ltr";
 
   icon?: React.ReactNode;
   menuItemStyle?: React.CSSProperties;
+
+  onChange?: (value: any) => void;
 }
 
 export function CustomMenu({
@@ -24,6 +28,8 @@ export function CustomMenu({
   icon,
   direction,
   menuItemStyle,
+  onChange,
+  isActive,
 }: IMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -33,8 +39,11 @@ export function CustomMenu({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (value: string) => {
     setAnchorEl(null);
+    if (onChange) {
+      onChange(value);
+    }
   };
 
   return (
@@ -60,7 +69,7 @@ export function CustomMenu({
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
+        // onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -101,7 +110,12 @@ export function CustomMenu({
       >
         {menu.map((item, key) => {
           return (
-            <MenuItem style={menuItemStyle} key={key} onClick={handleClose}>
+            <MenuItem
+              style={menuItemStyle}
+              key={key}
+              onClick={() => handleClose(item.name)}
+              sx={{ background: isActive ? "#7a7f9a" : "" }}
+            >
               <div className="w-full h-full p-2 text-base capitalize font-medium flex justify-between">
                 {item.img && (
                   <div className="img mr-4">

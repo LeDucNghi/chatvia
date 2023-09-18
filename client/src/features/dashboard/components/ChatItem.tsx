@@ -2,7 +2,7 @@ import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
 import { Conversation } from "../../../models";
 import CustomModal from "../../../components/common/Modal/Modal";
 import { IconButton } from "@mui/material";
-import { Loader } from "../../../components/common/Loader/Loader";
+import { Loader } from "../../../components/common/Loader/BaseLoader";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { useState } from "react";
 
@@ -32,7 +32,6 @@ export function ChatItem({
   const [img, setImg] = useState("");
 
   const handleOpenImage = (img: string) => {
-    console.log("🚀 ~ file: ChatItem.tsx:36 ~ handleOpenImage ~ img:", img);
     setIsOpen(true);
     setImg(img);
   };

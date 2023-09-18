@@ -6,7 +6,9 @@
     flex-direction: row;
 
     width: 35%;
-    height: 100%;
+    height: 100vh;
+
+    font-family: "Montserrat", sans-serif;
 
     .dashboard-side-menu {
         position: relative;
@@ -40,7 +42,7 @@
                 width: 3.5rem;
                 height: 3.5rem;
 
-                margin-bottom: 1rem;
+                margin: 0 auto 1rem auto;
 
                 .isActive {
                     color: #7269ef;

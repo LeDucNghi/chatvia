@@ -1,10 +1,18 @@
+import { Conversation, DashboardState, UserProfile } from "../../models";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { AuthState } from "../../models";
 import { RootState } from "../../app/store";
 
-const initialState: AuthState = {
-  isSignedIn: false,
+const initialState: DashboardState = {
+  fetching: {
+    isConversation: true,
+    isFriendList: false,
+  },
+  conversations: [],
+  friends: [],
+
+  mode: "light",
+  languages: "english",
 };
 
 export const dashboard = createSlice({
@@ -12,14 +20,38 @@ export const dashboard = createSlice({
   initialState,
 
   reducers: {
-    signinStatus(state, action: PayloadAction<boolean>) {
-      state.isSignedIn = action.payload;
+    fetchConversationSuccess(state, action: PayloadAction<Conversation[]>) {
+      state.conversations = action.payload;
+      state.fetching.isConversation = false;
+    },
+
+    fetchUserListSuccess(state, action: PayloadAction<UserProfile[]>) {
+      state.friends = action.payload;
+      state.fetching.isFriendList = false;
+    },
+
+    onModeChange(state, action: PayloadAction<"light" | "dark">) {
+      state.mode = action.payload;
+    },
+
+    onLanguagesChange(state, action: PayloadAction<"vietnamese" | "english">) {
+      state.languages = action.payload;
     },
   },
 });
 
-export const { signinStatus } = dashboard.actions;
+export const {
+  fetchConversationSuccess,
+  fetchUserListSuccess,
+  onModeChange,
+  onLanguagesChange,
+} = dashboard.actions;
 
-export const selectSignedIn = (state: RootState) => state.dashboard.isConnected;
+export const selectConversations = (state: RootState) =>
+  state.dashboard.conversations;
+export const selectFriendList = (state: RootState) => state.dashboard.friends;
+export const selectFetching = (state: RootState) => state.dashboard.fetching;
+export const selectMode = (state: RootState) => state.dashboard.mode;
+export const selectLanguage = (state: RootState) => state.dashboard.languages;
 
 export const dashboardReducer = dashboard.reducer;

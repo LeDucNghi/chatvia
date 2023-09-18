@@ -24,13 +24,12 @@ export default function SignIn() {
   const signinStatus = useAppSelector(selectSignedIn);
 
   const [showPassword, setShowPassword] = useState(false);
-  
+
   useEffect(() => {
     if (signinStatus) {
       navigate("/dashboard");
     }
   }, [signinStatus, navigate]);
-  
 
   const initialValue = {
     username: "",
@@ -48,13 +47,9 @@ export default function SignIn() {
       .required("Password is required!!"),
   });
 
-  const handleSignIn =  (values: UserProfile) => {
-     dispatch(signin(values));
-
-    
+  const handleSignIn = (values: UserProfile) => {
+    dispatch(signin(values));
   };
-
-  
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -65,7 +60,10 @@ export default function SignIn() {
   };
 
   return (
-    <AuthLayout page="isSignIn">
+    <AuthLayout
+      layoutDescription="Sign in to continue to Chatvia"
+      title="Sign In"
+    >
       <div className="p-4">
         <Formik
           initialValues={initialValue}

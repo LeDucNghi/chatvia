@@ -39,7 +39,10 @@ export default function SignUp() {
   };
 
   return (
-    <AuthLayout page="isSignUp">
+    <AuthLayout
+      layoutDescription="Get your Chatvia account now."
+      title="Sign In"
+    >
       <div className="p-4">
         <Formik
           initialValues={initialValue}

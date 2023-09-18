@@ -1,6 +1,6 @@
 import { Images } from "./images";
 
-export const languages = [
+export const languageList = [
   {
     id: 1,
     name: "vietnamese",

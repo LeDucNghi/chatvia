@@ -1,17 +1,32 @@
-import { Avatar, Button } from "@mui/material";
-
+import { AvatarBadge } from "../../../components/common/Avatar/AvatarBadge";
 import { Badge } from "../../../components/common/Badge/Badge";
+import { Button } from "@mui/material";
 import { RecentMessage } from "../../../models";
 
 export interface IRecentChatItemProps {
   message: RecentMessage;
+
+  isSelected: boolean;
+
+  onClick: (id: number) => void;
 }
 
-export function RecentChatItem({ message }: IRecentChatItemProps) {
+export function RecentChatItem({
+  message,
+  isSelected,
+  onClick,
+}: IRecentChatItemProps) {
   return (
-    <Button className="chat-recent-item">
-      <div className="flex justify-between items-center">
-        <Avatar alt="Remy Sharp" src={message.user.avatar} />
+    <Button
+      onClick={() => onClick(message.id)}
+      className={isSelected ? "chat-recent-item isActive" : "chat-recent-item"}
+    >
+      <div className="w-full h-full flex justify-between items-center">
+        <AvatarBadge
+          alt={message.user.username}
+          status={message.status}
+          avatar={message.user.avatar!}
+        />
 
         <div className="recent-msg text-left">
           <h5 className="text-black font-semibold">{message.user.username} </h5>

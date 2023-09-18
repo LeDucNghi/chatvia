@@ -1,4 +1,5 @@
-import { Conversation } from "../models";
+import { Conversation, RecentMessage } from "../models";
+
 import { faker } from "@faker-js/faker";
 
 export const conversationsList: Conversation[] = [
@@ -84,10 +85,11 @@ export const conversationsList: Conversation[] = [
   },
 ];
 
-export const recentMessage = [
+export const recentMessage: RecentMessage[] = [
   {
     id: 1,
     message: faker.lorem.paragraph(),
+    status: "online",
     user: {
       id: 1,
       username: faker.person.fullName(),
@@ -97,6 +99,7 @@ export const recentMessage = [
   {
     id: 2,
     message: faker.lorem.paragraph(),
+    status: "leave",
     user: {
       id: 2,
       username: faker.person.fullName(),
@@ -106,6 +109,7 @@ export const recentMessage = [
   {
     id: 3,
     message: faker.lorem.paragraph(),
+    status: "off",
     user: {
       id: 3,
       username: faker.person.fullName(),
@@ -115,6 +119,7 @@ export const recentMessage = [
   {
     id: 4,
     message: faker.lorem.paragraph(),
+    status: "online",
     user: {
       id: 4,
       username: faker.person.fullName(),
@@ -124,6 +129,7 @@ export const recentMessage = [
   {
     id: 5,
     message: faker.lorem.paragraph(),
+    status: "leave",
     user: {
       id: 5,
       username: faker.person.fullName(),
@@ -133,6 +139,7 @@ export const recentMessage = [
   {
     id: 6,
     message: faker.lorem.paragraph(),
+    status: "online",
     user: {
       id: 6,
       username: faker.person.fullName(),
@@ -142,6 +149,7 @@ export const recentMessage = [
   {
     id: 7,
     message: faker.lorem.paragraph(),
+    status: "off",
     user: {
       id: 7,
       username: faker.person.fullName(),

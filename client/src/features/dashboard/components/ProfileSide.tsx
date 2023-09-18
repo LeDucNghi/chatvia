@@ -1,11 +1,13 @@
 import "../pages/Dashboard.scss";
 
-import { Button, IconButton } from "@mui/material";
-
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
+import { Button } from "@mui/material";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { CustomAccordion } from "../../../components/common/Accordion/Accordion";
+import { CustomMenu } from "../../../components/common/Menu/Menu";
+import { Dropdown } from "../../../models";
 import { Images } from "../../../constants";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import { SideWrapper } from "./SideWrapper";
@@ -17,9 +19,11 @@ export function ProfileSide() {
     <SideWrapper
       title="my profile"
       icon={
-        <IconButton>
-          <MoreVertIcon />
-        </IconButton>
+        <CustomMenu
+          menu={profileMenu}
+          direction="rtl"
+          icon={<MoreVertIcon />}
+        />
       }
     >
       <div className="profile-info flex-center">
@@ -62,6 +66,14 @@ export function ProfileSide() {
     </SideWrapper>
   );
 }
+
+const profileMenu: Dropdown[] = [
+  {
+    id: 1,
+    name: "Edit",
+    icon: <ModeEditIcon />,
+  },
+];
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);

@@ -5,6 +5,7 @@ import { Avatar, Button, IconButton } from "@mui/material";
 import { ContactInvite, Dropdown } from "../../../models";
 import { Form, Formik } from "formik";
 
+import { BaseItemLoader } from "../../../components/common/Loader/BaseItemLoader";
 import BlockIcon from "@mui/icons-material/Block";
 import ClearIcon from "@mui/icons-material/Clear";
 import { CustomMenu } from "../../../components/common/Menu/Menu";
@@ -16,9 +17,13 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import ShareIcon from "@mui/icons-material/Share";
 import { SideWrapper } from "./SideWrapper";
+import { selectFetching } from "../dashboardSlice";
+import { useAppSelector } from "../../../app/store";
 import { users } from "../../../mock";
 
 export function ContactSide() {
+  const fetching = useAppSelector(selectFetching);
+
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleFieldChange = (value: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,34 +146,34 @@ export function ContactSide() {
           <div className="p-3 uppercase font-semibold">a</div>
 
           <ul className="capitalize">
-            {users.map((user, key) => {
-              return (
-                <li key={key} className=" p-3 w-full flex justify-between">
-                  <Button className="w-full">
-                    <div className="flex items-center justify-start w-full">
-                      <Avatar src={user.avatar} />
+            {fetching.isConversation ? (
+              <BaseItemLoader listToRender={5} />
+            ) : (
+              users.map((user, key) => {
+                return (
+                  <li key={key} className=" p-3 w-full flex justify-between">
+                    <Button className="w-full">
+                      <div className="flex items-center justify-start w-full">
+                        <Avatar src={user.avatar} />
 
-                      <h5 className="ml-2 text-black font-semibold capitalize">
-                        {user.username}
-                      </h5>
-                    </div>
-                  </Button>
+                        <h5 className="ml-2 text-black font-semibold capitalize">
+                          {user.username}
+                        </h5>
+                      </div>
+                    </Button>
 
-                  {/* <IconButton>
-                    <MoreVertIcon />
-                  </IconButton> */}
-
-                  <CustomMenu
-                    icon={<MoreVertIcon />}
-                    direction="rtl"
-                    menu={contactOptions}
-                    menuItemStyle={{
-                      color: "#7a7f9a",
-                    }}
-                  />
-                </li>
-              );
-            })}
+                    <CustomMenu
+                      icon={<MoreVertIcon />}
+                      direction="rtl"
+                      menu={contactOptions}
+                      menuItemStyle={{
+                        color: "#7a7f9a",
+                      }}
+                    />
+                  </li>
+                );
+              })
+            )}
           </ul>
         </div>
       </div>

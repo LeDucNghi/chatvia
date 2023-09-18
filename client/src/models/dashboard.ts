@@ -3,6 +3,23 @@ import { UserProfile } from "./auth";
 
 export type Sides = "profile" | "chat" | "group" | "contact" | "setting";
 
+export type Mode = "dark" | "light";
+
+export type Language = "vietnamese" | "english";
+
+export interface DashboardState {
+  fetching: {
+    isConversation: boolean;
+    isFriendList: boolean;
+  };
+
+  conversations: Conversation[];
+  friends: UserProfile[];
+
+  mode: "dark" | "light";
+  languages: "vietnamese" | "english";
+}
+
 export interface Conversation {
   id: number;
   conversation: string;
@@ -15,6 +32,7 @@ export interface RecentMessage {
   id: number;
   message: string;
   user: UserProfile;
+  status: "online" | "leave" | "off";
 }
 
 export interface Groups {

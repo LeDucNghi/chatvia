@@ -63,13 +63,21 @@
 
 .chat-recent {
     .chat-recent-list {
-        height: 23rem;
+        height: 22rem;
         overflow: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         .chat-recent-item {
             background: transparent;
 
-            padding: 0.9rem 0.5rem;
+            padding: 0.9rem 1rem;
+
+            &.isActive {
+                background-color: rgba(230, 235, 245, 0.8);
+            }
 
             .recent-msg {
                 padding: 0 1rem;

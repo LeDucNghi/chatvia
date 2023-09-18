@@ -1,5 +1,3 @@
-"use client";
-
 import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
@@ -24,7 +22,10 @@ export default function page() {
   });
 
   return (
-    <AuthLayout page="isForgot">
+    <AuthLayout
+      layoutDescription="Reset Password with Chatvia."
+      title="ForGot Password"
+    >
       <div className="p-4">
         <Formik
           initialValues={initialValue}

@@ -2,12 +2,13 @@
 
 .dashboard-chat {
     width: 65%;
-    height: 100%;
+    height: 100vh;
 
     box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
 
     .chat-header {
         width: 100%;
+        height: 5rem;
 
         padding: 1rem 1.5rem;
 
@@ -47,7 +48,7 @@
         position: relative;
 
         width: 100%;
-        height: 31rem;
+        height: 75%;
 
         overflow: auto;
 
@@ -157,7 +158,7 @@
     .chat-input-section {
         border-top: 0.01rem solid #f0eff5;
 
-        padding: 1rem;
+        padding: 1.2rem 1.5rem;
 
         .textfield {
             width: 70%;
