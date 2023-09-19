@@ -107,29 +107,37 @@ export default function SignUp() {
                       onClick={() => navigate("/forgot")}
                       className="text-sm mx-auto"
                     >
-                      Forget your password
+                      <p className="text-sm mx-auto dark-gray font-medium">
+                        Forget your password
+                      </p>
                     </Button>
                   </div>
 
                   <p className="container my-3 flex-center font-semibold text-gray-600">
                     Already have an account? &nbsp;
-                    <Link href="/" className="text-indigo-700 font-semibold">
-                      Sign In
+                    <Link href="/">
+                      <p className="font-semibold main-color capitalize no-underline">
+                        sign in
+                      </p>
                     </Link>
                   </p>
 
                   <LoadingButton
-                    className={`bg-indigo-400 ${
-                      !dirty || !isValid || isSubmitting
-                        ? "cursor-not-allowed"
-                        : ""
-                    }`}
+                    sx={{ padding: 0 }}
                     type="submit"
                     variant="contained"
                     disabled={!dirty || !isValid}
                     loading={isSubmitting}
                   >
-                    Sign in
+                    <div
+                      className={
+                        !dirty || !isValid
+                          ? "bg-transparent w-full h-full py-2 px-4"
+                          : "bg-purple w-full h-full py-2 px-4"
+                      }
+                    >
+                      sign up
+                    </div>
                   </LoadingButton>
                 </div>
               </Form>

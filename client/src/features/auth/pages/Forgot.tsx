@@ -8,7 +8,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import { UserProfile } from "../../../models";
 
-export default function page() {
+export default function Forgot() {
   const initialValue = {
     email: "",
   };
@@ -58,28 +58,32 @@ export default function page() {
                     error={touched.email && Boolean(errors.email)}
                   />
 
-                  <p className="container my-2 flex-center font-semibold text-gray-600">
+                  <p className="container my-3 flex-center font-semibold text-gray-600">
                     Remember It? &nbsp;
                     <Link
                       href="/signin"
                       className="text-indigo-700 font-semibold"
                     >
-                      Sign In
+                      <p className="font-semibold main-color">Sign In</p>
                     </Link>
                   </p>
 
                   <LoadingButton
-                    className={`bg-indigo-400 ${
-                      !dirty || !isValid || isSubmitting
-                        ? "cursor-not-allowed"
-                        : ""
-                    }`}
+                    sx={{ padding: 0 }}
                     type="submit"
                     variant="contained"
                     disabled={!dirty || !isValid}
                     loading={isSubmitting}
                   >
-                    Reset
+                    <div
+                      className={
+                        !dirty || !isValid
+                          ? "bg-transparent w-full h-full py-2 px-4"
+                          : "bg-purple w-full h-full py-2 px-4"
+                      }
+                    >
+                      Sign in
+                    </div>
                   </LoadingButton>
                 </div>
               </Form>

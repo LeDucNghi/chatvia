@@ -14,9 +14,13 @@ import React from "react";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
 import { Sides } from "../../../models";
+import { cookies } from "../../../utils";
 
 export default function Dashboard() {
   const [side, setSide] = React.useState<Sides>("chat");
+
+  const token = cookies.getCookie("user");
+  console.log("🚀 ~ file: Dashboard.tsx:23 ~ Dashboard ~ token:", token);
 
   return (
     <AuthenticatedLayout>

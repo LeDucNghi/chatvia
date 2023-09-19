@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
 const tokenConfig = require("../config/token");
 
-module.exports = (req, res, next) => {
-  const token =
-    req.body.token || req.query.token || req.headers["x-access-token"];
+exports.verifyToken = (req, res, next) => {
+  const token = req.body.token || req.query.token || req.headers.authorization;
 
-  if (token) {
-    jwt.verify(token, tokenConfig.SECRET, (err, decoded) => {
+  if (token.startsWith("Bearer")) {
+    const newToken = token.replace("Bearer ", "");
+
+    jwt.verify(newToken, tokenConfig.SECRET, (err, decoded) => {
       if (err) {
         console.error(err.toString());
 
