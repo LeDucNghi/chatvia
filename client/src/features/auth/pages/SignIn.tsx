@@ -126,11 +126,10 @@ export default function SignIn() {
                   </div>
 
                   <div className="container my-2 flex justify-center text-gray-400">
-                    <Button
-                      onClick={() => navigate("/forgot")}
-                      className="text-sm mx-auto"
-                    >
-                      Forget your password
+                    <Button onClick={() => navigate("/forgot")}>
+                      <p className="text-sm mx-auto dark-gray font-medium">
+                        Forget your password
+                      </p>
                     </Button>
                   </div>
 
@@ -140,22 +139,26 @@ export default function SignIn() {
                       onClick={() => navigate("/signup")}
                       className="text-indigo-700 font-semibold"
                     >
-                      Sign Up Now
+                      <p className="font-semibold main-color">Sign Up Now</p>
                     </Button>
                   </p>
 
                   <LoadingButton
-                    className={`bg-indigo-400 ${
-                      !dirty || !isValid || isSubmitting
-                        ? "cursor-not-allowed"
-                        : ""
-                    }`}
+                    sx={{ padding: 0 }}
                     type="submit"
                     variant="contained"
                     disabled={!dirty || !isValid}
                     loading={isSubmitting}
                   >
-                    Sign in
+                    <div
+                      className={
+                        !dirty || !isValid
+                          ? "bg-transparent w-full h-full py-2 px-4"
+                          : "bg-purple w-full h-full py-2 px-4"
+                      }
+                    >
+                      Sign in
+                    </div>
                   </LoadingButton>
                 </div>
               </Form>

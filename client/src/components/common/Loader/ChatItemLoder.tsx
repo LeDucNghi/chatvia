@@ -13,14 +13,20 @@ export function ChatItemLoader({ listToRender }: IChatItemLoaderProps) {
         return (
           <div key={key} className="relative w-full flex items-end p-2">
             <div className="relative">
-              <Skeleton variant="circular">
+              <Skeleton animation="wave" variant="circular">
                 <Avatar />
               </Skeleton>
             </div>
 
             <div className="ml-4">
-              <Skeleton variant="rounded" width={500} height={50} />
               <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={500}
+                height={50}
+              />
+              <Skeleton
+                animation="wave"
                 sx={{ mt: "1rem" }}
                 variant="rounded"
                 width={100}

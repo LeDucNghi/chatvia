@@ -16,7 +16,7 @@ import { SideMenu } from "../components/MenuSide";
 import { Sides } from "../../../models";
 
 export default function Dashboard() {
-  const [side, setSide] = React.useState<Sides>("contact");
+  const [side, setSide] = React.useState<Sides>("chat");
 
   return (
     <AuthenticatedLayout>

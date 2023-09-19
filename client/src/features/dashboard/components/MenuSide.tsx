@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { CustomMenu } from "../../../components/common/Menu/Menu";
 import { Images } from "../../../constants";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import { cookies } from "../../../utils";
 
 export interface ISideMenuProps {
   setSide: (side: Sides) => void;
@@ -26,7 +27,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const mode = useAppSelector(selectMode);
   const languages = useAppSelector(selectLanguage);
 
-  const [isSelected, setIsSelected] = React.useState<Sides>("contact");
+  const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
 
   const handleChangeSide = (side: Sides) => {
@@ -52,10 +53,11 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   };
 
   const handleMenuChange = (values: "profile" | "setting" | "logout") => {
-    console.log(
-      "🚀 ~ file: MenuSide.tsx:48 ~ handleMenuChange ~ values:",
-      values
-    );
+    if (values === "logout") {
+      cookies.removeCookie("user");
+
+      window.location.href = "/";
+    }
   };
 
   return (

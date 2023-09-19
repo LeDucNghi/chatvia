@@ -1,6 +1,7 @@
 import "./Chat.scss";
 
 import { selectConversations, selectFetching } from "../dashboardSlice";
+import { useEffect, useRef } from "react";
 
 import { ChatItem } from "./ChatItem";
 import { ChatItemLoader } from "../../../components/common/Loader/ChatItemLoder";
@@ -11,8 +12,14 @@ import { useAppSelector } from "../../../app/store";
 // import { Conversation } from "../../../models";
 
 export function ChatContent() {
+  const bottom = useRef<null | HTMLDivElement>(null);
+
   const conversations = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
+
+  useEffect(() => {
+    bottom?.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   // const [disabledList, setDisabledList] = React.useState<Conversation[]>([]);
 
@@ -53,7 +60,7 @@ export function ChatContent() {
   return (
     <div className="chat-content-wrapper">
       {fetching.isConversation ? (
-        <ChatItemLoader listToRender={4} />
+        <ChatItemLoader listToRender={6} />
       ) : conversations.length === 0 ? (
         <NotFound
           hasButton
@@ -74,6 +81,8 @@ export function ChatContent() {
           );
         })
       )}
+
+      <div className="" ref={bottom}></div>
     </div>
   );
 }
