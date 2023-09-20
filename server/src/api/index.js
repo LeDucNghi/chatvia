@@ -1,15 +1,11 @@
 const express = require("express");
 
 const user = require("./auth");
+const conversation = require("./conversation");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({
-    message: "API - 👋🌎🌍🌏",
-  });
-});
-
 router.use("/auth", user);
+router.use("/conversation", conversation);
 
 module.exports = router;

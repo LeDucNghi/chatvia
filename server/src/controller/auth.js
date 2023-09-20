@@ -1,24 +1,25 @@
-const { UserModel } = require("../models/Users");
+const { User } = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const tokenConfig = require("../config/token");
 const transporter = require("../config/mail");
 
+// SIGN UP
 exports.signup = async (req, res) => {
   const { username, password, email } = req.body;
 
   if (!username || !password || !email) {
     res.status(401).send({ message: "Some field are missing !!" });
   } else {
-    // const user = await UserModel.findOne({ username }).select("-password");
-    const user = await UserModel.findOne({ username });
+    // const user = await User.findOne({ username }).select("-password");
+    const user = await User.findOne({ username });
 
     if (user) {
       res.status(401).send({ message: "User already exist!!" });
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const newUser = new UserModel({
+      const newUser = new User({
         username,
         password: hashedPassword,
         email,
@@ -33,13 +34,14 @@ exports.signup = async (req, res) => {
   }
 };
 
+// SIGN IN
 exports.signin = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
     return res.status(401).send({ "message ": "Some fields are missing!!" });
   } else {
-    const user = await UserModel.findOne({ username });
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(401).send({ message: "User not found!!" });
@@ -59,15 +61,16 @@ exports.signin = async (req, res) => {
   }
 };
 
+// UPDATE PROFILE
 exports.updateProfile = async (req, res) => {
   const { username, avatar } = req.body;
 
-  const user = await UserModel.findOne({ username });
+  const user = await User.findOne({ username });
 
   if (!user) {
     return res.status(401).send({ message: "User Not Found!!" });
   } else {
-    const doc = await UserModel.findOneAndUpdate(
+    const doc = await User.findOneAndUpdate(
       { username },
       { avatar },
       {
@@ -79,6 +82,7 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+// RESET PASSWORD
 exports.resetPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -95,17 +99,11 @@ exports.resetPassword = async (req, res) => {
   main().catch(console.error);
 
   res.status(200).send(info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-  //
-  // NOTE: You can go to https://forwardemail.net/my-account/emails to see your email delivery status and preview
-  //       Or you can use the "preview-email" npm package to preview emails locally in browsers and iOS Simulator
-  //       <https://github.com/forwardemail/preview-email>
-  //
 };
 
+// GET USER
 exports.getUser = async (req, res) => {
   const token = req.decoded;
 
-  return res.status(200).send({ token });
+  return res.status(200).send({ ...token });
 };
