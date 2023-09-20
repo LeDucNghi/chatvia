@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const middlewares = require("./middleware/errorHandler");
+const errorHandler = require("./middleware/errorHandler");
 const api = require("./api");
 const http = require("http");
 const socket = require("socket.io");
@@ -25,11 +25,11 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api", api);
 
-app.use(middlewares.notFound);
-app.use(middlewares.errorHandler);
+app.use(errorHandler.notFound);
+app.use(errorHandler.errorHandler);
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  console.log("A user connected", socket.id);
 
   socket.on("disconnect", () => {
     console.log("A user disconnected");
@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
 });
 
 mongoose.connect(
-  "mongodb+srv://ducnghi:0972647481Nghi@cluster0.zuv1ih0.mongodb.net/Cluster0?retryWrites=true&w=majority",
+  `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.zuv1ih0.mongodb.net/Cluster0?retryWrites=true&w=majority`,
   {
     useUnifiedTopology: true,
     useNewUrlParser: true,
