@@ -1,5 +1,5 @@
 export interface UserProfile {
-  id?: number;
+  _id?: number;
   username?: string;
   password?: string;
   email?: string;
@@ -10,4 +10,5 @@ export interface UserProfile {
 
 export interface AuthState {
   isSignedIn: boolean;
+  user: UserProfile | null | undefined;
 }

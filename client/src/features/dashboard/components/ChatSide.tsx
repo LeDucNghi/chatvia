@@ -13,7 +13,11 @@ import { selectFetching } from "../dashboardSlice";
 import { useAppSelector } from "../../../app/store";
 import { useState } from "react";
 
-export function ChatSide() {
+export interface IChatSideProps {
+  curChatRoom?: (value: string) => void;
+}
+
+export function ChatSide({ curChatRoom }: IChatSideProps) {
   const fetching = useAppSelector(selectFetching);
 
   const [isSelected, setIsSelected] = useState(0);
@@ -23,6 +27,14 @@ export function ChatSide() {
       "🚀 ~ file: ChatSide.tsx:12 ~ handleFieldChange ~ value:",
       value
     );
+  };
+
+  const onItemChange = (id: number, partnerId: number) => {
+    setIsSelected(id);
+
+    if (curChatRoom) {
+      curChatRoom(String(partnerId));
+    }
   };
 
   return (
@@ -53,8 +65,8 @@ export function ChatSide() {
             recentMessage.map((msg, key) => {
               return (
                 <RecentChatItem
-                  onClick={setIsSelected}
-                  isSelected={msg.id === isSelected}
+                  onClick={onItemChange}
+                  isSelected={msg._id === isSelected}
                   key={key}
                   message={msg}
                 />

@@ -5,4 +5,4 @@ const url =
     ? "chatvia-server.vercel.app"
     : "http://localhost:5000";
 
-export const socket = io(url!, { query: { userId: "Jz-dolQFozE1lR4PAAAJ" } });
+export const socket = io(url!, { query: { userId: "Jz-dolQFozE1lR4PAAAJ" } , autoConnect : false});

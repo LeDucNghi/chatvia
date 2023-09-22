@@ -4,7 +4,6 @@ const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const errorHandler = require("./middleware/errorHandler");
-const api = require("./api");
 const http = require("http");
 const socket = require("socket.io");
 
@@ -23,12 +22,35 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
+const api = require("./api");
+
 app.use("/api", api);
 
 app.use(errorHandler.notFound);
 app.use(errorHandler.errorHandler);
 
+global.onlineUsers = new Map();
+
 io.on("connection", (socket) => {
+  global.chatSocket = socket;
+
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("chat-via", (data) => {
+    socket.join(data);
+  });
+
+  socket.on("send-msg", (data) => {
+    console.log("🚀 ~ file: app.js:46 ~ socket.on ~ data:", data);
+    // const sendUserSocket = onlineUsers.get(data.to);
+
+    // if (sendUserSocket) {
+    //   socket.to(sendUserSocket).emit("msg-receive", data.msg);
+    // }
+    socket.to(data.room).emit("msg-receive", data.msg);
+  });
   console.log("A user connected", socket.id);
 
   socket.on("disconnect", () => {
@@ -50,4 +72,4 @@ server.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
 });
 
-module.exports = app;
+module.exports = { app };

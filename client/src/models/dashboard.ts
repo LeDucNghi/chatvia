@@ -12,25 +12,29 @@ export interface DashboardState {
     isFriendList: boolean;
   };
 
-  conversations: Conversation[];
+  conversations: Message[];
   friends: UserProfile[];
 
-  mode: "dark" | "light";
-  languages: "vietnamese" | "english";
+  mode: Mode;
+  languages: Language;
 }
 
-export interface Conversation {
-  id: number;
-  conversation: string;
-  user: UserProfile;
+export interface Message {
+  _id: number;
+  partnerId?: number;
+  consId?: number;
+  message: string;
+  sender: UserProfile;
   hasImages?: boolean;
   images?: [{ id: number; img: string }];
+  status?: "sent" | "delivered" | "read" | "unread";
+  timeStamp?: string;
 }
 
 export interface RecentMessage {
-  id: number;
+  _id: number;
   message: string;
-  user: UserProfile;
+  sender: UserProfile;
   status: "online" | "leave" | "off";
 }
 

@@ -1,4 +1,4 @@
-import { Conversation, DashboardState, UserProfile } from "../../models";
+import { DashboardState, Message, UserProfile } from "../../models";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from "../../app/store";
@@ -20,7 +20,7 @@ export const dashboard = createSlice({
   initialState,
 
   reducers: {
-    fetchConversationSuccess(state, action: PayloadAction<Conversation[]>) {
+    fetchConversationSuccess(state, action: PayloadAction<Message[]>) {
       state.conversations = action.payload;
       state.fetching.isConversation = false;
     },

@@ -10,7 +10,7 @@ export const authService = {
     return axiosClient.post("/auth/signup", params);
   },
 
-  getUser(params: UserProfile): Promise<UserProfile> {
-    return axiosClient.post("/getUser", params.token);
+  getUser(): Promise<UserProfile> {
+    return axiosClient.post("/auth/getUser");
   },
 };

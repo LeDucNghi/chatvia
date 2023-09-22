@@ -1,9 +1,9 @@
 import { alert, cookies } from "../../utils";
+import { fetchUser, signinStatus } from "./authSlice";
 
 import { AppThunk } from "../../app/store";
 import { UserProfile } from "../../models";
 import { authService } from "../../services";
-import { signinStatus } from "./authSlice";
 
 export const signin =
   (values: UserProfile): AppThunk =>
@@ -50,3 +50,13 @@ export const signup =
       });
     }
   };
+
+export const getUser = (): AppThunk => async (dispatch) => {
+  try {
+    const res = await authService.getUser();
+
+    dispatch(fetchUser(res));
+  } catch (error) {
+    console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+  }
+};

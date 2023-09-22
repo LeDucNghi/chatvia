@@ -31,24 +31,34 @@ exports.sendMessage = async (req, res) => {
   } else {
     const newMessage = await Message.create({
       message: message,
-      user: token.user,
-      conversationId: conversation._id,
+      sender: token.user,
+      conversation: conversation._id,
     });
 
     await newMessage.save();
 
-    return res.status(200).send({ message: { newMessage } });
+    return res.status(200).send({ message: newMessage });
   }
 };
 
 // GET CONVERSATION LIST
 exports.getConversation = async (req, res) => {
   const _id = await req.params.id;
+  const isGroup = await req.query.isGroup;
+  console.log(
+    "🚀 ~ file: conversation.js:48 ~ exports.getConversation= ~ isGroup:",
+    isGroup,
+    _id
+  );
 
-  const conversation = await Conversation.findById(_id);
+  const conversation = await Conversation.findOne({
+    _id,
+    isGroup,
+  });
 
+  // return res.status(200).send({ conversation });
   if (conversation) {
-    const message = await Message.findOne({
+    const message = await Message.find({
       conversation: _id,
     })
       .populate("sender", "-password -__v")

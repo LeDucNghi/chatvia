@@ -6,11 +6,18 @@ import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import { selectFetching } from "../dashboardSlice";
-import { useAppSelector } from "../../../app/store";
+import { socket } from "../../../constants";
+import { useState } from "react";
 
 export function ChatSection() {
-  const fetching = useAppSelector(selectFetching);
+  const [msg, setMsg] = useState<string>("");
+
+  const handleSendMessage = () => {
+    socket.emit("send-msg", {
+      room: "chatvia",
+      msg: msg,
+    });
+  };
 
   return (
     <div className="chat-input-section flex items-center justify-between">
@@ -22,7 +29,10 @@ export function ChatSection() {
         placeholder="Your Message..."
         className="textfield"
         autoComplete="off"
-        disabled={fetching.isConversation ? true : false}
+        // disabled={fetching.isConversation ? true : false}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setMsg(e.target.value)
+        }
       />
 
       <div className="chat-input-tool ">
@@ -39,8 +49,9 @@ export function ChatSection() {
         </IconButton>
 
         <IconButton
-          disabled={fetching.isConversation ? true : false}
+          // disabled={fetching.isConversation ? true : false}
           className="tool-icon send-icon"
+          onClick={() => handleSendMessage()}
         >
           <SendOutlinedIcon />
         </IconButton>

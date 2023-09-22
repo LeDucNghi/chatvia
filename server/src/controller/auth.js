@@ -63,7 +63,7 @@ exports.signin = async (req, res) => {
 
 // UPDATE PROFILE
 exports.updateProfile = async (req, res) => {
-  const { username, avatar } = req.body;
+  const { username, ...rest } = req.body;
 
   const user = await User.findOne({ username });
 
@@ -72,7 +72,7 @@ exports.updateProfile = async (req, res) => {
   } else {
     const doc = await User.findOneAndUpdate(
       { username },
-      { avatar },
+      { ...rest },
       {
         new: true,
       }
@@ -103,7 +103,9 @@ exports.resetPassword = async (req, res) => {
 
 // GET USER
 exports.getUser = async (req, res) => {
-  const token = req.decoded;
+  const { user } = req.decoded;
 
-  return res.status(200).send({ ...token });
+  const { password, ...rest } = user;
+
+  return res.status(200).send({ user: rest });
 };

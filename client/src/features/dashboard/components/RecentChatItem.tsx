@@ -8,7 +8,7 @@ export interface IRecentChatItemProps {
 
   isSelected: boolean;
 
-  onClick: (id: number) => void;
+  onClick: (id: number, partnerId: number) => void;
 }
 
 export function RecentChatItem({
@@ -18,18 +18,20 @@ export function RecentChatItem({
 }: IRecentChatItemProps) {
   return (
     <Button
-      onClick={() => onClick(message.id)}
+      onClick={() => onClick(message._id, message.sender._id!)}
       className={isSelected ? "chat-recent-item isActive" : "chat-recent-item"}
     >
       <div className="w-full h-full flex justify-between items-center">
         <AvatarBadge
-          alt={message.user.username}
+          alt={message.sender.username}
           status={message.status}
-          avatar={message.user.avatar!}
+          avatar={message.sender.avatar!}
         />
 
         <div className="recent-msg text-left">
-          <h5 className="text-black font-semibold">{message.user.username} </h5>
+          <h5 className="text-black font-semibold">
+            {message.sender.username}{" "}
+          </h5>
           <p className=" text-gray-400">{message.message} </p>
         </div>
 

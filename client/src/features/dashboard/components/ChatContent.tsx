@@ -6,10 +6,8 @@ import { useEffect, useRef } from "react";
 import { ChatItem } from "./ChatItem";
 import { ChatItemLoader } from "../../../components/common/Loader/ChatItemLoder";
 import { NotFound } from "../../../components/common/NotFound/NotFound";
-import { conversationsList } from "../../../mock";
+import { conversation } from "../../../mock";
 import { useAppSelector } from "../../../app/store";
-
-// import { Conversation } from "../../../models";
 
 export function ChatContent() {
   const bottom = useRef<null | HTMLDivElement>(null);
@@ -29,7 +27,7 @@ export function ChatContent() {
 
   // const uniqueIds: any[] = [];
 
-  // const unique = conversationsList.filter((element) => {
+  // const unique = conversation.filter((element) => {
   //   const isDuplicate = uniqueIds.includes(element.user.id);
 
   //   if (!isDuplicate) {
@@ -47,7 +45,7 @@ export function ChatContent() {
   //   unique.forEach((cons) => {
   //     const { id, user } = cons;
 
-  //     const filter = conversationsList.find(
+  //     const filter = conversation.find(
   //       (uni) => uni.id !== id && uni.user.id === user.id
   //     );
 
@@ -68,15 +66,15 @@ export function ChatContent() {
           type="component"
         />
       ) : (
-        conversationsList.map((cons, key) => {
+        conversation.map((cons, key) => {
           // const findCons = disabledList.find((item) => cons.id === item.id);
 
           return (
             <ChatItem
               key={key}
               hasImages={cons.hasImages}
-              userType={cons.user.id === 1 ? "me" : "friend"}
-              conversation={cons}
+              userType={cons.sender._id === 1 ? "me" : "friend"}
+              message={cons}
             />
           );
         })

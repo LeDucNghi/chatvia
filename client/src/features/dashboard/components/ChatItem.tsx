@@ -1,15 +1,15 @@
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
-import { Conversation } from "../../../models";
 import CustomModal from "../../../components/common/Modal/Modal";
 import { IconButton } from "@mui/material";
 import { Loader } from "../../../components/common/Loader/BaseLoader";
+import { Message } from "../../../models";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { useState } from "react";
 
 export interface IChatItemProps {
   userType: "friend" | "me";
 
-  conversation: Conversation;
+  message: Message;
 
   isDisabled?: boolean;
   isTyping?: boolean;
@@ -18,7 +18,7 @@ export interface IChatItemProps {
 
 export function ChatItem({
   userType,
-  conversation,
+  message,
   isDisabled,
   isTyping,
   hasImages,
@@ -26,7 +26,7 @@ export function ChatItem({
   // check id nếu thằng sau trùng thằng trước
   // thì thằng tin nhắn trc sẽ bị ẩn tên và avatar
 
-  // const filter = conversationsList.filter(cons => cons.id === conversation.id)
+  // const filter = messagesList.filter(cons => cons.id === message.id)
 
   const [isOpen, setIsOpen] = useState(false);
   const [img, setImg] = useState("");
@@ -42,7 +42,7 @@ export function ChatItem({
         <div className="chat-item-wrapper w-full flex">
           <div className="chat-avatar mr-3">
             {!isDisabled && (
-              <img src={`${conversation.user.avatar}`} alt="avatar" />
+              <img src={`${message.sender.avatar}`} alt="avatar" />
             )}
           </div>
 
@@ -63,10 +63,10 @@ export function ChatItem({
                     </p>
                   ) : (
                     <>
-                      <p className="chat-text"> {conversation.conversation}</p>
+                      <p className="chat-text"> {message.message}</p>
                       {hasImages && (
                         <ul className="flex relative w-full">
-                          {conversation.images?.map((img, key) => {
+                          {message.images?.map((img, key) => {
                             return (
                               <li
                                 key={key}
@@ -103,7 +103,7 @@ export function ChatItem({
                 )}
               </div>
               <div className="chat-name w-full capitalize font-semibold">
-                {!isDisabled && conversation.user.username}
+                {!isDisabled && message.sender.username}
               </div>
             </div>
           </div>
@@ -119,7 +119,7 @@ export function ChatItem({
                   </IconButton>
                 </div>
                 <div className="chat-text-content">
-                  <p className="chat-text">{conversation.conversation}</p>
+                  <p className="chat-text">{message.message}</p>
 
                   <p className="chat-time flex items-center justify-end">
                     <AccessAlarmsOutlinedIcon fontSize="small" />
@@ -130,7 +130,7 @@ export function ChatItem({
 
               {!isDisabled && (
                 <div className="chat-name w-full capitalize font-semibold">
-                  {conversation.user.username}
+                  {message.sender.username}
                 </div>
               )}
             </div>
@@ -138,7 +138,7 @@ export function ChatItem({
 
           <div className="chat-avatar ml-3">
             {!isDisabled && (
-              <img src={`${conversation.user.avatar}`} alt="avatar" />
+              <img src={`${message.sender.avatar}`} alt="avatar" />
             )}
           </div>
         </div>
