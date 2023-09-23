@@ -12,10 +12,7 @@ require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
 const io = socket(server, {
-  cors: "https://chatviaa.vercel.app/",
-  // process.env.NODE_ENV === "production"
-  //   ?
-  // : "http://localhost:3000/",
+  cors: "*",
 });
 
 app.use(helmet());
