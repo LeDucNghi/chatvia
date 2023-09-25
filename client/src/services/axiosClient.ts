@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
+import { UserProfile } from "../models";
 import axios from "axios";
-
-// import type { UserProfile } from "@/models";
+import { cookies } from "../utils";
 
 export const axiosClient = axios.create({
   baseURL:
@@ -15,11 +15,11 @@ export const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   function (config) {
-    // const user: UserProfile = JSON.parse(localStorage.getItem("user")!);
+    const user: UserProfile = cookies.getCookie("user");
 
-    // if (user) {
-    //   config.headers.Authorization = `Bearer ${user.accessToken}`;
-    // }
+    if (user) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
 
     return config;
   },
