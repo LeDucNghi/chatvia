@@ -9,31 +9,31 @@ import { createBrowserRouter } from "react-router-dom";
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: SignIn,
+    element: <SignIn />,
   },
 
   {
     path: "/signup",
-    Component: SignUp,
+    element: <SignUp />,
   },
 
   {
     path: "/forgot",
-    Component: Forgot,
+    element: <Forgot />,
   },
 
   {
     path: "/reset/:email",
-    Component: ResetPassword,
+    element: <ResetPassword />,
   },
 
   {
     path: "/dashboard",
-    Component: Dashboard,
+    element: <Dashboard />,
   },
 
   {
     path: "*",
-    Component: NotFound,
+    element: <NotFound />,
   },
 ]);

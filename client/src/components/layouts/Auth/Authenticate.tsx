@@ -20,6 +20,6 @@ export function AuthenticatedLayout({ children }: IAuthenticatedProps) {
     }
   }, [isLoggedIn]);
 
-  if (!isLoggedIn) return <Navigate to="/" replace />;
+  if (!isLoggedIn) return <Navigate to="/" />;
   else return <>{children}</>;
 }
