@@ -18,7 +18,7 @@ export interface INotFoundProps {
   hasButton?: boolean;
 }
 
-export function NotFound({
+export default function NotFound({
   style,
   type,
   title,

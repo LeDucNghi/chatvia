@@ -10,14 +10,14 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import { InputField } from "../../../components/common/InputField/InputField";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { NotFound } from "../../../components/common/NotFound/NotFound";
+import NotFound from "../../../components/common/NotFound/NotFound";
 import { UserProfile } from "../../../models";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { selectValidUser } from "../authSlice";
 import { useParams } from "react-router-dom";
 
-export function ResetPassword() {
+export default function ResetPassword() {
   const { email } = useParams();
 
   const dispatch = useAppDispatch();

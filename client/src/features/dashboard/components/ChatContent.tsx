@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 
 import { ChatItem } from "./ChatItem";
 import { ChatItemLoader } from "../../../components/common/Loader/ChatItemLoder";
-import { NotFound } from "../../../components/common/NotFound/NotFound";
+import NotFound from "../../../components/common/NotFound/NotFound";
 import { conversation } from "../../../mock";
 import { useAppSelector } from "../../../app/store";
 
