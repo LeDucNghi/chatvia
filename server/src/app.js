@@ -18,7 +18,9 @@ const io = socket(server, {
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT,
+    origin: "https://chatviaa.vercel.app/",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -27,7 +29,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
 const api = require("./api");
-const pusher = require("./config/pusher");
+// const pusher = require("./config/pusher");
 
 app.use("/api", api);
 

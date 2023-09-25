@@ -10,7 +10,9 @@ export const axiosClient = axios.create({
       : `http://localhost:5000/api`,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "https://chatvia-server.vercel.app/",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
   },
 });
 
