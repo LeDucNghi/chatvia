@@ -12,24 +12,17 @@ require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
 const io = socket(server, {
-  cors: process.env.CLIENT,
+  cors: "*",
 });
 
 app.use(helmet());
-app.use(
-  cors({
-    origin: "https://chatviaa.vercel.app/",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
 const api = require("./api");
-// const pusher = require("./config/pusher");
 
 app.use("/api", api);
 
@@ -64,12 +57,6 @@ io.on("connection", (socket) => {
     console.log("A user disconnected");
   });
 });
-
-// pusher
-//   .trigger("my-channel", "my-event", {
-//     message: "hello world",
-//   })
-//   .then((e) => console.log(e));
 
 mongoose.connect(
   `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.zuv1ih0.mongodb.net/Cluster0?retryWrites=true&w=majority`,
