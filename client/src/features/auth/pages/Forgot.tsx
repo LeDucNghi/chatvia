@@ -1,9 +1,9 @@
 import * as Yup from "yup";
 
+import { Card, Link } from "@mui/material";
 import { Form, Formik } from "formik";
 
 import { AuthLayout } from "../../../components/layouts/Auth/AuthLayout";
-import { Link } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import { UserProfile } from "../../../models";
@@ -52,11 +52,16 @@ export default function Forgot() {
                     label="Email"
                     className="mb-4"
                     name="email"
+                    placeholder="Ex: example..."
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={touched.email && errors.email}
                     error={touched.email && Boolean(errors.email)}
                   />
+
+                  <Card elevation={2}>
+                    You can enter your mail name before @gmail.com
+                  </Card>
 
                   <p className="container my-3 flex-center font-semibold text-gray-600">
                     Remember It? &nbsp;

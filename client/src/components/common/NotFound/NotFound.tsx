@@ -7,12 +7,13 @@ import { useNavigate } from "react-router-dom";
 export interface INotFoundProps {
   style?: React.CSSProperties;
 
-  type: "component" | "page";
+  type?: "component" | "page";
 
-  title: string;
+  title?: string;
   subTitle?: string;
   buttonContent?: string;
   route?: string;
+  className?: string;
 
   hasButton?: boolean;
 }
@@ -25,12 +26,13 @@ export function NotFound({
   buttonContent,
   route,
   hasButton,
+  className,
 }: INotFoundProps) {
   const navigate = useNavigate();
 
   return (
     <div
-      className="w-full h-full relative flex flex-col justify-center items-center"
+      className={`w-full h-full relative flex flex-col justify-center items-center ${className}`}
       style={style}
     >
       <img

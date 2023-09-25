@@ -12,7 +12,7 @@ require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
 const io = socket(server, {
-  cors: "*",
+  cors: process.env.CLIENT,
 });
 
 app.use(helmet());
@@ -23,6 +23,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
 const api = require("./api");
+const pusher = require("./config/pusher");
 
 app.use("/api", api);
 
@@ -57,6 +58,12 @@ io.on("connection", (socket) => {
     console.log("A user disconnected");
   });
 });
+
+// pusher
+//   .trigger("my-channel", "my-event", {
+//     message: "hello world",
+//   })
+//   .then((e) => console.log(e));
 
 mongoose.connect(
   `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.zuv1ih0.mongodb.net/Cluster0?retryWrites=true&w=majority`,

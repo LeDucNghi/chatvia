@@ -1,5 +1,5 @@
 import { alert, cookies } from "../../utils";
-import { fetchUser, signinStatus } from "./authSlice";
+import { fetchUser, onValidateUser, signinStatus } from "./authSlice";
 
 import { AppThunk } from "../../app/store";
 import { UserProfile } from "../../models";
@@ -60,3 +60,28 @@ export const getUser = (): AppThunk => async (dispatch) => {
     console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
   }
 };
+
+export const validateUser =
+  ({ email }: UserProfile): AppThunk =>
+  async (dispatch) => {
+    try {
+      await authService.validateUser({ email });
+
+      dispatch(onValidateUser(true));
+    } catch (error) {
+      console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+      dispatch(onValidateUser(false));
+    }
+  };
+
+export const handleResetPwd =
+  (values: UserProfile): AppThunk =>
+  async (dispatch) => {
+    try {
+      const res = await authService.resetPassword(values);
+
+      dispatch(fetchUser(res));
+    } catch (error) {
+      console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+    }
+  };

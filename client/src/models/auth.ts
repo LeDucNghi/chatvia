@@ -11,4 +11,5 @@ export interface UserProfile {
 export interface AuthState {
   isSignedIn: boolean;
   user: UserProfile | null | undefined;
+  isValidUser: boolean;
 }

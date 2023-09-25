@@ -83,22 +83,31 @@ exports.updateProfile = async (req, res) => {
 };
 
 // RESET PASSWORD
-exports.resetPassword = async (req, res) => {
-  const { email } = req.body;
+exports.sendEmail = async (req, res) => {
+  const { email } = await req.body;
 
-  // send mail with defined transport object
-  const info = await transporter.sendMail({
-    from: '"Chatvia Team 👻" chatvia.team@gmail.com', // sender address
-    to: email, // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>test from Chatvia BE.</b>", // html body
-  });
+  const user = await User.findOne({ email });
 
-  console.log("Message sent: %s", info.messageId);
-  main().catch(console.error);
+  if (user) {
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"Chatvia Team 👻" chatvia.team@gmail.com', // sender address
+      to: `${email}@gmail.com`, // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Hello world?", // plain text body
+      html: `<h1>Hi ${user.username}, </h1> <br /> <h3>Click the button below to redirect to reset your password</h3> <br /> <button><a href="https://chatviaa.vercel.app/reset/${email}" > Click here</a> </button>`, // html body
+    });
 
-  res.status(200).send(info.messageId);
+    console.log("Message sent: %s", info.messageId);
+    // info.catch(console.error);
+
+    res.status(200).send({
+      messageId: info.messageId,
+      message: "We have sent to your email !!",
+    });
+  } else {
+    res.status(404).send({ message: "User not found!!" });
+  }
 };
 
 // GET USER

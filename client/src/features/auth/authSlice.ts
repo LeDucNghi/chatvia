@@ -6,6 +6,7 @@ import { RootState } from "../../app/store";
 const initialState: AuthState = {
   isSignedIn: false,
   user: null,
+  isValidUser: false,
 };
 
 export const auth = createSlice({
@@ -20,12 +21,17 @@ export const auth = createSlice({
     fetchUser(state, action: PayloadAction<UserProfile>) {
       state.user = action.payload;
     },
+
+    onValidateUser(state, action: PayloadAction<boolean>) {
+      state.isValidUser = action.payload;
+    },
   },
 });
 
-export const { signinStatus, fetchUser } = auth.actions;
+export const { signinStatus, fetchUser, onValidateUser } = auth.actions;
 
 export const selectSignedIn = (state: RootState) => state.auth.isSignedIn;
 export const selectUser = (state: RootState) => state.auth.user;
+export const selectValidUser = (state: RootState) => state.auth.isValidUser;
 
 export const authReducer = auth.reducer;
