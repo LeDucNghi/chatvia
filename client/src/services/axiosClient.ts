@@ -6,7 +6,7 @@ import axios from "axios";
 export const axiosClient = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? `https://chatvia-server.vercel.app/api/`
+      ? `https://chatvia-server.vercel.app/api`
       : `http://localhost:5000/api`,
   headers: {
     "Content-Type": "application/json",
