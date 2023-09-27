@@ -9,6 +9,8 @@ export interface ISidesProps {
   icon?: React.ReactNode;
   header?: React.ReactNode;
   children?: React.ReactNode;
+
+  style?: React.CSSProperties;
 }
 
 export function SideWrapper({
@@ -17,11 +19,12 @@ export function SideWrapper({
   children,
   header,
   className,
+  style,
 }: ISidesProps) {
   return (
-    <div className={`side-info ${className}`}>
+    <div style={style} className={`side-info ${className}`}>
       <div className="side-header">
-        <h4 className="mb-6 font-semibold flex justify-between">
+        <h4 className="mb-4 font-semibold flex justify-between">
           {" "}
           {title} {icon}{" "}
         </h4>

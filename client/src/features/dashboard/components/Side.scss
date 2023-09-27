@@ -59,41 +59,41 @@
 
         overflow: auto;
     }
-}
 
-.chat-recent {
-    .chat-recent-list {
-        height: 22rem;
-        overflow: auto;
+    .chat-recent {
+        .chat-recent-list {
+            height: 21rem;
+            overflow: auto;
 
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-        .chat-recent-item {
-            background: transparent;
-
-            padding: 0.9rem 1rem;
-
-            &.isActive {
-                background-color: rgba(230, 235, 245, 0.8);
+            &::-webkit-scrollbar {
+                display: none;
             }
 
-            .recent-msg {
-                padding: 0 1rem;
+            .chat-recent-item {
+                background: transparent;
 
-                text-transform: none;
+                padding: 0.9rem 1rem;
 
-                h5 {
-                    font-size: 0.9rem;
-
-                    @include line-clamp;
+                &.isActive {
+                    background-color: rgba(230, 235, 245, 0.8);
                 }
 
-                p {
-                    font-size: 0.8rem;
+                .recent-msg {
+                    padding: 0 1rem;
 
-                    @include line-clamp;
+                    text-transform: none;
+
+                    h5 {
+                        font-size: 0.9rem;
+
+                        @include line-clamp;
+                    }
+
+                    p {
+                        font-size: 0.8rem;
+
+                        @include line-clamp;
+                    }
                 }
             }
         }

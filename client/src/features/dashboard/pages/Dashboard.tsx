@@ -3,6 +3,7 @@ import "../components/Side.scss";
 import "./Dashboard.scss";
 
 import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import { AuthenticatedLayout } from "../../../components/layouts/Auth/Authenticate";
 import { ChatContent } from "../components/ChatContent";
@@ -15,18 +16,23 @@ import { ProfileSide } from "../components/ProfileSide";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
 import { Sides } from "../../../models";
-import { getConversation } from "../dashboardThunk";
-import { useAppDispatch } from "../../../app/store";
+import { fetchConversation } from "../dashboardThunk";
+import { selectUser } from "../../auth/authSlice";
 
 export default function Dashboard() {
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   const [side, setSide] = React.useState<Sides>("chat");
-  // const [curChatRoom, setCurChatRoom] = React.useState<string>("");
+  const [curChatRoom, setCurChatRoom] = React.useState<string>(
+    "6509523b3693bf258f8467f0"
+  );
 
   useEffect(() => {
-    dispatch(getConversation("650da4ff60dbd1a34280f0c8", false));
-  }, [dispatch]);
+    if (user) {
+      dispatch(fetchConversation(false, [curChatRoom, String(user?._id)]));
+    }
+  }, [curChatRoom, user]);
 
   return (
     <AuthenticatedLayout>
@@ -45,7 +51,7 @@ export default function Dashboard() {
           {side === "profile" ? (
             <ProfileSide />
           ) : side === "chat" ? (
-            <ChatSide />
+            <ChatSide curChatRoom={setCurChatRoom} />
           ) : side === "group" ? (
             <GroupSide />
           ) : (
@@ -58,7 +64,7 @@ export default function Dashboard() {
 
           <ChatContent />
 
-          <ChatSection />
+          <ChatSection partnerId={curChatRoom} />
         </div>
       </div>
     </AuthenticatedLayout>

@@ -2,14 +2,14 @@ import * as React from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import { Dropdown } from "../../../models";
 import { Icon } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { Options } from "../../../models";
 
 export interface IMenuProps {
-  menu: Dropdown[];
+  menu: Options[];
 
   img?: string;
 
@@ -117,7 +117,7 @@ export function CustomMenu({
               onClick={() => handleClose(item.name)}
               sx={{ background: isActive ? "#7a7f9a" : "" }}
             >
-              <div className="w-full h-full p-2 text-base capitalize font-medium flex justify-between">
+              <div className="w-full backdrop-blur-md h-full p-2 text-base capitalize font-medium flex justify-between">
                 {item.img && (
                   <div className="img mr-4">
                     {" "}

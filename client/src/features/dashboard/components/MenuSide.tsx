@@ -2,7 +2,7 @@ import "../pages/Dashboard.scss";
 
 import * as React from "react";
 
-import { Button, Divider, Icon, Tooltip } from "@mui/material";
+import { Badge, Button, Divider, Icon, Tooltip } from "@mui/material";
 import { Language, Sides } from "../../../models";
 import { languageList, sideMenu, userMenu } from "../../../constants/";
 import {
@@ -36,7 +36,6 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   };
 
   const handleChangeMode = (id: number) => {
-    console.log("🚀 ~ file: MenuSide.tsx:38 ~ handleChangeMode ~ id:", id);
     if (id === 6) {
       if (mode === "dark") {
         dispatch(onModeChange("light"));
@@ -83,7 +82,13 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               }}
             >
               <Button variant="text">
-                <Icon>{menu.icon}</Icon>
+                {menu.id !== 2 ? (
+                  <Icon>{menu.icon}</Icon>
+                ) : (
+                  <Badge color="error" badgeContent={1}>
+                    <Icon>{menu.icon}</Icon>
+                  </Badge>
+                )}
               </Button>
             </Tooltip>
           );

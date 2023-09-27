@@ -1,4 +1,5 @@
-import { Message } from "./../models/dashboard";
+import { Message, MessageRes } from "./../models";
+
 import { axiosClient } from ".";
 
 export const conversationService = {
@@ -6,9 +7,13 @@ export const conversationService = {
     return axiosClient.post("/conversation/sendMessage", params);
   },
 
-  getConversation(id: string, isGroup: boolean): Promise<Message[]> {
-    return axiosClient.get(
-      `/conversation/getConversation/${id}?isGroup=${isGroup}`
+  getConversation(
+    isGroup: boolean,
+    participant: string[]
+  ): Promise<MessageRes> {
+    return axiosClient.post(
+      `/conversation/getConversation?isGroup=${isGroup}`,
+      { participant }
     );
   },
 };

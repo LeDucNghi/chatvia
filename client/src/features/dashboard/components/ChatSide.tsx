@@ -14,7 +14,7 @@ import { useAppSelector } from "../../../app/store";
 import { useState } from "react";
 
 export interface IChatSideProps {
-  curChatRoom?: (value: string) => void;
+  curChatRoom: (value: string) => void;
 }
 
 export function ChatSide({ curChatRoom }: IChatSideProps) {
@@ -32,9 +32,7 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
   const onItemChange = (id: number, partnerId: number) => {
     setIsSelected(id);
 
-    if (curChatRoom) {
-      curChatRoom(String(partnerId));
-    }
+    curChatRoom(String(partnerId));
   };
 
   return (
@@ -51,14 +49,14 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
         />
       }
     >
-      <div className="chat-user-onine mt-3 mb-6">
+      <div className="chat-user-onine mb-3">
         <Carousel option={users} />
       </div>
 
-      <div className="chat-recent w-full h-full">
+      <div className="chat-recent w-full ">
         <h5 className="mb-4 font-semibold">Recent</h5>
 
-        <div className="chat-recent-list p-2 w-full ">
+        <div className="chat-recent-list py-2 w-full ">
           {fetching.isConversation ? (
             <BaseItemLoader listToRender={4} />
           ) : (

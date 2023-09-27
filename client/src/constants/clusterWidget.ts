@@ -1,7 +1,7 @@
-import { Dropdown } from "../models";
 import { Images } from "./images";
+import { Options } from "../models";
 
-export const languageList: Dropdown[] = [
+export const languageList: Options[] = [
   {
     id: 1,
     name: "vietnamese",
@@ -14,7 +14,7 @@ export const languageList: Dropdown[] = [
   },
 ];
 
-export const userMenu: Dropdown[] = [
+export const userMenu: Options[] = [
   {
     id: 1,
     icon: "account_box",
@@ -70,7 +70,7 @@ export const sideMenu = [
   },
 ];
 
-export const profileMenu: Dropdown[] = [
+export const profileMenu: Options[] = [
   {
     id: 1,
     name: "Edit",
@@ -78,7 +78,7 @@ export const profileMenu: Dropdown[] = [
   },
 ];
 
-export const contactOptions: Dropdown[] = [
+export const contactOptions: Options[] = [
   {
     id: 1,
     name: "share",
@@ -93,5 +93,28 @@ export const contactOptions: Dropdown[] = [
     id: 3,
     name: "remove",
     icon: "deleteoutline",
+  },
+];
+
+export const messageOptions = [
+  {
+    id: 1,
+    name: "select all",
+  },
+  {
+    id: 2,
+    name: "add a reaction",
+  },
+  {
+    id: 3,
+    name: "reply",
+  },
+  {
+    id: 4,
+    name: "forward",
+  },
+  {
+    id: 5,
+    name: "remove",
   },
 ];

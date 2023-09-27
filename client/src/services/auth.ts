@@ -15,7 +15,7 @@ export const authService = {
   },
 
   getUser(): Promise<UserProfile> {
-    return axiosClient.post("/auth/getUser");
+    return axiosClient.get("/auth/getUser");
   },
 
   validateUser({ email }: UserProfile): Promise<UserProfile> {

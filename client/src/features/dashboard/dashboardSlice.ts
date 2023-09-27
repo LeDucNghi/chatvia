@@ -1,4 +1,4 @@
-import { DashboardState, Message, UserProfile } from "../../models";
+import { DashboardState, MessageRes, UserProfile } from "../../models";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from "../../app/store";
@@ -8,11 +8,14 @@ const initialState: DashboardState = {
     isConversation: true,
     isFriendList: false,
   },
-  conversations: [],
   friends: [],
+
+  conversations: null,
+  partner: null,
 
   mode: "light",
   languages: "english",
+  conversationId: "",
 };
 
 export const dashboard = createSlice({
@@ -20,7 +23,7 @@ export const dashboard = createSlice({
   initialState,
 
   reducers: {
-    fetchConversationSuccess(state, action: PayloadAction<Message[]>) {
+    fetchConversationSuccess(state, action: PayloadAction<MessageRes>) {
       state.conversations = action.payload;
       state.fetching.isConversation = false;
     },
@@ -28,6 +31,10 @@ export const dashboard = createSlice({
     fetchUserListSuccess(state, action: PayloadAction<UserProfile[]>) {
       state.friends = action.payload;
       state.fetching.isFriendList = false;
+    },
+
+    fetchPartnerProfileSuccess(state, action: PayloadAction<UserProfile>) {
+      state.partner = action.payload;
     },
 
     onModeChange(state, action: PayloadAction<"light" | "dark">) {
@@ -43,6 +50,7 @@ export const dashboard = createSlice({
 export const {
   fetchConversationSuccess,
   fetchUserListSuccess,
+  fetchPartnerProfileSuccess,
   onModeChange,
   onLanguagesChange,
 } = dashboard.actions;
@@ -53,5 +61,6 @@ export const selectFriendList = (state: RootState) => state.dashboard.friends;
 export const selectFetching = (state: RootState) => state.dashboard.fetching;
 export const selectMode = (state: RootState) => state.dashboard.mode;
 export const selectLanguage = (state: RootState) => state.dashboard.languages;
+export const selectPartner = (state: RootState) => state.dashboard.partner;
 
 export const dashboardReducer = dashboard.reducer;

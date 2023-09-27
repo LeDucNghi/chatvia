@@ -1,22 +1,34 @@
 import "./Chat.scss";
 
 import { IconButton, TextField } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import { socket } from "../../../constants";
+import { selectConversations } from "../dashboardSlice";
+import { sendMsg } from "../dashboardThunk";
 import { useState } from "react";
 
-export function ChatSection() {
+export interface IChatSectionProps {
+  partnerId: string;
+}
+
+export function ChatSection({ partnerId }: IChatSectionProps) {
+  const dispatch = useAppDispatch();
+  const conversation = useAppSelector(selectConversations);
+
   const [msg, setMsg] = useState<string>("");
 
   const handleSendMessage = () => {
-    socket.emit("send-msg", {
-      room: "chatvia",
-      msg: msg,
-    });
+    dispatch(
+      sendMsg({
+        consId: conversation?.data._id,
+        partnerId: partnerId,
+        message: msg,
+      })
+    );
   };
 
   return (

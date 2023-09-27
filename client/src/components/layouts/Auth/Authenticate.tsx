@@ -2,7 +2,8 @@ import * as React from "react";
 
 import { Navigate } from "react-router-dom";
 import { cookies } from "../../../utils";
-import { socket } from "../../../constants";
+import { handleGetUser } from "../../../features/auth/authThunk";
+import { useAppDispatch } from "../../../app/store";
 
 export interface IAuthenticatedProps {
   children: React.ReactNode;
@@ -10,15 +11,11 @@ export interface IAuthenticatedProps {
 
 export function AuthenticatedLayout({ children }: IAuthenticatedProps) {
   const isLoggedIn = cookies.getCookie("user");
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    if (isLoggedIn) {
-      socket.connect();
-      socket.emit("chat-via", "chatvia");
-    } else {
-      socket.disconnect();
-    }
-  }, [isLoggedIn]);
+    dispatch(handleGetUser());
+  }, [dispatch]);
 
   if (!isLoggedIn) return <Navigate to="/" />;
   else return <>{children}</>;

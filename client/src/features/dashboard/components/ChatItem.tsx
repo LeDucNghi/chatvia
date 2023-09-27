@@ -1,9 +1,11 @@
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
+import { CustomMenu } from "../../../components/common/Menu/Menu";
 import CustomModal from "../../../components/common/Modal/Modal";
-import { IconButton } from "@mui/material";
 import { Loader } from "../../../components/common/Loader/BaseLoader";
 import { Message } from "../../../models";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import { messageOptions } from "../../../constants";
+import moment from "moment";
 import { useState } from "react";
 
 export interface IChatItemProps {
@@ -42,7 +44,7 @@ export function ChatItem({
         <div className="chat-item-wrapper w-full flex">
           <div className="chat-avatar mr-3">
             {!isDisabled && (
-              <img src={`${message.sender.avatar}`} alt="avatar" />
+              <img src={`${message.sender?.avatar}`} alt="avatar" />
             )}
           </div>
 
@@ -89,21 +91,23 @@ export function ChatItem({
                   {!isTyping && (
                     <p className="chat-time flex items-center justify-end">
                       <AccessAlarmsOutlinedIcon fontSize="small" />
-                      10:31
+                      {moment(message.timeStamp).format("LT")}
                     </p>
                   )}
                 </div>
 
                 {!isTyping && (
                   <div className="chat-text-option">
-                    <IconButton>
-                      <MoreVertOutlinedIcon />
-                    </IconButton>
+                    <CustomMenu
+                      menu={messageOptions}
+                      direction="rtl"
+                      icon={<MoreVertOutlinedIcon />}
+                    />
                   </div>
                 )}
               </div>
               <div className="chat-name w-full capitalize font-semibold">
-                {!isDisabled && message.sender.username}
+                {!isDisabled && message.sender?.username}
               </div>
             </div>
           </div>
@@ -114,23 +118,25 @@ export function ChatItem({
             <div className="w-full flex flex-wrap">
               <div className="chat-text-wrap flex justify-end mb-3">
                 <div className="chat-text-option">
-                  <IconButton>
-                    <MoreVertOutlinedIcon />
-                  </IconButton>
+                  <CustomMenu
+                    menu={messageOptions}
+                    direction="rtl"
+                    icon={<MoreVertOutlinedIcon />}
+                  />
                 </div>
                 <div className="chat-text-content">
                   <p className="chat-text">{message.message}</p>
 
-                  <p className="chat-time flex items-center justify-end">
+                  <p className="chat-time flex items-center justify-start">
                     <AccessAlarmsOutlinedIcon fontSize="small" />
-                    10:31
+                    {moment(message.timeStamp).format("LT")}
                   </p>
                 </div>
               </div>
 
               {!isDisabled && (
                 <div className="chat-name w-full capitalize font-semibold">
-                  {message.sender.username}
+                  {message.sender?.username}
                 </div>
               )}
             </div>
@@ -138,7 +144,7 @@ export function ChatItem({
 
           <div className="chat-avatar ml-3">
             {!isDisabled && (
-              <img src={`${message.sender.avatar}`} alt="avatar" />
+              <img src={`${message.sender?.avatar}`} alt="avatar" />
             )}
           </div>
         </div>

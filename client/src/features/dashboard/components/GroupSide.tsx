@@ -17,7 +17,6 @@ import { users } from "../../../mock";
 export function GroupSide() {
   const fetching = useAppSelector(selectFetching);
 
-
   const handleFieldChange = (value: React.ChangeEvent<HTMLInputElement>) => {
     console.log(
       "🚀 ~ file: ChatSide.tsx:12 ~ handleFieldChange ~ value:",
@@ -29,7 +28,6 @@ export function GroupSide() {
     <SideWrapper
       title="Groups"
       icon={<PeopleOutlineIcon />}
-      className="mt-4"
       header={
         <InputField
           onChange={handleFieldChange}
@@ -40,26 +38,30 @@ export function GroupSide() {
         />
       }
     >
-      <div className="group-wrapper w-full overflow-auto">
-        {fetching.isConversation ? <BaseItemLoader listToRender={5} /> : users.map((group, key) => {
-          return (
-            <Button
-              sx={{ padding: "1rem" }}
-              className="w-full group-items"
-              key={key}
-            >
-              <div className="w-full flex justify-between items-center">
-                <Avatar src={group.avatar} alt={group.username} />
+      <div className="group-wrapper w-full h-96 overflow-auto">
+        {fetching.isConversation ? (
+          <BaseItemLoader listToRender={5} />
+        ) : (
+          users.map((group, key) => {
+            return (
+              <Button
+                sx={{ padding: "1rem" }}
+                className="w-full group-items"
+                key={key}
+              >
+                <div className="w-full flex justify-between items-center">
+                  <Avatar src={group.avatar} alt={group.username} />
 
-                <h5 className="text-left text-sm text-black w-9/12 font-semibold ml-2">
-                  #{group.username}
-                </h5>
+                  <h5 className="text-left text-sm text-black w-9/12 font-semibold ml-2">
+                    #{group.username}
+                  </h5>
 
-                <Badge content={10} />
-              </div>
-            </Button>
-          );
-        })}
+                  <Badge content={10} />
+                </div>
+              </Button>
+            );
+          })
+        )}
       </div>
     </SideWrapper>
   );

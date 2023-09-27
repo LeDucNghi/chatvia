@@ -51,7 +51,7 @@ export const signup =
     }
   };
 
-export const getUser = (): AppThunk => async (dispatch) => {
+export const handleGetUser = (): AppThunk => async (dispatch) => {
   try {
     const res = await authService.getUser();
 
