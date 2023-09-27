@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post("/sendMessage", verifyToken, sendMessage);
 
-router.get("/getConversation/:id", getConversation);
+router.post("/getConversation", getConversation);
 
 module.exports = router;

@@ -112,9 +112,13 @@ exports.sendEmail = async (req, res) => {
 
 // GET USER
 exports.getUser = async (req, res) => {
-  const { user } = req.decoded;
+  try {
+    const { user } = await req.decoded;
 
-  const { password, ...rest } = user;
+    const { password, ...rest } = user;
 
-  return res.status(200).send({ user: rest });
+    return res.status(200).send({ ...rest });
+  } catch (error) {
+    res.status(500).send({ error });
+  }
 };

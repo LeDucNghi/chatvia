@@ -1,6 +1,7 @@
 const { Message } = require("../models/Message");
 const { Schema, default: mongoose } = require("mongoose");
 const { Conversation } = require("../models/Conversation");
+const pusher = require("../config/pusher");
 
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
@@ -10,6 +11,10 @@ exports.sendMessage = async (req, res) => {
   const conversation = await Conversation.findById(consId);
 
   if (!conversation) {
+    pusher.trigger("my-channel", "my-event", {
+      message: message,
+    });
+
     const newConversation = await Conversation.create({
       _id: new mongoose.Types.ObjectId(),
       isGroup: false,
@@ -29,6 +34,10 @@ exports.sendMessage = async (req, res) => {
 
     return res.status(200).send({ message: newMessage });
   } else {
+    pusher.trigger("my-channel", "my-event", {
+      message: message,
+    });
+
     const newMessage = await Message.create({
       message: message,
       sender: token.user,
@@ -43,28 +52,26 @@ exports.sendMessage = async (req, res) => {
 
 // GET CONVERSATION LIST
 exports.getConversation = async (req, res) => {
-  const _id = await req.params.id;
   const isGroup = await req.query.isGroup;
-  console.log(
-    "🚀 ~ file: conversation.js:48 ~ exports.getConversation= ~ isGroup:",
-    isGroup,
-    _id
-  );
+  const { participant } = await req.body;
 
   const conversation = await Conversation.findOne({
-    _id,
     isGroup,
+    participant: [...participant],
   });
 
-  // return res.status(200).send({ conversation });
   if (conversation) {
     const message = await Message.find({
-      conversation: _id,
+      conversation: conversation._id,
     })
-      .populate("sender", "-password -__v")
+      .populate("sender", "-password -__v -messages")
       .exec();
 
-    return res.status(200).send({ message });
+    conversation.messages = [...message];
+
+    return res.status(200).send({
+      data: conversation,
+    });
   } else {
     return res.status(404).send({
       message:
