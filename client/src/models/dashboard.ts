@@ -23,7 +23,7 @@ export interface DashboardState {
     isFriendList: boolean;
   };
 
-  conversations: MessageRes | null;
+  conversations: MessageRes;
   friends: UserProfile[];
   partner: UserProfile | null;
 
@@ -31,6 +31,7 @@ export interface DashboardState {
 
   mode: Mode;
   languages: Language;
+  message : Message | null
 }
 
 export interface Message {

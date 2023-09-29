@@ -1,4 +1,5 @@
 import {
+  fetchConversationFailed,
   fetchConversationSuccess,
   fetchPartnerProfileSuccess,
 } from "./dashboardSlice";
@@ -46,11 +47,13 @@ export const fetchConversation =
 
         dispatch(fetchConversationSuccess(res));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log("🚀 ~ file: dashboardThunk.ts:36 ~ error:", error);
 
+      dispatch(fetchConversationFailed());
+
       alert({
-        content: "Something went wrong 🤔",
+        content: `${error.response.data.message}`,
         position: "top-center",
         type: "error",
       });

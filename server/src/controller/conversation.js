@@ -6,15 +6,16 @@ const pusher = require("../config/pusher");
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
   const { message, consId, partnerId } = await req.body;
-  const token = req.decoded;
+  const token = await req.decoded;
+
+  pusher.trigger("my-channel", "my-event", {
+    message: message,
+    sender: { ...token.user },
+  });
 
   const conversation = await Conversation.findById(consId);
 
   if (!conversation) {
-    pusher.trigger("my-channel", "my-event", {
-      message: message,
-    });
-
     const newConversation = await Conversation.create({
       _id: new mongoose.Types.ObjectId(),
       isGroup: false,
@@ -34,10 +35,6 @@ exports.sendMessage = async (req, res) => {
 
     return res.status(200).send({ message: newMessage });
   } else {
-    pusher.trigger("my-channel", "my-event", {
-      message: message,
-    });
-
     const newMessage = await Message.create({
       message: message,
       sender: token.user,
@@ -57,7 +54,7 @@ exports.getConversation = async (req, res) => {
 
   const conversation = await Conversation.findOne({
     isGroup,
-    participant: [...participant],
+    participant: { $in: participant },
   });
 
   if (conversation) {

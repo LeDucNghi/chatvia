@@ -1,4 +1,4 @@
-export * from "./socket";
+export * from "./pusher";
 export * from "./auth";
 export * from "./dashboard";
 export * from "./seo";

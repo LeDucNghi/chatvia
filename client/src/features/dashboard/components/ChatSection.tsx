@@ -1,15 +1,17 @@
 import "./Chat.scss";
 
 import { IconButton, TextField } from "@mui/material";
+import { addNewMessage, selectConversations } from "../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
+import { useEffect, useState } from "react";
 
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
+import { Message } from "../../../models";
+import Pusher from "pusher-js";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import { selectConversations } from "../dashboardSlice";
 import { sendMsg } from "../dashboardThunk";
-import { useState } from "react";
 
 export interface IChatSectionProps {
   partnerId: string;
@@ -19,7 +21,21 @@ export function ChatSection({ partnerId }: IChatSectionProps) {
   const dispatch = useAppDispatch();
   const conversation = useAppSelector(selectConversations);
 
+  const pusher = new Pusher("bd7b197e7fcf1ef09586", {
+    cluster: "ap1",
+  });
+
+  const channel = pusher.subscribe("my-channel");
+
   const [msg, setMsg] = useState<string>("");
+
+  useEffect(() => {
+    channel.bind("my-event", (data: Message) => {
+      console.log("messages: ", data);
+
+      dispatch(addNewMessage(data));
+    });
+  }, []);
 
   const handleSendMessage = () => {
     dispatch(
@@ -29,6 +45,8 @@ export function ChatSection({ partnerId }: IChatSectionProps) {
         message: msg,
       })
     );
+
+    setMsg("");
   };
 
   return (
@@ -41,6 +59,7 @@ export function ChatSection({ partnerId }: IChatSectionProps) {
         placeholder="Your Message..."
         className="textfield"
         autoComplete="off"
+        value={msg}
         // disabled={fetching.isConversation ? true : false}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setMsg(e.target.value)

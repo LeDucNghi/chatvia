@@ -17,7 +17,7 @@
         border-bottom: 0.01rem solid #f0eff5;
 
         .header-name {
-            width: 40%;
+            width: 30%;
 
             img {
                 width: 2.2rem;
@@ -40,7 +40,7 @@
         }
 
         .header-tool {
-            width: 60%;
+            width: 70%;
         }
     }
 
@@ -63,6 +63,8 @@
             height: auto;
 
             align-items: end;
+
+            padding: 1rem 0;
 
             &.right {
                 justify-content: flex-end;

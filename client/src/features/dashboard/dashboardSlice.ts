@@ -1,4 +1,4 @@
-import { DashboardState, MessageRes, UserProfile } from "../../models";
+import { DashboardState, Message, MessageRes, UserProfile } from "../../models";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from "../../app/store";
@@ -10,12 +10,22 @@ const initialState: DashboardState = {
   },
   friends: [],
 
-  conversations: null,
+  conversations: {
+    data: {
+      __v: 0,
+      _id: "",
+      groupName: "",
+      isGroup: false,
+      messages: [],
+      participant: [],
+    },
+  },
   partner: null,
 
   mode: "light",
   languages: "english",
   conversationId: "",
+  message: null,
 };
 
 export const dashboard = createSlice({
@@ -44,6 +54,14 @@ export const dashboard = createSlice({
     onLanguagesChange(state, action: PayloadAction<"vietnamese" | "english">) {
       state.languages = action.payload;
     },
+
+    fetchConversationFailed(state) {
+      state.fetching.isConversation = false;
+    },
+
+    addNewMessage(state, action: PayloadAction<Message>) {
+      state.conversations.data.messages.push(action.payload);
+    },
   },
 });
 
@@ -51,8 +69,10 @@ export const {
   fetchConversationSuccess,
   fetchUserListSuccess,
   fetchPartnerProfileSuccess,
+  fetchConversationFailed,
   onModeChange,
   onLanguagesChange,
+  addNewMessage,
 } = dashboard.actions;
 
 export const selectConversations = (state: RootState) =>
