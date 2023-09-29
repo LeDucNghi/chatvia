@@ -13,6 +13,7 @@ import { ChatSide } from "../components/ChatSide";
 import { ContactSide } from "../components/ContactSide";
 import { GroupSide } from "../components/GroupSide";
 import { ProfileSide } from "../components/ProfileSide";
+import { RequestSide } from "../components/RequestSide";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
 import { Sides } from "../../../models";
@@ -54,6 +55,8 @@ export default function Dashboard() {
             <ChatSide curChatRoom={setCurChatRoom} />
           ) : side === "group" ? (
             <GroupSide />
+          ) : side === "request" ? (
+            <RequestSide />
           ) : (
             <ContactSide />
           )}

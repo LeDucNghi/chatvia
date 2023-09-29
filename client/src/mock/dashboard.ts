@@ -1,4 +1,4 @@
-import { Message, RecentMessage } from "../models";
+import { Message, RecentMessage, UserProfile } from "../models";
 
 import { faker } from "@faker-js/faker";
 
@@ -155,5 +155,39 @@ export const recentMessage: RecentMessage[] = [
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
+  },
+];
+
+export const friendRequests: UserProfile[] = [
+  {
+    _id: 1,
+    username: faker.person.fullName(),
+    avatar: faker.image.avatar(),
+  },
+  {
+    _id: 2,
+    username: faker.person.fullName(),
+    avatar: faker.image.avatar(),
+  },
+  {
+    _id: 3,
+    username: faker.person.fullName(),
+    avatar: faker.image.avatar(),
+  },
+  {
+    _id: 4,
+    username: faker.person.fullName(),
+    avatar: faker.image.avatar(),
+  },
+  {
+    _id: 5,
+    username: faker.person.fullName(),
+    avatar: faker.image.avatar(),
+  },
+
+  {
+    _id: 6,
+    username: faker.person.fullName(),
+    avatar: faker.image.avatar(),
   },
 ];

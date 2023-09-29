@@ -56,7 +56,7 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
       <div className="chat-recent w-full ">
         <h5 className="mb-4 font-semibold">Recent</h5>
 
-        <div className="chat-recent-list py-2 w-full ">
+        <div className="chat-recent-list overflow-auto py-2 w-full h-[380px] ">
           {fetching.isConversation ? (
             <BaseItemLoader listToRender={4} />
           ) : (

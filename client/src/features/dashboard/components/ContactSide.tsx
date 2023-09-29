@@ -139,7 +139,8 @@ export function ContactSide() {
           </Formik>
         </div>
       </CustomModal>
-      <div className="contacts w-full h-96 overflow-auto">
+
+      <div className="contacts w-full h-[500px] overflow-auto">
         <div className="contact-item">
           <div className="p-3 uppercase font-semibold">a</div>
 

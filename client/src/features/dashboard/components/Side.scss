@@ -62,9 +62,6 @@
 
     .chat-recent {
         .chat-recent-list {
-            height: 21rem;
-            overflow: auto;
-
             &::-webkit-scrollbar {
                 display: none;
             }
@@ -96,6 +93,16 @@
                     }
                 }
             }
+        }
+    }
+
+    .request-wrapper {
+        margin-bottom: 1rem;
+
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+            background: #dcdde1;
         }
     }
 }

@@ -1,6 +1,12 @@
 import { UserProfile } from "./auth";
 
-export type Sides = "profile" | "chat" | "group" | "contact" | "setting";
+export type Sides =
+  | "profile"
+  | "chat"
+  | "group"
+  | "contact"
+  | "setting"
+  | "request";
 
 export type Mode = "dark" | "light";
 
@@ -31,7 +37,7 @@ export interface DashboardState {
 
   mode: Mode;
   languages: Language;
-  message : Message | null
+  message: Message | null;
 }
 
 export interface Message {

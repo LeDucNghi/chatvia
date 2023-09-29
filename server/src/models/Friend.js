@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 const { UserModel } = require("./Users");
 
 const FriendSchema = new mongoose.Schema({
-  friend: {
-    type: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },
-    required: false,
-  },
+  friend: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
   friendShipStatus: {
     type: String,
@@ -14,6 +11,6 @@ const FriendSchema = new mongoose.Schema({
   },
 });
 
-const FriendModel = mongoose.model("friend", FriendSchema);
+const FriendModel = mongoose.model("Friend", FriendSchema);
 
 module.exports = { FriendModel };

@@ -38,7 +38,7 @@ export function GroupSide() {
         />
       }
     >
-      <div className="group-wrapper w-full h-96 overflow-auto">
+      <div className="group-wrapper w-full h-[500px] overflow-auto ">
         {fetching.isConversation ? (
           <BaseItemLoader listToRender={5} />
         ) : (

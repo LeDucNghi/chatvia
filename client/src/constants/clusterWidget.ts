@@ -47,24 +47,30 @@ export const sideMenu = [
   },
   {
     id: 3,
-    icon: "peopleoutline",
+    icon: "groups",
     title: "Group",
     value: "group",
   },
   {
     id: 4,
+    icon: "groupadd",
+    title: "Friend Request",
+    value: "request",
+  },
+  {
+    id: 5,
     icon: "phone",
     title: "Contacts",
     value: "contact",
   },
 
   {
-    id: 5,
+    id: 6,
     icon: "language",
     title: "Languages",
   },
   {
-    id: 6,
+    id: 7,
     icon: "nightlight",
     title: "Dark / Light mode",
   },

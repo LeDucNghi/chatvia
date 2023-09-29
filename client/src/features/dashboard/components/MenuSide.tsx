@@ -36,7 +36,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   };
 
   const handleChangeMode = (id: number) => {
-    if (id === 6) {
+    if (id === 7) {
       if (mode === "dark") {
         dispatch(onModeChange("light"));
       } else {
@@ -68,7 +68,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
       <Divider />
 
       <div className="side-menu-pills mb-4">
-        {sideMenu.slice(0, 4).map((menu, key) => {
+        {sideMenu.slice(0, 5).map((menu, key) => {
           return (
             <Tooltip
               className="pills-item mx-auto"
@@ -82,7 +82,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               }}
             >
               <Button variant="text">
-                {menu.id !== 2 ? (
+                {menu.id !== 2 && menu.id !== 4 ? (
                   <Icon>{menu.icon}</Icon>
                 ) : (
                   <Badge color="error" badgeContent={1}>
@@ -98,7 +98,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
       <Divider />
 
       <div className="side-menu-pills">
-        {sideMenu.slice(4, 6).map((menu, key) => {
+        {sideMenu.slice(5, 7).map((menu, key) => {
           return (
             <Tooltip
               className="pills-item mx-auto"
@@ -110,7 +110,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               onClick={() => handleChangeMode(menu.id)}
             >
               <Button variant="text">
-                {menu.id === 5 ? (
+                {menu.id === 6 ? (
                   <CustomMenu
                     onChange={handleChangeLanguage}
                     direction="ltr"
