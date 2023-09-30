@@ -4,9 +4,17 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
 const initialState: AuthState = {
+  isFetching: {
+    isContacts: false,
+  },
+
   isSignedIn: false,
-  user: null,
   isValidUser: false,
+
+  user: null,
+
+  userList: [],
+  contacts: [],
 };
 
 export const auth = createSlice({
@@ -14,6 +22,10 @@ export const auth = createSlice({
   initialState,
 
   reducers: {
+    fetchingContacts(state) {
+      state.isFetching.isContacts = true;
+    },
+
     signinStatus(state, action: PayloadAction<boolean>) {
       state.isSignedIn = action.payload;
     },
@@ -25,13 +37,31 @@ export const auth = createSlice({
     onValidateUser(state, action: PayloadAction<boolean>) {
       state.isValidUser = action.payload;
     },
+
+    fetchContactsSuccess(state, action: PayloadAction<UserProfile[]>) {
+      state.contacts = action.payload;
+    },
+
+    fetchUserListSuccess(state, action: PayloadAction<UserProfile[]>) {
+      state.userList = action.payload;
+    },
   },
 });
 
-export const { signinStatus, fetchUser, onValidateUser } = auth.actions;
+export const {
+  signinStatus,
+  fetchUser,
+  onValidateUser,
+  fetchContactsSuccess,
+  fetchUserListSuccess,
+  fetchingContacts,
+} = auth.actions;
 
 export const selectSignedIn = (state: RootState) => state.auth.isSignedIn;
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectValidUser = (state: RootState) => state.auth.isValidUser;
+export const selectAuthFetching = (state: RootState) => state.auth.isFetching;
+export const selectContacts = (state: RootState) => state.auth.contacts;
+export const selectUserList = (state: RootState) => state.auth.userList;
 
 export const authReducer = auth.reducer;

@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 export interface INotFoundProps {
   style?: React.CSSProperties;
 
-  type?: "component" | "page";
-
   title?: string;
   subTitle?: string;
   buttonContent?: string;
@@ -16,17 +14,19 @@ export interface INotFoundProps {
   className?: string;
 
   hasButton?: boolean;
+
+  icon?: string;
 }
 
 export default function NotFound({
   style,
-  type,
   title,
   subTitle,
   buttonContent,
   route,
   hasButton,
   className,
+  icon,
 }: INotFoundProps) {
   const navigate = useNavigate();
 
@@ -36,9 +36,10 @@ export default function NotFound({
       style={style}
     >
       <img
-        src={type === "component" ? Images.mailbox : Images.error}
+        // src={type === "component" ? Images.mailbox : Images.error}
+        src={icon ? icon : Images.error}
         alt="empty"
-        className="w-20 h-20 object-contain"
+        className="w-20 h-20 object-contain pointer-events-none"
       />
 
       <div className="flex flex-col items-center">

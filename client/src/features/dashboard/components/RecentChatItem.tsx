@@ -8,7 +8,7 @@ export interface IRecentChatItemProps {
 
   isSelected: boolean;
 
-  onClick: (id: number, partnerId: number) => void;
+  onClick: (id: string, partnerId: string) => void;
 }
 
 export function RecentChatItem({

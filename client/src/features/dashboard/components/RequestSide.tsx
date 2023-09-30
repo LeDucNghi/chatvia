@@ -8,7 +8,7 @@ export function RequestSide() {
     <SideWrapper title="friend request" icon={<GroupAddIcon />}>
       <div className="h-[600px] overflow-auto">
         {friendRequests.map((req, key) => {
-          return <RequestItem user={req} key={key} />;
+          return <RequestItem status="receive" user={req} key={key} />;
         })}
       </div>
     </SideWrapper>

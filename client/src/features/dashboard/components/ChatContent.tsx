@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 
 import { ChatItem } from "./ChatItem";
 import { ChatItemLoader } from "../../../components/common/Loader/ChatItemLoder";
+import { Images } from "../../../constants";
 import NotFound from "../../../components/common/NotFound/NotFound";
 import { selectUser } from "../../auth/authSlice";
 import { useAppSelector } from "../../../app/store";
@@ -21,14 +22,14 @@ export function ChatContent() {
   }, []);
 
   return (
-    <div className="chat-content-wrapper">
+    <div className="chat-content-wrapper w-full p-6 flex flex-col overflow-auto h-[530px]">
       {fetching.isConversation ? (
         <ChatItemLoader listToRender={6} />
       ) : !conversations ? (
         <NotFound
           hasButton={false}
           title="You have never talked to this person before. Let's get started"
-          type="component"
+          icon={Images.mailbox}
         />
       ) : (
         conversations.data.messages.map((cons, key) => {

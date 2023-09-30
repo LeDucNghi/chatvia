@@ -10,6 +10,7 @@ export interface ICustomTextfieldProps
   placeholder?: string;
   name?: string;
   className?: string;
+  value?: string;
 
   type: "text" | "password" | "email";
 
@@ -38,6 +39,7 @@ export function InputField({
   prependIcon,
   appendIcon,
   autoFocus,
+  value,
 }: ICustomTextfieldProps) {
   return (
     <div className={className}>
@@ -55,6 +57,7 @@ export function InputField({
           label={label}
           error={error}
           autoFocus={autoFocus}
+          value={value}
         />
 
         {helperText && (

@@ -20,7 +20,7 @@ export interface IChatSideProps {
 export function ChatSide({ curChatRoom }: IChatSideProps) {
   const fetching = useAppSelector(selectFetching);
 
-  const [isSelected, setIsSelected] = useState(0);
+  const [isSelected, setIsSelected] = useState("");
 
   const handleFieldChange = (value: React.ChangeEvent<HTMLInputElement>) => {
     console.log(
@@ -29,7 +29,7 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
     );
   };
 
-  const onItemChange = (id: number, partnerId: number) => {
+  const onItemChange = (id: string, partnerId: string) => {
     setIsSelected(id);
 
     curChatRoom(String(partnerId));

@@ -1,5 +1,10 @@
 import { alert, cookies } from "../../utils";
-import { fetchUser, onValidateUser, signinStatus } from "./authSlice";
+import {
+  fetchUser,
+  fetchUserListSuccess,
+  onValidateUser,
+  signinStatus,
+} from "./authSlice";
 
 import { AppThunk } from "../../app/store";
 import { UserProfile } from "../../models";
@@ -83,5 +88,37 @@ export const handleResetPwd =
       dispatch(fetchUser(res));
     } catch (error) {
       console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+    }
+  };
+
+export const handleGetAllUser = (): AppThunk => async (dispatch) => {
+  try {
+    const res = await authService.getAllUsers();
+
+    dispatch(fetchUserListSuccess(res.data));
+  } catch (error) {
+    console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+  }
+};
+
+export const handleFindContact =
+  (email: string): AppThunk =>
+  async () => {
+    try {
+      const res = await authService.findContact(email);
+      console.log("🚀 ~ file: dashboardThunk.ts:68 ~ res:", res);
+    } catch (error) {
+      console.log("🚀 ~ file: dashboardThunk.ts:69 ~ error:", error);
+    }
+  };
+
+export const handleSendInvitation =
+  (id: string): AppThunk =>
+  async () => {
+    try {
+      const res = await authService.sendInvitation(id);
+      console.log("🚀 ~ file: dashboardThunk.ts:79 ~ res:", res);
+    } catch (error) {
+      console.log("🚀 ~ file: dashboardThunk.ts:80 ~ error:", error);
     }
   };

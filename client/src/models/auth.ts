@@ -1,5 +1,5 @@
 export interface UserProfile {
-  _id?: number;
+  _id?: string;
   username?: string;
   password?: string;
   email?: string;
@@ -9,7 +9,15 @@ export interface UserProfile {
 }
 
 export interface AuthState {
+  isFetching: {
+    isContacts: boolean;
+  };
+
   isSignedIn: boolean;
-  user: UserProfile | null | undefined;
   isValidUser: boolean;
+
+  user: UserProfile | null | undefined;
+  userList: UserProfile[];
+
+  contacts: UserProfile[];
 }

@@ -7,7 +7,7 @@ export const conversation: Message[] = [
     _id: 1,
     message: faker.lorem.paragraph(2),
     sender: {
-      _id: 1,
+      _id: "1",
       username: "anhtuan",
       email: "phamanhtuan@gmail.com",
       avatar:
@@ -18,7 +18,7 @@ export const conversation: Message[] = [
     _id: 2,
     message: faker.lorem.paragraph(2),
     sender: {
-      _id: 1,
+      _id: "1",
       username: "anhtuan",
       email: "phamanhtuan@gmail.com",
       avatar:
@@ -36,7 +36,7 @@ export const conversation: Message[] = [
       },
     ],
     sender: {
-      _id: 2,
+      _id: "2",
       username: "ducnghi",
       email: "leducnghi@gmail.com",
       avatar:
@@ -54,7 +54,7 @@ export const conversation: Message[] = [
       },
     ],
     sender: {
-      _id: 2,
+      _id: "2",
       username: "ducnghi",
       email: "leducnghi@gmail.com",
       avatar:
@@ -65,7 +65,7 @@ export const conversation: Message[] = [
     _id: 5,
     message: faker.lorem.paragraph(2),
     sender: {
-      _id: 2,
+      _id: "2",
       username: "ducnghi",
       email: "leducnghi@gmail.com",
       avatar:
@@ -76,7 +76,7 @@ export const conversation: Message[] = [
     _id: 6,
     message: faker.lorem.paragraph(2),
     sender: {
-      _id: 1,
+      _id: "1",
       username: "anhtuan",
       email: "phamanhtuan@gmail.com",
       avatar:
@@ -87,71 +87,71 @@ export const conversation: Message[] = [
 
 export const recentMessage: RecentMessage[] = [
   {
-    _id: 1,
+    _id: "1",
     message: faker.lorem.paragraph(),
     status: "online",
     sender: {
-      _id: 1,
+      _id: "1",
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
   },
   {
-    _id: 2,
+    _id: "2",
     message: faker.lorem.paragraph(),
     status: "leave",
     sender: {
-      _id: 2,
+      _id: "2",
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
   },
   {
-    _id: 3,
+    _id: "3",
     message: faker.lorem.paragraph(),
     status: "off",
     sender: {
-      _id: 3,
+      _id: "3",
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
   },
   {
-    _id: 4,
+    _id: "4",
     message: faker.lorem.paragraph(),
     status: "online",
     sender: {
-      _id: 4,
+      _id: "4",
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
   },
   {
-    _id: 5,
+    _id: "5",
     message: faker.lorem.paragraph(),
     status: "leave",
     sender: {
-      _id: 5,
+      _id: "5",
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
   },
   {
-    _id: 6,
+    _id: "6",
     message: faker.lorem.paragraph(),
     status: "online",
     sender: {
-      _id: 6,
+      _id: "6",
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
   },
   {
-    _id: 7,
+    _id: "7",
     message: faker.lorem.paragraph(),
     status: "off",
     sender: {
-      _id: 7,
+      _id: "7",
       username: faker.person.fullName(),
       avatar: faker.image.avatar(),
     },
@@ -160,33 +160,33 @@ export const recentMessage: RecentMessage[] = [
 
 export const friendRequests: UserProfile[] = [
   {
-    _id: 1,
+    _id: "1",
     username: faker.person.fullName(),
     avatar: faker.image.avatar(),
   },
   {
-    _id: 2,
+    _id: "2",
     username: faker.person.fullName(),
     avatar: faker.image.avatar(),
   },
   {
-    _id: 3,
+    _id: "3",
     username: faker.person.fullName(),
     avatar: faker.image.avatar(),
   },
   {
-    _id: 4,
+    _id: "4",
     username: faker.person.fullName(),
     avatar: faker.image.avatar(),
   },
   {
-    _id: 5,
+    _id: "5",
     username: faker.person.fullName(),
     avatar: faker.image.avatar(),
   },
 
   {
-    _id: 6,
+    _id: "6",
     username: faker.person.fullName(),
     avatar: faker.image.avatar(),
   },

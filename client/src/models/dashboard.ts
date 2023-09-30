@@ -53,7 +53,7 @@ export interface Message {
 }
 
 export interface RecentMessage {
-  _id: number;
+  _id: string;
   message: string;
   sender: UserProfile;
   status: "online" | "leave" | "off";
