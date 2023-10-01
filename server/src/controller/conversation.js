@@ -8,7 +8,7 @@ exports.sendMessage = async (req, res) => {
   const { message, consId, partnerId } = await req.body;
   const token = await req.decoded;
 
-  pusher.trigger("my-channel", "my-event", {
+  await pusher.trigger("message", "my-event", {
     message: message,
     sender: { ...token.user },
   });
