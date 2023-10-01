@@ -1,53 +1,50 @@
-.dashboard-side {
-    position: relative;
+.dashboard-container {
+    .dashboard-side {
+        width: 35%;
 
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
+        .dashboard-side-menu {
+            position: relative;
 
-    width: 35%;
-    height: 100vh;
+            width: 15%;
+            height: 100%;
 
-    font-family: "Montserrat", sans-serif;
+            box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
 
-    .dashboard-side-menu {
-        position: relative;
+            z-index: 9;
 
-        width: 15%;
-        height: 100%;
+            .side-menu-logo {
+                width: 100%;
+                height: 4.4rem;
 
-        box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
-
-        z-index: 9;
-
-        .side-menu-logo {
-            width: 100%;
-            height: 4.4rem;
-
-            img {
-                width: 2rem;
-                height: 2rem;
+                img {
+                    width: 2rem;
+                    height: 2rem;
+                }
             }
-        }
 
-        .side-menu-pills {
-            width: 100%;
+            .side-menu-pills {
+                width: 100%;
 
-            display: flex;
-            flex-direction: column;
+                display: flex;
+                flex-direction: column;
 
-            margin-top: 1rem;
+                margin-top: 1rem;
 
-            .pills-item {
-                width: 3.5rem;
-                height: 3.5rem;
+                .pills-item {
+                    width: 3.5rem;
+                    height: 3.5rem;
 
-                margin: 0 auto 1rem auto;
+                    margin: 0 auto 1rem auto;
 
-                .isActive {
-                    color: #7269ef;
+                    .isActive {
+                        color: #7269ef;
+                    }
                 }
             }
         }
+    }
+
+    .dashboard-chat {
+        box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
     }
 }

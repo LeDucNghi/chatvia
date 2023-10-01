@@ -1,7 +1,7 @@
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { RequestItem } from "./RequestItem";
-import { SideWrapper } from "./SideWrapper";
-import { friendRequests } from "../../../mock";
+import { SideWrapper } from "../SideWrapper";
+import { friendRequests } from "../../../../mock";
 
 export function RequestSide() {
   return (

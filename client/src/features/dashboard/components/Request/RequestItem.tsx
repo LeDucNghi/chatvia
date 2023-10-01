@@ -1,8 +1,8 @@
-import "./Side.scss";
+import "../Side.scss";
 
 import { Avatar, Button, Card } from "@mui/material";
 
-import { UserProfile } from "../../../models";
+import { UserProfile } from "../../../../models";
 
 export interface IRequestItemProps {
   user: UserProfile;

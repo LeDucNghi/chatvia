@@ -1,13 +1,15 @@
+import "./Conversation.scss";
+
 import { Avatar, IconButton, Skeleton, Typography } from "@mui/material";
 import {
   selectConversations,
   selectFetching,
   selectPartner,
-} from "../dashboardSlice";
+} from "../../dashboardSlice";
 
 import CallIcon from "@mui/icons-material/Call";
 import ClearIcon from "@mui/icons-material/Clear";
-import CustomModal from "../../../components/common/Modal/Modal";
+import CustomModal from "../../../../components/common/Modal/Modal";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
@@ -15,7 +17,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import SearchIcon from "@mui/icons-material/Search";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
-import { useAppSelector } from "../../../app/store";
+import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
 export function ChatHeader() {
@@ -40,7 +42,7 @@ export function ChatHeader() {
   };
 
   return (
-    <div className="chat-header">
+    <div className="chat-header w-full h-20 px-4 py-6 flex">
       {fetching.isConversation ? (
         <div className="flex items-center justify-between">
           <Skeleton variant="circular">
@@ -58,9 +60,13 @@ export function ChatHeader() {
       ) : (
         <>
           <div className="header-name flex justify-between items-center">
-            <img src={partner?.avatar} alt="logo" />
+            <img
+              className="w-9 h-9 object-contain "
+              src={partner?.avatar}
+              alt="logo"
+            />
 
-            <h5 className="flex font-semibold items-center">
+            <h5 className="flex font-semibold items-center w-4/5 capitalize">
               {partner?.username}
               <FiberManualRecordIcon className="icon online ml-1" />
             </h5>

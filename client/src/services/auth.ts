@@ -31,7 +31,7 @@ export const authService = {
     return axiosClient.post(`/auth/findContact`, { email });
   },
 
-  sendInvitation(id: string): Promise<string> {
+  sendInvitation(id: string): Promise<any> {
     return axiosClient.post(`/auth/sendInvitation/${id}`);
   },
 };

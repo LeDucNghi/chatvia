@@ -1,7 +1,7 @@
-import { AvatarBadge } from "../../../components/common/Avatar/AvatarBadge";
-import { Badge } from "../../../components/common/Badge/Badge";
+import { AvatarBadge } from "../../../../components/common/Avatar/AvatarBadge";
+import { Badge } from "../../../../components/common/Badge/Badge";
 import { Button } from "@mui/material";
-import { RecentMessage } from "../../../models";
+import { RecentMessage } from "../../../../models";
 
 export interface IRecentChatItemProps {
   message: RecentMessage;

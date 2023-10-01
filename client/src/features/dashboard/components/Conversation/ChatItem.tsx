@@ -1,10 +1,12 @@
+import "./Conversation.scss";
+
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
-import { CustomMenu } from "../../../components/common/Menu/Menu";
-import CustomModal from "../../../components/common/Modal/Modal";
-import { Loader } from "../../../components/common/Loader/BaseLoader";
-import { Message } from "../../../models";
+import { CustomMenu } from "../../../../components/common/Menu/Menu";
+import CustomModal from "../../../../components/common/Modal/Modal";
+import { Loader } from "../../../../components/common/Loader/BaseLoader";
+import { Message } from "../../../../models";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import { messageOptions } from "../../../constants";
+import { messageOptions } from "../../../../constants";
 import moment from "moment";
 import { useState } from "react";
 
@@ -41,7 +43,7 @@ export function ChatItem({
   return (
     <>
       {userType === "friend" ? (
-        <div className="chat-item-wrapper w-full flex">
+        <div className="chat-item-wrapper relative w-full flex items-end py-4">
           <div className="chat-avatar mr-3">
             {!isDisabled && (
               <img src={`${message.sender?.avatar}`} alt="avatar" />

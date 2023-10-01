@@ -1,14 +1,14 @@
-import "./Chat.scss";
+import "./Conversation.scss";
 
-import { selectConversations, selectFetching } from "../dashboardSlice";
+import { selectConversations, selectFetching } from "../../dashboardSlice";
 import { useEffect, useRef } from "react";
 
 import { ChatItem } from "./ChatItem";
-import { ChatItemLoader } from "../../../components/common/Loader/ChatItemLoder";
-import { Images } from "../../../constants";
-import NotFound from "../../../components/common/NotFound/NotFound";
-import { selectUser } from "../../auth/authSlice";
-import { useAppSelector } from "../../../app/store";
+import { ChatItemLoader } from "../../../../components/common/Loader/ChatItemLoder";
+import { Images } from "../../../../constants";
+import NotFound from "../../../../components/common/NotFound/NotFound";
+import { selectUser } from "../../../auth/authSlice";
+import { useAppSelector } from "../../../../app/store";
 
 export function ChatContent() {
   const bottom = useRef<null | HTMLDivElement>(null);
@@ -22,7 +22,7 @@ export function ChatContent() {
   }, []);
 
   return (
-    <div className="chat-content-wrapper w-full p-6 flex flex-col overflow-auto h-[530px]">
+    <div className="chat-content-wrapper w-full p-6 relative flex flex-col overflow-auto h-[530px]">
       {fetching.isConversation ? (
         <ChatItemLoader listToRender={6} />
       ) : !conversations ? (

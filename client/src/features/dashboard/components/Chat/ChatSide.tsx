@@ -1,16 +1,16 @@
-import "./Side.scss";
+import "../Side.scss";
 
-import { recentMessage, users } from "../../../mock";
+import { recentMessage, users } from "../../../../mock";
 
-import { BaseItemLoader } from "../../../components/common/Loader/BaseItemLoader";
-import { Carousel } from "../../../components/common/Carousel/Carousel";
+import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
+import { Carousel } from "../../../../components/common/Carousel/Carousel";
 import ChatIcon from "@mui/icons-material/Chat";
-import { InputField } from "../../../components/common/InputField/InputField";
+import { InputField } from "../../../../components/common/InputField/InputField";
 import { RecentChatItem } from "./RecentChatItem";
 import SearchIcon from "@mui/icons-material/Search";
-import { SideWrapper } from "./SideWrapper";
-import { selectFetching } from "../dashboardSlice";
-import { useAppSelector } from "../../../app/store";
+import { SideWrapper } from "../SideWrapper";
+import { selectFetching } from "../../dashboardSlice";
+import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
 export interface IChatSideProps {
@@ -53,7 +53,7 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
         <Carousel option={users} />
       </div>
 
-      <div className="chat-recent w-full ">
+      <div className="chat-recent w-full">
         <h5 className="mb-4 font-semibold">Recent</h5>
 
         <div className="chat-recent-list overflow-auto py-2 w-full h-[380px] ">

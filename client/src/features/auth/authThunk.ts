@@ -117,7 +117,12 @@ export const handleSendInvitation =
   async () => {
     try {
       const res = await authService.sendInvitation(id);
-      console.log("🚀 ~ file: dashboardThunk.ts:79 ~ res:", res);
+
+      alert({
+        content: `${res.message}`,
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:80 ~ error:", error);
     }

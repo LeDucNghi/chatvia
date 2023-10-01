@@ -1,15 +1,15 @@
-import "../pages/Dashboard.scss";
+import "../../pages/Dashboard.scss";
 
-import { Images, profileMenu } from "../../../constants";
+import { Images, profileMenu } from "../../../../constants";
 
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 import { Button } from "@mui/material";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { CustomAccordion } from "../../../components/common/Accordion/Accordion";
-import { CustomMenu } from "../../../components/common/Menu/Menu";
+import { CustomAccordion } from "../../../../components/common/Accordion/Accordion";
+import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import { SideWrapper } from "./SideWrapper";
+import { SideWrapper } from "../SideWrapper";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
