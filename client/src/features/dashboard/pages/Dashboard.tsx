@@ -6,14 +6,14 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import { AuthenticatedLayout } from "../../../components/layouts/Auth/Authenticate";
-import { ChatContent } from "../components/Conversation/ChatContent";
-import { ChatHeader } from "../components/Conversation/ChatHeader";
-import { ChatSection } from "../components/Conversation/ChatSection";
 import { ChatSide } from "../components/Chat/ChatSide";
 import { ContactSide } from "../components/Contact/ContactSide";
+import { Content } from "../components/Conversation/Content";
 import { GroupSide } from "../components/Group/GroupSide";
+import { Header } from "../components/Conversation/Header";
 import { ProfileSide } from "../components/Profile/ProfileSide";
 import { RequestSide } from "../components/Request/RequestSide";
+import { Section } from "../components/Conversation/Section";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
 import { addNewMessage } from "../dashboardSlice";
@@ -84,11 +84,11 @@ export default function Dashboard() {
         </div>
 
         <div className="dashboard-chat h-screen w-8/12">
-          <ChatHeader />
+          <Header />
 
-          <ChatContent />
+          <Content />
 
-          <ChatSection partnerId={curChatRoom} />
+          <Section partnerId={curChatRoom} />
         </div>
       </div>
     </AuthenticatedLayout>

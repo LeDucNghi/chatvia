@@ -3,14 +3,14 @@ import "./Conversation.scss";
 import { selectConversations, selectFetching } from "../../dashboardSlice";
 import { useEffect, useRef } from "react";
 
-import { ChatItem } from "./ChatItem";
+import { ChatItem } from "./Item";
 import { ChatItemLoader } from "../../../../components/common/Loader/ChatItemLoder";
 import { Images } from "../../../../constants";
 import NotFound from "../../../../components/common/NotFound/NotFound";
 import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
 
-export function ChatContent() {
+export function Content() {
   const bottom = useRef<null | HTMLDivElement>(null);
 
   const conversations = useAppSelector(selectConversations);

@@ -20,7 +20,7 @@ import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
-export function ChatHeader() {
+export function Header() {
   const conversations = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
   const partner = useAppSelector(selectPartner);
