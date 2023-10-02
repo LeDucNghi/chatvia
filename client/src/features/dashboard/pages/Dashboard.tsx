@@ -83,7 +83,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="dashboard-chat h-screen w-8/12">
+        <div className="dashboard-chat h-auto w-8/12">
           <Header />
 
           <Content />

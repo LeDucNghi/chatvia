@@ -117,6 +117,8 @@
 }
 
 .chat-input-section {
+    height: auto;
+
     border-top: 0.01rem solid #f0eff5;
 
     padding: 1.2rem 1.5rem;
@@ -128,23 +130,10 @@
     .chat-input-tool {
         width: 30%;
 
-        display: flex;
-        justify-content: flex-end;
-
-        .tool-icon {
-            padding: 0.7rem;
-        }
-
         .send-icon {
             border-radius: 0.5rem;
             background-color: #7269ef;
             color: #fff;
-
-            &:disabled {
-                cursor: not-allowed;
-                background-color: rgba(245, 247, 251, 0.9);
-                color: #ccc;
-            }
         }
     }
 }
