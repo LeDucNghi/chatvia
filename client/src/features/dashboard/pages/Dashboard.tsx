@@ -1,14 +1,16 @@
 import "../components/Side.scss";
 import "./Dashboard.scss";
 
-import { Message, Sides, UserProfile } from "../../../models";
+import { FriendRequest, Message, Sides } from "../../../models";
 import React, { useEffect } from "react";
+import { addNewMessage, addNewRequest } from "../dashboardSlice";
+import { fetchConversation, handleGetFriendRequest } from "../dashboardThunk";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import { AuthenticatedLayout } from "../../../components/layouts/Auth/Authenticate";
 import { ChatSide } from "../components/Chat/ChatSide";
 import { ContactSide } from "../components/Contact/ContactSide";
-import { Content } from "../components/Conversation/Content";
+import { Conversation } from "../components/Conversation/Conversation";
 import { GroupSide } from "../components/Group/GroupSide";
 import { Header } from "../components/Conversation/Header";
 import { ProfileSide } from "../components/Profile/ProfileSide";
@@ -16,8 +18,6 @@ import { RequestSide } from "../components/Request/RequestSide";
 import { Section } from "../components/Conversation/Section";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
-import { addNewMessage } from "../dashboardSlice";
-import { fetchConversation } from "../dashboardThunk";
 import { selectUser } from "../../auth/authSlice";
 import { subscribeChannel } from "../../../utils";
 
@@ -49,12 +49,16 @@ export default function Dashboard() {
   useEffect(() => {
     const friendRequestChannel = subscribeChannel("friend-request");
 
-    friendRequestChannel.bind(`${user?._id}`, (data: UserProfile) => {
+    friendRequestChannel.bind(`${user?._id}`, (data: FriendRequest) => {
       console.log("messages: ", data);
 
-      // dispatch(addNewMessage(data));
+      dispatch(addNewRequest(data));
     });
   }, [user?._id]);
+
+  useEffect(() => {
+    dispatch(handleGetFriendRequest());
+  }, [dispatch]);
 
   return (
     <AuthenticatedLayout>
@@ -86,7 +90,7 @@ export default function Dashboard() {
         <div className="dashboard-chat h-auto w-8/12">
           <Header />
 
-          <Content />
+          <Conversation />
 
           <Section partnerId={curChatRoom} />
         </div>

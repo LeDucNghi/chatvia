@@ -8,6 +8,7 @@ import { languageList, sideMenu, userMenu } from "../../../constants/";
 import {
   onLanguagesChange,
   onModeChange,
+  selectFriendRequest,
   selectLanguage,
   selectMode,
 } from "../dashboardSlice";
@@ -26,6 +27,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMode);
   const languages = useAppSelector(selectLanguage);
+  const friendRequest = useAppSelector(selectFriendRequest);
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
@@ -85,7 +87,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                 {menu.id !== 2 && menu.id !== 4 ? (
                   <Icon>{menu.icon}</Icon>
                 ) : (
-                  <Badge color="error" badgeContent={1}>
+                  <Badge color="error" badgeContent={friendRequest.length}>
                     <Icon>{menu.icon}</Icon>
                   </Badge>
                 )}

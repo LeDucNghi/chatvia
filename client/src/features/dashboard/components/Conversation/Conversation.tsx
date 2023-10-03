@@ -10,7 +10,7 @@ import NotFound from "../../../../components/common/NotFound/NotFound";
 import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
 
-export function Content() {
+export function Conversation() {
   const bottom = useRef<null | HTMLDivElement>(null);
 
   const conversations = useAppSelector(selectConversations);
@@ -21,15 +21,19 @@ export function Content() {
     bottom?.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  const fakeList = [];
+
   return (
     <div className="chat-content-wrapper w-full p-6 relative flex flex-col overflow-auto h-[530px]">
       {fetching.isConversation ? (
         <ChatItemLoader listToRender={6} />
-      ) : !conversations ? (
+      ) : fakeList.length === 0 ? (
         <NotFound
           hasButton={false}
-          title="You have never talked to this person before. Let's get started"
-          icon={Images.mailbox}
+          title="You have never talked to this person before."
+          subTitle="Let's get started"
+          icon={Images.robot}
+          iconStyle={{ width: "200px", height: "200px" }}
         />
       ) : (
         conversations.data.messages.map((cons, key) => {

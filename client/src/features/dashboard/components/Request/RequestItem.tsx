@@ -3,6 +3,8 @@ import "../Side.scss";
 import { Avatar, Button, Card } from "@mui/material";
 
 import { UserProfile } from "../../../../models";
+import { handleUpdateRequest } from "../../dashboardThunk";
+import { useAppDispatch } from "../../../../app/store";
 
 export interface IRequestItemProps {
   user: UserProfile;
@@ -10,13 +12,26 @@ export interface IRequestItemProps {
   status: "send" | "receive";
 
   onClick?: (user: UserProfile) => void;
+
+  requestId?: string;
 }
 
-export function RequestItem({ user, status, onClick }: IRequestItemProps) {
+export function RequestItem({
+  user,
+  status,
+  onClick,
+  requestId,
+}: IRequestItemProps) {
+  const dispatch = useAppDispatch();
+
   const handleChooseItem = (user: UserProfile) => {
     if (onClick) {
       onClick(user);
     }
+  };
+
+  const onUpdateRequestStt = (status: "accepted" | "deny") => {
+    dispatch(handleUpdateRequest(requestId!, status));
   };
 
   return (
@@ -41,7 +56,12 @@ export function RequestItem({ user, status, onClick }: IRequestItemProps) {
 
           {status === "receive" && (
             <div className="w-full">
-              <Button className="w-2/5" size="small" variant="contained">
+              <Button
+                onClick={() => onUpdateRequestStt("accepted")}
+                className="w-2/5"
+                size="small"
+                variant="contained"
+              >
                 Accept
               </Button>
               <Button
@@ -50,6 +70,7 @@ export function RequestItem({ user, status, onClick }: IRequestItemProps) {
                 sx={{ ml: "1rem" }}
                 color="error"
                 variant="outlined"
+                onClick={() => onUpdateRequestStt("deny")}
               >
                 Deny
               </Button>

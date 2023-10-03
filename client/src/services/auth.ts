@@ -26,12 +26,4 @@ export const authService = {
   validateUser({ email }: UserProfile): Promise<UserProfile> {
     return axiosClient.post(`/auth/validateUser/${email}`);
   },
-
-  findContact(email: string): Promise<string> {
-    return axiosClient.post(`/auth/findContact`, { email });
-  },
-
-  sendInvitation(id: string): Promise<any> {
-    return axiosClient.post(`/auth/sendInvitation/${id}`);
-  },
 };

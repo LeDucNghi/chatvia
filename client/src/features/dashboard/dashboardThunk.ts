@@ -1,6 +1,7 @@
 import {
   fetchConversationFailed,
   fetchConversationSuccess,
+  fetchFriendRequestsSuccess,
   fetchPartnerProfileSuccess,
 } from "./dashboardSlice";
 
@@ -57,5 +58,63 @@ export const fetchConversation =
         position: "top-center",
         type: "error",
       });
+    }
+  };
+
+export const handleGetFriendRequest = (): AppThunk => async (dispatch) => {
+  try {
+    const res = await conversationService.getFriendRequest();
+
+    dispatch(fetchFriendRequestsSuccess(res.data));
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: dashboardThunk.ts:67 ~ handleGetFriendRequest ~ error:",
+      error
+    );
+  }
+};
+
+export const handleUpdateRequest =
+  (id: string, status: "accepted" | "deny"): AppThunk =>
+  async () => {
+    try {
+      const res = await conversationService.updateFriendRequestStt(id, status);
+
+      if (res) {
+        alert({ content: "Accepted", position: "top-center", type: "success" });
+      }
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: dashboardThunk.ts:81 ~ handleUpdateRequest ~ error:",
+        error
+      );
+      alert({ content: "Accepted", position: "top-center", type: "success" });
+    }
+  };
+
+export const handleFindContact =
+  (email: string): AppThunk =>
+  async () => {
+    try {
+      const res = await conversationService.findContact(email);
+      console.log("🚀 ~ file: dashboardThunk.ts:68 ~ res:", res);
+    } catch (error) {
+      console.log("🚀 ~ file: dashboardThunk.ts:69 ~ error:", error);
+    }
+  };
+
+export const handleSendInvitation =
+  (id: string): AppThunk =>
+  async () => {
+    try {
+      const res = await conversationService.sendInvitation(id);
+
+      alert({
+        content: `${res.message}`,
+        position: "top-center",
+        type: "success",
+      });
+    } catch (error) {
+      console.log("🚀 ~ file: dashboardThunk.ts:80 ~ error:", error);
     }
   };

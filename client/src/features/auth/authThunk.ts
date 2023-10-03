@@ -100,30 +100,3 @@ export const handleGetAllUser = (): AppThunk => async (dispatch) => {
     console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
   }
 };
-
-export const handleFindContact =
-  (email: string): AppThunk =>
-  async () => {
-    try {
-      const res = await authService.findContact(email);
-      console.log("🚀 ~ file: dashboardThunk.ts:68 ~ res:", res);
-    } catch (error) {
-      console.log("🚀 ~ file: dashboardThunk.ts:69 ~ error:", error);
-    }
-  };
-
-export const handleSendInvitation =
-  (id: string): AppThunk =>
-  async () => {
-    try {
-      const res = await authService.sendInvitation(id);
-
-      alert({
-        content: `${res.message}`,
-        position: "top-center",
-        type: "success",
-      });
-    } catch (error) {
-      console.log("🚀 ~ file: dashboardThunk.ts:80 ~ error:", error);
-    }
-  };

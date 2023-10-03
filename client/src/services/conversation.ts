@@ -1,4 +1,4 @@
-import { Message, MessageRes } from "./../models";
+import { FriendRequest, Message, MessageRes, RequestRes } from "./../models";
 
 import { axiosClient } from ".";
 
@@ -15,5 +15,24 @@ export const conversationService = {
       `/conversation/getConversation?isGroup=${isGroup}`,
       { participant }
     );
+  },
+
+  getFriendRequest(): Promise<RequestRes<FriendRequest>> {
+    return axiosClient.get(`/conversation/getFriendRequest`);
+  },
+
+  findContact(email: string): Promise<string> {
+    return axiosClient.post(`/conversation/findContact`, { email });
+  },
+
+  sendInvitation(id: string): Promise<any> {
+    return axiosClient.post(`/conversation/sendInvitation/${id}`);
+  },
+
+  updateFriendRequestStt(
+    id: string,
+    status: "accepted" | "deny"
+  ): Promise<any> {
+    return axiosClient.post(`/conversation/friendRequestStt/${id}`, { status });
   },
 };

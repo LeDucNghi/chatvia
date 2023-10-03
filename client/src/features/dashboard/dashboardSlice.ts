@@ -1,4 +1,10 @@
-import { DashboardState, Message, MessageRes, UserProfile } from "../../models";
+import {
+  DashboardState,
+  FriendRequest,
+  Message,
+  MessageRes,
+  UserProfile,
+} from "../../models";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from "../../app/store";
@@ -7,8 +13,11 @@ const initialState: DashboardState = {
   fetching: {
     isConversation: true,
     isFriendList: false,
+    isFriendRequest: false,
   },
+
   friends: [],
+  friendRequests: [],
 
   conversations: {
     data: {
@@ -33,6 +42,14 @@ export const dashboard = createSlice({
   initialState,
 
   reducers: {
+    fetchingConversation(state) {
+      state.fetching.isConversation = true;
+    },
+
+    fetchingFriendRequest(state) {
+      state.fetching.isFriendRequest = true;
+    },
+
     fetchConversationSuccess(state, action: PayloadAction<MessageRes>) {
       state.conversations = action.payload;
       state.fetching.isConversation = false;
@@ -40,6 +57,11 @@ export const dashboard = createSlice({
 
     fetchUserListSuccess(state, action: PayloadAction<UserProfile[]>) {
       state.friends = action.payload;
+      state.fetching.isFriendList = false;
+    },
+
+    fetchFriendRequestsSuccess(state, action: PayloadAction<FriendRequest[]>) {
+      state.friendRequests = action.payload;
       state.fetching.isFriendList = false;
     },
 
@@ -62,10 +84,17 @@ export const dashboard = createSlice({
     addNewMessage(state, action: PayloadAction<Message>) {
       state.conversations.data.messages.push(action.payload);
     },
+
+    addNewRequest(state, action: PayloadAction<FriendRequest>) {
+      state.friendRequests.push(action.payload);
+    },
   },
 });
 
 export const {
+  fetchingConversation,
+  fetchingFriendRequest,
+  fetchFriendRequestsSuccess,
   fetchConversationSuccess,
   fetchUserListSuccess,
   fetchPartnerProfileSuccess,
@@ -73,6 +102,7 @@ export const {
   onModeChange,
   onLanguagesChange,
   addNewMessage,
+  addNewRequest,
 } = dashboard.actions;
 
 export const selectConversations = (state: RootState) =>
@@ -82,5 +112,7 @@ export const selectFetching = (state: RootState) => state.dashboard.fetching;
 export const selectMode = (state: RootState) => state.dashboard.mode;
 export const selectLanguage = (state: RootState) => state.dashboard.languages;
 export const selectPartner = (state: RootState) => state.dashboard.partner;
+export const selectFriendRequest = (state: RootState) =>
+  state.dashboard.friendRequests;
 
 export const dashboardReducer = dashboard.reducer;

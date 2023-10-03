@@ -23,13 +23,19 @@ export interface MessageRes {
   };
 }
 
+export interface RequestRes<T> {
+  data: T[];
+}
+
 export interface DashboardState {
   fetching: {
     isConversation: boolean;
     isFriendList: boolean;
+    isFriendRequest: boolean;
   };
 
   conversations: MessageRes;
+  friendRequests: FriendRequest[];
   friends: UserProfile[];
   partner: UserProfile | null;
 
@@ -84,4 +90,12 @@ export interface Emoji {
   unified: string;
   keywords: string[];
   shortcodes: string;
+}
+
+export interface FriendRequest {
+  _id: string;
+  friend: string;
+  sender: UserProfile;
+  friendShipStatus: "pending" | "accepted" | "deny";
+  __v: number;
 }

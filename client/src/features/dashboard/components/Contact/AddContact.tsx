@@ -9,7 +9,7 @@ import { InputField } from "../../../../components/common/InputField/InputField"
 import NotFound from "../../../../components/common/NotFound/NotFound";
 import { RequestItem } from "../Request/RequestItem";
 import { UserProfile } from "../../../../models";
-import { handleSendInvitation } from "../../../auth/authThunk";
+import { handleSendInvitation } from "../../../dashboard/dashboardThunk";
 import { useAppDispatch } from "../../../../app/store";
 
 export interface IAddContactProps {

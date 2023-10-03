@@ -5,7 +5,9 @@ import { recentMessage, users } from "../../../../mock";
 import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
 import { Carousel } from "../../../../components/common/Carousel/Carousel";
 import ChatIcon from "@mui/icons-material/Chat";
+import { Images } from "../../../../constants";
 import { InputField } from "../../../../components/common/InputField/InputField";
+import NotFound from "../../../../components/common/NotFound/NotFound";
 import { RecentChatItem } from "./RecentChatItem";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
@@ -35,6 +37,8 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
     curChatRoom(String(partnerId));
   };
 
+  const fakeList = [];
+
   return (
     <SideWrapper
       title="chats"
@@ -59,6 +63,11 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
         <div className="chat-recent-list overflow-auto py-2 w-full h-[380px] ">
           {fetching.isConversation ? (
             <BaseItemLoader listToRender={4} />
+          ) : fakeList.length === 0 ? (
+            <NotFound
+              icon={Images.conversation}
+              title="You don't have any conversation recently!!"
+            />
           ) : (
             recentMessage.map((msg, key) => {
               return (
