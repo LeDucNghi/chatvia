@@ -71,35 +71,4 @@ router.post("/findContact", async (req, res) => {
   }
 });
 
-router.post("/sendInvitation/:id", verifyToken, async (req, res) => {
-  const _id = await req.params.id;
-  console.log("🚀 ~ file: auth.js:66 ~ router.post ~ _id:", typeof _id);
-
-  const token = await req.decoded;
-
-  if (_id === token.user._id) {
-    return res
-      .status(401)
-      .send({ message: "You can not send invitation to yourself🤡" });
-  } else {
-    pusher.trigger("friend-request", `${_id}`, {
-      sender: { ...token.user },
-    });
-
-    const user = await User.findOne({ _id }).select("-password -__v");
-
-    if (user) {
-      const newFriendShip = await Friend.create({
-        friend: user._id,
-        friendShipStatus: "pending",
-        sender: token.user._id,
-      });
-
-      await newFriendShip.save();
-
-      return res.status(200).send({ message: "Invitation has been sent!!" });
-    }
-  }
-});
-
 module.exports = router;
