@@ -3,6 +3,7 @@ const { Schema, default: mongoose } = require("mongoose");
 const { Conversation } = require("../models/Conversation");
 const pusher = require("../config/pusher");
 const { Friend } = require("../models/Friend");
+const { User } = require("../models/Users");
 
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
@@ -84,6 +85,7 @@ exports.getFriendRequest = async (req, res) => {
 
     const request = await Friend.find({
       friend: token.user._id,
+      friendShipStatus: "pending",
     })
       .populate("sender", "-password -__v -messages")
       .exec();
@@ -96,7 +98,6 @@ exports.getFriendRequest = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("🚀 ~ file: conversation.js:16 ~ router.post ~ error:", error);
     return res.status(500).send(`Infernal server error ${error}`);
   }
 };

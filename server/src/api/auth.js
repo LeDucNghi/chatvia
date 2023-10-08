@@ -11,8 +11,6 @@ const {
   findContacts,
 } = require("../controller/auth");
 const { verifyToken } = require("../middleware/authorize");
-const { Friend } = require("../models/Friend");
-const pusher = require("../config/pusher");
 
 const router = express.Router();
 

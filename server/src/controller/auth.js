@@ -6,33 +6,41 @@ const transporter = require("../config/mail");
 
 // SIGN UP
 exports.signup = async (req, res) => {
-  const { username, password, email } = req.body;
+  try {
+    const { username, password, email } = await req.body;
 
-  if (!username || !password || !email) {
-    res.status(401).send({ message: "Some field are missing !!" });
-  } else {
-    // const user = await User.findOne({ username }).select("-password");
-    const user = await User.findOne({ username });
-    const email = await User.findOne({ email });
-    if (user) {
-      res.status(401).send({ message: "User already exist!!" });
-    } else if (email) {
-      res.status(401).send({ message: "Email already exist!!" });
+    if (!username || !password || !email) {
+      return res.status(401).send({ message: "Some field are missing !!" });
     } else {
-      const hashedPassword = await bcrypt.hash(password, 10);
+      // const user = await User.findOne({ username }).select("-password");
+      const existedUser = await User.findOne({ username });
 
-      const newUser = new User({
-        username,
-        password: hashedPassword,
-        email,
-      });
+      const existedEmail = await User.findOne({ email });
 
-      await newUser.save();
+      if (existedUser) {
+        res.status(401).send({ message: "User already exist!!" });
+      } else if (existedEmail) {
+        res.status(401).send({ message: "Email already exist!!" });
+      } else {
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-      return res
-        .status(200)
-        .send({ message: "User registered successfully!!" });
+        const newUser = new User({
+          username,
+          password: hashedPassword,
+          email,
+        });
+
+        await newUser.save();
+
+        return res
+          .status(200)
+          .send({ message: "User registered successfully!!" });
+      }
     }
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: `${error}`, message: `Internal Server Error` });
   }
 };
 

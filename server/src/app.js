@@ -72,4 +72,13 @@ server.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
 });
 
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+
+  // Optionally, perform any cleanup tasks before restarting
+
+  // Restart the Node.js process
+  process.exit();
+});
+
 module.exports = { app };
