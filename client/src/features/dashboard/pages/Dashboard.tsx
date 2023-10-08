@@ -13,6 +13,7 @@ import { ContactSide } from "../components/Contact/ContactSide";
 import { Conversation } from "../components/Conversation/Conversation";
 import { GroupSide } from "../components/Group/GroupSide";
 import { Header } from "../components/Conversation/Header";
+import { NotificationSide } from "../components/Notifications/NotificationSide";
 import { ProfileSide } from "../components/Profile/ProfileSide";
 import { RequestSide } from "../components/Request/RequestSide";
 import { Section } from "../components/Conversation/Section";
@@ -82,6 +83,8 @@ export default function Dashboard() {
             <GroupSide />
           ) : side === "request" ? (
             <RequestSide />
+          ) : side === "notifications" ? (
+            <NotificationSide />
           ) : (
             <ContactSide />
           )}

@@ -39,28 +39,32 @@ export function ProfileSide() {
       </div>
 
       <div className="profile-about">
-        <CustomAccordion
-          panelOrder="panel1"
-          title="About"
-          preprendIcon={<PersonRoundedIcon fontSize="small" />}
-        >
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
-          </Typography>
-        </CustomAccordion>
+        <div className="mb-2">
+          <CustomAccordion
+            panelOrder="panel1"
+            title="About"
+            preprendIcon={<PersonRoundedIcon fontSize="small" />}
+          >
+            <Typography>
+              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
+              feugiat. Aliquam eget maximus est, id dignissim quam.
+            </Typography>
+          </CustomAccordion>
+        </div>
 
-        <CustomAccordion
-          panelOrder="panel2"
-          title="Attached Files"
-          preprendIcon={<AttachFileRoundedIcon fontSize="small" />}
-        >
-          <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat
-            lectus, varius pulvinar diam eros in elit. Pellentesque convallis
-            laoreet laoreet.
-          </Typography>
-        </CustomAccordion>
+        <div className="">
+          <CustomAccordion
+            panelOrder="panel2"
+            title="Attached Files"
+            preprendIcon={<AttachFileRoundedIcon fontSize="small" />}
+          >
+            <Typography>
+              Donec placerat, lectus sed mattis semper, neque lectus feugiat
+              lectus, varius pulvinar diam eros in elit. Pellentesque convallis
+              laoreet laoreet.
+            </Typography>
+          </CustomAccordion>
+        </div>
       </div>
     </SideWrapper>
   );

@@ -14,7 +14,7 @@ export function Carousel({ option }: ICarouselProps) {
   return (
     <Swiper
       spaceBetween={15}
-      slidesPerView={4}
+      slidesPerView={3}
       onSlideChange={() => console.log("slide change")}
       // onSwiper={(swiper) => console.log(swiper)}
       className="carousel"
@@ -23,9 +23,11 @@ export function Carousel({ option }: ICarouselProps) {
         return (
           <SwiperSlide key={key}>
             {" "}
-            <div className="carousel-item">
+            <div className="carousel-item relative rounded-2xl flex-center flex-col px-6 ">
               <AvatarBadge status="online" avatar={user.avatar!} />
-              <h5 className="font-medium pb-2">{user.username} </h5>
+              <h5 className="font-medium pb-2 truncate w-full">
+                {user.username}{" "}
+              </h5>
             </div>
           </SwiperSlide>
         );

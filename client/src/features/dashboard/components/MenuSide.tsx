@@ -38,7 +38,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   };
 
   const handleChangeMode = (id: number) => {
-    if (id === 7) {
+    if (id === 8) {
       if (mode === "dark") {
         dispatch(onModeChange("light"));
       } else {
@@ -63,14 +63,14 @@ export function SideMenu({ setSide }: ISideMenuProps) {
 
   return (
     <div className="dashboard-side-menu">
-      <div className="side-menu-logo flex-center mb-4">
+      <div className="side-menu-logo flex-center mb-2">
         <img src={Images.logo2} width={0} height={0} alt="logo" />
       </div>
 
       <Divider />
 
-      <div className="side-menu-pills mb-4">
-        {sideMenu.slice(0, 5).map((menu, key) => {
+      <div className="side-menu-pills w-full flex flex-col ">
+        {sideMenu.slice(0, 6).map((menu, key) => {
           return (
             <Tooltip
               className="pills-item mx-auto"
@@ -84,7 +84,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               }}
             >
               <Button variant="text">
-                {menu.id !== 2 && menu.id !== 4 ? (
+                {menu.id !== 2 && menu.id !== 4 && menu.id !== 5 ? (
                   <Icon>{menu.icon}</Icon>
                 ) : (
                   <Badge color="error" badgeContent={friendRequest.length}>
@@ -99,8 +99,8 @@ export function SideMenu({ setSide }: ISideMenuProps) {
 
       <Divider />
 
-      <div className="side-menu-pills">
-        {sideMenu.slice(5, 7).map((menu, key) => {
+      <div className="side-menu-pills w-full flex flex-col">
+        {sideMenu.slice(6, 8).map((menu, key) => {
           return (
             <Tooltip
               className="pills-item mx-auto"
@@ -112,12 +112,12 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               onClick={() => handleChangeMode(menu.id)}
             >
               <Button variant="text">
-                {menu.id === 6 ? (
+                {menu.id === 7 ? (
                   <CustomMenu
                     onChange={handleChangeLanguage}
                     direction="ltr"
                     menuItemStyle={{
-                      color: "#7a7f9a",
+                      background: "#fff",
                     }}
                     isActive={languages === language ? true : false}
                     icon={menu.icon}

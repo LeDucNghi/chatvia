@@ -65,7 +65,11 @@ export const handleGetFriendRequest = (): AppThunk => async (dispatch) => {
   try {
     const res = await conversationService.getFriendRequest();
 
-    dispatch(fetchFriendRequestsSuccess(res.data));
+    const filter = res.data.filter(
+      (item) => item.friendShipStatus === "pending"
+    );
+
+    dispatch(fetchFriendRequestsSuccess(filter));
   } catch (error) {
     console.log(
       "🚀 ~ file: dashboardThunk.ts:67 ~ handleGetFriendRequest ~ error:",
@@ -73,6 +77,8 @@ export const handleGetFriendRequest = (): AppThunk => async (dispatch) => {
     );
   }
 };
+
+export const handleGetFriendList = (): AppThunk => async (dispatch) => {};
 
 export const handleUpdateRequest =
   (id: string, status: "accepted" | "deny"): AppThunk =>

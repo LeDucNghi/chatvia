@@ -1,3 +1,5 @@
+@import "../../../assets/styles/index.scss";
+
 .carousel {
     padding: 1rem 0;
 
@@ -7,18 +9,7 @@
         cursor: pointer;
 
         .carousel-item {
-            position: relative;
-
-            border-radius: 1rem;
-
             background: #e6ebf5;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-
-            padding: 0 1rem;
 
             .MuiBadge-root {
                 position: relative;

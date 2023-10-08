@@ -6,7 +6,8 @@ export type Sides =
   | "group"
   | "contact"
   | "setting"
-  | "request";
+  | "request"
+  | "notifications";
 
 export type Mode = "dark" | "light";
 

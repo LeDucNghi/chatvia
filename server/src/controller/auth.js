@@ -124,3 +124,29 @@ exports.getUser = async (req, res) => {
     res.status(500).send({ error });
   }
 };
+
+exports.validateUser = async (req, res) => {
+  const email = await req.params.email;
+
+  if (!email) {
+    res.status(404).send({ message: "Email is required!!" });
+  } else {
+    const user = User.findOne({ email: `${email}@gmail.com` });
+
+    if (!user) {
+      res.status(404).send({ message: "User not found!!" });
+    } else {
+      res.status(200).send({ message: "hihi" });
+    }
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).select("-password -__v");
+
+    return res.status(200).send({ data: users });
+  } catch (error) {
+    return res.status(401).send({ error });
+  }
+};

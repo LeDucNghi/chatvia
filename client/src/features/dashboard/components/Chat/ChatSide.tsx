@@ -37,8 +37,6 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
     curChatRoom(String(partnerId));
   };
 
-  const fakeList = [];
-
   return (
     <SideWrapper
       title="chats"
@@ -53,9 +51,11 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
         />
       }
     >
-      <div className="chat-user-onine mb-3">
-        <Carousel option={users} />
-      </div>
+      {recentMessage.length !== 0 && (
+        <div className="chat-user-onine mb-3">
+          <Carousel option={users} />
+        </div>
+      )}
 
       <div className="chat-recent w-full">
         <h5 className="mb-4 font-semibold">Recent</h5>
@@ -63,7 +63,7 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
         <div className="chat-recent-list overflow-auto py-2 w-full h-[380px] ">
           {fetching.isConversation ? (
             <BaseItemLoader listToRender={4} />
-          ) : fakeList.length === 0 ? (
+          ) : recentMessage.length === 0 ? (
             <NotFound
               icon={Images.conversation}
               title="You don't have any conversation recently!!"

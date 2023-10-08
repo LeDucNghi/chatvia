@@ -59,18 +59,25 @@ export const sideMenu = [
   },
   {
     id: 5,
+    icon: "notifications",
+    title: "Notifications",
+    value: "notifications",
+  },
+
+  {
+    id: 6,
     icon: "phone",
     title: "Contacts",
     value: "contact",
   },
 
   {
-    id: 6,
+    id: 7,
     icon: "language",
     title: "Languages",
   },
   {
-    id: 7,
+    id: 8,
     icon: "nightlight",
     title: "Dark / Light mode",
   },
