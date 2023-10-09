@@ -2,6 +2,9 @@ import "./Side.scss";
 
 import * as React from "react";
 
+import { selectMode } from "../dashboardSlice";
+import { useAppSelector } from "../../../app/store";
+
 export interface ISidesProps {
   title: string;
   className?: string;
@@ -21,8 +24,13 @@ export function SideWrapper({
   className,
   style,
 }: ISidesProps) {
+  const mode = useAppSelector(selectMode);
+
   return (
-    <div style={style} className={`side-info ${className}`}>
+    <div
+      style={style}
+      className={`side-info ${className} ${mode === "dark" ? "dark" : ""} `}
+    >
       <div className="side-header">
         <h4 className="mb-4 font-semibold flex justify-between">
           {" "}
@@ -32,7 +40,12 @@ export function SideWrapper({
         {header}
       </div>
 
-      <div className="side-content">{children}</div>
+      <div
+        style={{ color: mode === "dark" ? "#93a7cc" : "" }}
+        className="side-content"
+      >
+        {children}
+      </div>
     </div>
   );
 }

@@ -4,12 +4,16 @@ import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { UserProfile } from "../../../../models";
 import { contactOptions } from "../../../../constants";
+import { selectMode } from "../../dashboardSlice";
+import { useAppSelector } from "../../../../app/store";
 
 export interface IAlphabetItemProps {
   itemsByLetter: UserProfile;
 }
 
 export function AlphabetItem({ itemsByLetter }: IAlphabetItemProps) {
+  const mode = useAppSelector(selectMode);
+
   const alphabet = Object.keys(itemsByLetter).sort();
 
   return (
@@ -18,7 +22,14 @@ export function AlphabetItem({ itemsByLetter }: IAlphabetItemProps) {
         return (
           <div key={letter}>
             {" "}
-            <div className="p-3 uppercase font-semibold"> {letter} </div>
+            <div
+              className={`p-3 uppercase font-semibold ${
+                mode === "dark" ? "text-blue-600" : ""
+              }`}
+            >
+              {" "}
+              {letter}{" "}
+            </div>
             <ul className="capitalize">
               {itemsByLetter[letter].map((user, index) => {
                 return (
@@ -27,7 +38,11 @@ export function AlphabetItem({ itemsByLetter }: IAlphabetItemProps) {
                       <div className="flex items-center justify-start w-full">
                         <Avatar src={user.avatar} />
 
-                        <h5 className="ml-2 text-black font-semibold capitalize">
+                        <h5
+                          className={`ml-2 ${
+                            mode === "dark" ? "text-white" : "text-black"
+                          } font-semibold capitalize`}
+                        >
                           {user.username}
                         </h5>
                       </div>

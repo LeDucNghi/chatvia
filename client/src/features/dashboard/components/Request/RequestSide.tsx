@@ -1,3 +1,5 @@
+import "./Request.scss";
+
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { Images } from "../../../../constants";
 import NotFound from "../../../../components/common/NotFound/NotFound";

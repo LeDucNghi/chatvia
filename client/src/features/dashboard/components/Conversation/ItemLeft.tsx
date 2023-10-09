@@ -1,3 +1,5 @@
+import "./Conversation.scss";
+
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import { Loader } from "../../../../components/common/Loader/BaseLoader";

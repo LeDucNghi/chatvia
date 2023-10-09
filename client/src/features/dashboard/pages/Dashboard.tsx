@@ -3,7 +3,7 @@ import "./Dashboard.scss";
 
 import { FriendRequest, Message, Sides } from "../../../models";
 import React, { useEffect } from "react";
-import { addNewMessage, addNewRequest } from "../dashboardSlice";
+import { addNewMessage, addNewRequest, selectMode } from "../dashboardSlice";
 import { fetchConversation, handleGetFriendRequest } from "../dashboardThunk";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
@@ -24,6 +24,7 @@ import { subscribeChannel } from "../../../utils";
 
 export default function Dashboard() {
   const user = useAppSelector(selectUser);
+  const mode = useAppSelector(selectMode);
   const dispatch = useAppDispatch();
 
   const [side, setSide] = React.useState<Sides>("chat");
@@ -90,7 +91,11 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="dashboard-chat h-auto w-8/12">
+        <div
+          className={`dashboard-chat h-auto w-8/12 ${
+            mode === "dark" && "dark"
+          }`}
+        >
           <Header />
 
           <Conversation />

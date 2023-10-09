@@ -62,12 +62,12 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   };
 
   return (
-    <div className="dashboard-side-menu">
+    <div className={`dashboard-side-menu ${mode === "dark" ? "dark" : ""}`}>
       <div className="side-menu-logo flex-center mb-2">
         <img src={Images.logo2} width={0} height={0} alt="logo" />
       </div>
 
-      <Divider />
+      <Divider sx={{ background: mode === "dark" ? "#a6b0cf" : "" }} />
 
       <div className="side-menu-pills w-full flex flex-col ">
         {sideMenu.slice(0, 6).map((menu, key) => {
@@ -80,7 +80,12 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               placement="left"
               onClick={() => handleChangeSide(menu.value as Sides)}
               sx={{
-                color: isSelected === menu.value ? "#7269ef" : "#000",
+                color:
+                  isSelected === menu.value
+                    ? "#7269ef"
+                    : mode === "dark"
+                    ? "#a6b0cf"
+                    : "#000",
               }}
             >
               <Button variant="text">
@@ -97,7 +102,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
         })}
       </div>
 
-      <Divider />
+      <Divider sx={{ background: mode === "dark" ? "#a6b0cf" : "" }} />
 
       <div className="side-menu-pills w-full flex flex-col">
         {sideMenu.slice(6, 8).map((menu, key) => {
@@ -108,7 +113,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               key={key}
               title={menu.title}
               placement="left"
-              sx={{ color: "#000" }}
+              sx={{ color: mode === "dark" ? "#a6b0cf" : "#000" }}
               onClick={() => handleChangeMode(menu.id)}
             >
               <Button variant="text">

@@ -2,6 +2,8 @@ import { AvatarBadge } from "../../../../components/common/Avatar/AvatarBadge";
 import { Badge } from "../../../../components/common/Badge/Badge";
 import { Button } from "@mui/material";
 import { RecentMessage } from "../../../../models";
+import { selectMode } from "../../dashboardSlice";
+import { useAppSelector } from "../../../../app/store";
 
 export interface IRecentChatItemProps {
   message: RecentMessage;
@@ -16,10 +18,16 @@ export function RecentChatItem({
   isSelected,
   onClick,
 }: IRecentChatItemProps) {
+  const mode = useAppSelector(selectMode);
+
   return (
     <Button
       onClick={() => onClick(message._id, message.sender._id!)}
-      className={isSelected ? "chat-recent-item isActive" : "chat-recent-item"}
+      className={
+        isSelected
+          ? `chat-recent-item isActive ${mode === "dark" ? "dark" : ""}`
+          : "chat-recent-item"
+      }
     >
       <div className="w-full h-full flex justify-between items-center">
         <AvatarBadge
@@ -29,7 +37,11 @@ export function RecentChatItem({
         />
 
         <div className="recent-msg text-left">
-          <h5 className="text-black font-semibold">
+          <h5
+            className={` font-semibold ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
+          >
             {message.sender.username}{" "}
           </h5>
           <p className=" text-gray-400">{message.message} </p>

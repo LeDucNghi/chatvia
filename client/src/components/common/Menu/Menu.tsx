@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Options } from "../../../models";
+import { selectMode } from "../../../features/dashboard/dashboardSlice";
+import { useAppSelector } from "../../../app/store";
 
 export interface IMenuProps {
   menu: Options[];
@@ -32,6 +34,8 @@ export function CustomMenu({
   onChange,
   isActive,
 }: IMenuProps) {
+  const mode = useAppSelector(selectMode);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
@@ -53,13 +57,16 @@ export function CustomMenu({
         <IconButton
           onClick={handleClick}
           size="small"
-          sx={{ margin: "0 auto" }}
+          sx={{
+            margin: "0 auto",
+            color: mode === "dark" ? "#93a7cc" : "",
+          }}
           aria-controls={open ? "account-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
           {icon ? (
-            <Icon>{icon}</Icon>
+            <Icon sx={{ width: 30, height: 30 }}>{icon}</Icon>
           ) : img ? (
             <Avatar sx={{ width: 32, height: 32 }} src={img} />
           ) : null}
@@ -74,6 +81,8 @@ export function CustomMenu({
         PaperProps={{
           elevation: 0,
           sx: {
+            background: `${mode === "dark" ? "#313a43" : ""}`,
+            color: mode === "dark" ? "#93a7cc" : "",
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: direction === "ltr" ? 0 : 1.5,
@@ -93,7 +102,7 @@ export function CustomMenu({
                     right: 14,
                     width: 10,
                     height: 10,
-                    bgcolor: "background.paper",
+                    bgcolor: mode === "dark" ? "#313a43" : "background.paper",
                     transform: "translateY(-50%) rotate(45deg)",
                     zIndex: 0,
                   }
@@ -115,9 +124,13 @@ export function CustomMenu({
               style={menuItemStyle}
               key={key}
               onClick={() => handleClose(item.name)}
-              sx={{ background: isActive ? "#7a7f9a" : "" }}
+              sx={{
+                background: isActive ? `#7a7f9a` : "",
+              }}
             >
-              <div className="w-full backdrop-blur-md h-full p-2 text-base capitalize font-medium flex justify-between">
+              <div
+                className={`w-full backdrop-blur-md h-full p-2 text-base capitalize font-medium flex justify-between`}
+              >
                 {item.img && (
                   <div className="img mr-4">
                     {" "}
@@ -130,7 +143,12 @@ export function CustomMenu({
                 )}
                 <p className="text-left">{item.name}</p>{" "}
                 <div className="icon ml-4">
-                  <Icon> {item.icon} </Icon>
+                  <Icon
+                    sx={{ color: mode === "dark" ? "dark-mode-color" : "" }}
+                  >
+                    {" "}
+                    {item.icon}{" "}
+                  </Icon>
                 </div>
               </div>
             </MenuItem>

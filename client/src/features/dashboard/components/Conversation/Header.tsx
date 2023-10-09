@@ -4,6 +4,7 @@ import { Avatar, Skeleton, Typography } from "@mui/material";
 import {
   selectConversations,
   selectFetching,
+  selectMode,
   selectPartner,
 } from "../../dashboardSlice";
 
@@ -17,6 +18,7 @@ export function Header() {
   const conversations = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
   const partner = useAppSelector(selectPartner);
+  const mode = useAppSelector(selectMode);
 
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState({
@@ -35,7 +37,11 @@ export function Header() {
   };
 
   return (
-    <div className="chat-header w-full h-20 px-4 py-6 flex">
+    <div
+      className={`chat-header w-full px-4 py-6 flex ${
+        mode === "dark" && "dark"
+      }`}
+    >
       {fetching.isConversation ? (
         <div className="flex items-center justify-between">
           <Skeleton variant="circular">

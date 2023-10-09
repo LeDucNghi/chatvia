@@ -9,6 +9,14 @@
     padding: 1.5rem;
 
     background-color: #f5f7fb;
+    transition: all 0.3s ease-in-out;
+
+    &.dark {
+        color: #fff;
+        background-color: #303841;
+
+        transition: all 0.3s ease-in-out;
+    }
 
     .side-header {
         text-transform: capitalize;
@@ -58,51 +66,5 @@
         height: 20rem;
 
         overflow: auto;
-    }
-
-    .chat-recent {
-        .chat-recent-list {
-            &::-webkit-scrollbar {
-                display: none;
-            }
-
-            .chat-recent-item {
-                background: transparent;
-
-                padding: 0.9rem 1rem;
-
-                &.isActive {
-                    background-color: rgba(230, 235, 245, 0.8);
-                }
-
-                .recent-msg {
-                    padding: 0 1rem;
-
-                    text-transform: none;
-
-                    h5 {
-                        font-size: 0.9rem;
-
-                        @include line-clamp;
-                    }
-
-                    p {
-                        font-size: 0.8rem;
-
-                        @include line-clamp;
-                    }
-                }
-            }
-        }
-    }
-
-    .request-wrapper {
-        margin-bottom: 1rem;
-
-        transition: background 0.3s ease-in-out;
-
-        &:hover {
-            background: #dcdde1;
-        }
     }
 }

@@ -1,10 +1,11 @@
-import "../Side.scss";
+import "./Request.scss";
 
 import { Avatar, Button, Card } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import { UserProfile } from "../../../../models";
 import { handleUpdateRequest } from "../../dashboardThunk";
-import { useAppDispatch } from "../../../../app/store";
+import { selectMode } from "../../dashboardSlice";
 
 export interface IRequestItemProps {
   user: UserProfile;
@@ -23,6 +24,7 @@ export function RequestItem({
   requestId,
 }: IRequestItemProps) {
   const dispatch = useAppDispatch();
+  const mode = useAppSelector(selectMode);
 
   const handleChooseItem = (user: UserProfile) => {
     if (onClick) {
@@ -35,7 +37,11 @@ export function RequestItem({
   };
 
   return (
-    <Card className="request-wrapper cursor-pointer">
+    <Card
+      className={`request-wrapper cursor-pointer ${
+        mode === "dark" ? "dark" : ""
+      }`}
+    >
       <div
         onClick={() => handleChooseItem(user)}
         className="w-full p-4 flex justify-between items-center"

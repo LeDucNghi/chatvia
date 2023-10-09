@@ -3,6 +3,24 @@
 .chat-header {
     border-bottom: 0.01rem solid #f0eff5;
 
+    background: transparent;
+
+    &.dark {
+        border-bottom: 0.01rem solid #93a7cc;
+
+        .header-name {
+            h5 {
+                color: #fff;
+            }
+        }
+
+        .header-tool {
+            .tool-icon {
+                color: #93a7cc;
+            }
+        }
+    }
+
     .header-name {
         width: 30%;
 
@@ -24,6 +42,8 @@
 }
 
 .chat-content-wrapper {
+    height: calc(100vh - 184px);
+
     .chat-item-wrapper {
         &.right {
             justify-content: flex-end;
@@ -123,12 +143,39 @@
 
     padding: 1.2rem 1.5rem;
 
+    &.dark {
+        border-top: 0.01rem solid #93a7cc;
+
+        .textfield {
+            ::placeholder,
+            label {
+                color: #93a7cc;
+            }
+
+            .MuiOutlinedInput-root {
+                color: #93a7cc;
+
+                & fieldset {
+                    border-color: #93a7cc;
+                }
+            }
+        }
+    }
+
     .textfield {
         width: 70%;
     }
 
-    .chat-input-tool {
+    .chat-section-tool {
         width: 30%;
+
+        &.dark {
+            .section-tool {
+                .icon {
+                    color: #93a7cc;
+                }
+            }
+        }
 
         .send-icon {
             border-radius: 0.5rem;

@@ -1,6 +1,7 @@
-import "../Side.scss";
+import "./Chat.scss";
 
 import { recentMessage, users } from "../../../../mock";
+import { selectFetching, selectMode } from "../../dashboardSlice";
 
 import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
 import { Carousel } from "../../../../components/common/Carousel/Carousel";
@@ -11,7 +12,6 @@ import NotFound from "../../../../components/common/NotFound/NotFound";
 import { RecentChatItem } from "./RecentChatItem";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
-import { selectFetching } from "../../dashboardSlice";
 import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
@@ -21,6 +21,7 @@ export interface IChatSideProps {
 
 export function ChatSide({ curChatRoom }: IChatSideProps) {
   const fetching = useAppSelector(selectFetching);
+  const mode = useAppSelector(selectMode);
 
   const [isSelected, setIsSelected] = useState("");
 
@@ -46,7 +47,9 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
           onChange={handleFieldChange}
           type="email"
           label="Find users"
-          prependIcon={<SearchIcon />}
+          prependIcon={
+            <SearchIcon sx={{ color: mode === "dark" ? "#93a7cc" : "" }} />
+          }
           autoFocus={false}
         />
       }
@@ -58,9 +61,15 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
       )}
 
       <div className="chat-recent w-full">
-        <h5 className="mb-4 font-semibold">Recent</h5>
+        <h5
+          className={`mb-4 font-semibold ${
+            mode === "dark" ? "text-white" : ""
+          }`}
+        >
+          Recent
+        </h5>
 
-        <div className="chat-recent-list overflow-auto py-2 w-full h-[380px] ">
+        <div className="chat-recent-list overflow-auto py-2 w-full">
           {fetching.isConversation ? (
             <BaseItemLoader listToRender={4} />
           ) : recentMessage.length === 0 ? (

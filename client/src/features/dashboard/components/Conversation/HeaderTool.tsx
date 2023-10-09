@@ -12,23 +12,23 @@ export interface IHeaderToolProps {
 export function HeaderTool({ call }: IHeaderToolProps) {
   return (
     <div className="header-tool flex justify-end">
-      <IconButton className="px-4">
+      <IconButton className="px-4 tool-icon">
         <SearchIcon />
       </IconButton>
 
-      <IconButton onClick={() => call("isVoice")} className="px-4">
+      <IconButton onClick={() => call("isVoice")} className="px-4 tool-icon">
         <CallIcon />
       </IconButton>
 
-      <IconButton onClick={() => call("isVideo")} className="px-4">
+      <IconButton onClick={() => call("isVideo")} className="px-4 tool-icon">
         <VideocamOutlinedIcon />
       </IconButton>
 
-      <IconButton className="px-4">
+      <IconButton className="px-4 tool-icon">
         <PersonOutlineOutlinedIcon />
       </IconButton>
 
-      <IconButton className="px-4">
+      <IconButton className="px-4 tool-icon">
         <MoreHorizOutlinedIcon />
       </IconButton>
     </div>

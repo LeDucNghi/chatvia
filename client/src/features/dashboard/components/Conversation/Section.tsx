@@ -2,7 +2,11 @@ import "./Conversation.scss";
 
 import { ChangeEvent, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
-import { selectConversations, selectFetching } from "../../dashboardSlice";
+import {
+  selectConversations,
+  selectFetching,
+  selectMode,
+} from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import ClearIcon from "@mui/icons-material/Clear";
@@ -20,6 +24,7 @@ export function Section({ partnerId }: ISectionProps) {
   const dispatch = useAppDispatch();
   const conversation = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
+  const mode = useAppSelector(selectMode);
 
   const [msg, setMsg] = useState<string>("");
   const [openEmoji, setOpenEmoji] = useState<boolean>(false);
@@ -81,7 +86,11 @@ export function Section({ partnerId }: ISectionProps) {
   };
 
   return (
-    <div className="chat-input-section flex items-center justify-between">
+    <div
+      className={`chat-input-section flex items-center justify-between ${
+        mode === "dark" && "dark"
+      }`}
+    >
       <TextField
         id="outlined-basic"
         type="text"

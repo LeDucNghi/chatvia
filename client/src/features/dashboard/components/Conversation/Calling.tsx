@@ -5,6 +5,8 @@ import CustomModal from "../../../../components/common/Modal/Modal";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { UserProfile } from "../../../../models";
 import VideocamIcon from "@mui/icons-material/Videocam";
+import { selectMode } from "../../dashboardSlice";
+import { useAppSelector } from "../../../../app/store";
 
 export interface ICallingProps {
   partner: UserProfile;
@@ -25,6 +27,8 @@ export function Calling({
   setIsOpen,
   isOpen,
 }: ICallingProps) {
+  const mode = useAppSelector(selectMode);
+
   return (
     <CustomModal
       styles={{ width: "31.25rem", height: "22rem" }}
@@ -40,7 +44,11 @@ export function Calling({
         </div>
 
         <div className="w-full my-8">
-          <h5 className="w-full text-lg font-semibold text-center capitalize">
+          <h5
+            className={`w-full text-lg font-semibold text-center capitalize mb-2 ${
+              mode === "dark" && "text-white"
+            }`}
+          >
             {" "}
             {partner?.username}
           </h5>

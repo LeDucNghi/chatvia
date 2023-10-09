@@ -1,6 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { IconButton, styled } from '@mui/material';
+import { IconButton, styled } from "@mui/material";
+import { selectFetching, selectMode } from "../../dashboardSlice";
 
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
@@ -9,18 +10,17 @@ import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined
 import Picker from "@emoji-mart/react";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import data from "@emoji-mart/data";
-import { selectFetching } from '../../dashboardSlice';
-import { useAppSelector } from '../../../../app/store';
+import { useAppSelector } from "../../../../app/store";
 
 export interface ISectionToolProps {
-  selectEmoji : (value : Emoji) => void
-  selectFile : (value: React.ChangeEvent<HTMLInputElement>) => void
-  setOpenEmoji : (value: boolean) => void
-  sendMsg : () => void
+  selectEmoji: (value: Emoji) => void;
+  selectFile: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  setOpenEmoji: (value: boolean) => void;
+  sendMsg: () => void;
 
-  openEmoji : boolean
+  openEmoji: boolean;
 
-  msg : string
+  msg: string;
 }
 
 export function SectionTool({
@@ -29,15 +29,19 @@ export function SectionTool({
   setOpenEmoji,
   openEmoji,
   sendMsg,
-  msg
+  msg,
 }: ISectionToolProps) {
   const fetching = useAppSelector(selectFetching);
-
+  const mode = useAppSelector(selectMode);
 
   return (
-    <div className="chat-input-tool relative flex justify-end">
-      <div className="tool-icon p-2 relative">
-        <IconButton onClick={() => setOpenEmoji(!openEmoji)}>
+    <div
+      className={`chat-section-tool relative flex justify-end ${
+        mode === "dark" && "dark"
+      }`}
+    >
+      <div className="section-tool p-2 relative">
+        <IconButton className="icon" onClick={() => setOpenEmoji(!openEmoji)}>
           <EmojiEmotionsOutlinedIcon />
         </IconButton>
         <div
@@ -47,8 +51,8 @@ export function SectionTool({
         </div>
       </div>
 
-      <div className="tool-icon p-2 relative">
-        <IconButton component="label">
+      <div className="section-tool p-2 relative">
+        <IconButton className="icon" component="label">
           <VisuallyHiddenInput
             type="file"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -59,8 +63,8 @@ export function SectionTool({
         </IconButton>
       </div>
 
-      <div className="tool-icon p-2 relative">
-        <IconButton component="label">
+      <div className="section-tool p-2 relative">
+        <IconButton className="icon" component="label">
           <VisuallyHiddenInput
             type="file"
             accept="image/*"
@@ -75,11 +79,12 @@ export function SectionTool({
       <div
         className={
           fetching.isConversation || !msg
-            ? "tool-icon p-2 relative send-icon cursor-not-allowed bg-slate-500"
-            : "tool-icon p-2 relative send-icon"
+            ? "section-tool p-2 relative send-icon cursor-not-allowed bg-slate-500"
+            : "section-tool p-2 relative send-icon"
         }
       >
         <IconButton
+          className="icon"
           component="label"
           disabled={fetching.isConversation || !msg ? true : false}
           onClick={() => sendMsg()}
