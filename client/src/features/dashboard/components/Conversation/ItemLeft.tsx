@@ -7,6 +7,8 @@ import { Message } from "../../../../models";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { messageOptions } from "../../../../constants";
 import moment from "moment";
+import { selectMode } from "../../dashboardSlice";
+import { useAppSelector } from "../../../../app/store";
 
 export interface ILeftProps {
   message: Message;
@@ -25,6 +27,8 @@ export function Left({
   hasImages,
   image,
 }: ILeftProps) {
+  const mode = useAppSelector(selectMode);
+
   const handleOpenImage = (img: string) => {
     image(img);
   };
@@ -93,7 +97,11 @@ export function Left({
               </div>
             )}
           </div>
-          <div className="chat-name w-full capitalize font-semibold">
+          <div
+            className={`chat-name w-full capitalize font-semibold ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
+          >
             {!isDisabled && message.sender?.username}
           </div>
         </div>

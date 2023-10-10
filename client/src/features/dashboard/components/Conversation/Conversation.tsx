@@ -4,7 +4,7 @@ import { selectConversations, selectFetching } from "../../dashboardSlice";
 import { useEffect, useRef } from "react";
 
 import { ChatItem } from "./Item";
-import { ChatItemLoader } from "../../../../components/common/Loader/ChatItemLoder";
+import { ChatItemLoader } from "../../../../components/common/Loader/ChatItemLoader";
 import { Images } from "../../../../constants";
 import NotFound from "../../../../components/common/NotFound/NotFound";
 import { selectUser } from "../../../auth/authSlice";

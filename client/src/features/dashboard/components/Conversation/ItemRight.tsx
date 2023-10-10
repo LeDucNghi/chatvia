@@ -5,6 +5,8 @@ import { Message } from "../../../../models";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { messageOptions } from "../../../../constants";
 import moment from "moment";
+import { selectMode } from "../../dashboardSlice";
+import { useAppSelector } from "../../../../app/store";
 
 export interface IRightProps {
   message: Message;
@@ -23,6 +25,8 @@ export function Right({
   hasImages,
   image,
 }: IRightProps) {
+  const mode = useAppSelector(selectMode);
+
   const handleOpenImage = (img: string) => {
     image(img);
   };
@@ -95,7 +99,11 @@ export function Right({
           </div>
 
           {!isDisabled && (
-            <div className="chat-name w-full capitalize font-semibold">
+            <div
+              className={`chat-name w-full capitalize font-semibold ${
+                mode === "dark" ? "text-white" : "text-black"
+              }`}
+            >
               {message.sender?.username}
             </div>
           )}
