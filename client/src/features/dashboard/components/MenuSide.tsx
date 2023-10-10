@@ -3,7 +3,7 @@ import "../pages/Dashboard.scss";
 import * as React from "react";
 
 import { Badge, Button, Divider, Icon, Tooltip } from "@mui/material";
-import { Language, Mode, Sides } from "../../../models";
+import { Language, Sides } from "../../../models";
 import { languageList, sideMenu, userMenu } from "../../../constants/";
 import {
   onLanguagesChange,
