@@ -24,6 +24,16 @@ export interface MessageRes {
   };
 }
 
+export interface Settings {
+  data: {
+    _id: string;
+    languages: Language;
+    mode: Mode;
+    user: string;
+    __v: number;
+  };
+}
+
 export interface RequestRes<T> {
   data: T[];
 }
@@ -39,12 +49,12 @@ export interface DashboardState {
   friendRequests: FriendRequest[];
   friends: UserProfile[];
   partner: UserProfile | null;
-
-  conversationId: string;
-
   mode: Mode;
   languages: Language;
   message: Message | null;
+  settings: Settings | null;
+
+  conversationId: string;
 }
 
 export interface Message {

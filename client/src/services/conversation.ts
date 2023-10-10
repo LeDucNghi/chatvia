@@ -1,4 +1,11 @@
-import { FriendRequest, Message, MessageRes, RequestRes } from "./../models";
+import {
+  FriendRequest,
+  Message,
+  MessageRes,
+  RequestRes,
+  Settings,
+} from "./../models";
+import { Language, Mode } from "./../models/dashboard";
 
 import { axiosClient } from ".";
 
@@ -34,5 +41,13 @@ export const conversationService = {
     status: "accepted" | "deny"
   ): Promise<any> {
     return axiosClient.post(`/conversation/friendRequestStt/${id}`, { status });
+  },
+
+  updateSettings(mode: Mode, language: Language): Promise<any> {
+    return axiosClient.post(`/conversation/settings`, { language, mode });
+  },
+
+  getSettings(): Promise<Settings> {
+    return axiosClient.get(`/conversation/settings`);
   },
 };

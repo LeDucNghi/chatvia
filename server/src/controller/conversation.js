@@ -4,6 +4,7 @@ const { Conversation } = require("../models/Conversation");
 const pusher = require("../config/pusher");
 const { Friend } = require("../models/Friend");
 const { User } = require("../models/Users");
+const { Settings } = require("../models/Settings");
 
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
@@ -156,5 +157,75 @@ exports.friendRequestStt = async (req, res) => {
     return res.status(200).send({ message: newStatus });
   } else {
     await res.status(404).send({ message: "Request not found" });
+  }
+};
+
+exports.updateSettings = async (req, res) => {
+  const { language, mode } = await req.body;
+  const token = await req.decoded;
+
+  try {
+    const settings = await Settings.findOne({ user: token.user._id });
+
+    if (!settings) {
+      await Settings.create({
+        languages: language,
+        mode: mode,
+        user: token.user._id,
+      });
+
+      return res.status(200).send({ message: "Create successfully !!" });
+    } else {
+      await Settings.findOneAndUpdate(
+        { user: token.user._id },
+        { languages: language, mode: mode }
+      );
+
+      return res.status(200).send({ message: "Update successfully !!" });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: `${error}`, message: `Internal Server Error` });
+  }
+};
+
+exports.getSettings = async (req, res) => {
+  const token = await req.decoded;
+
+  try {
+    const settings = await Settings.findOne({ user: token.user._id });
+
+    return res.status(200).send({ data: settings });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: `${error}`, message: `Internal Server Error` });
+  }
+};
+
+exports.getFriendList = async (req, res) => {
+  try {
+    const id = await req.params.id;
+    const { user } = await req.decoded;
+
+    const friendList = await Friend.find({
+      $or: [
+        { friend: user._id, sender: id },
+        { friend: id, sender: user._id },
+        { friendShipStatus: "accepted" },
+      ],
+    })
+      .populate("sender friend", "-password -__v")
+      .exec();
+
+    if (friendList) {
+      return res.status(200).send({ data: friendList });
+    }
+    return res.status(404).send({ message: "You do not have any friends😢" });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: `${error}`, message: `Internal Server Error` });
   }
 };

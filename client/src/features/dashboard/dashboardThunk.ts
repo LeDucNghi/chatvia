@@ -1,12 +1,14 @@
+import { Language, Message, Mode } from "../../models";
 import {
   fetchConversationFailed,
   fetchConversationSuccess,
   fetchFriendRequestsSuccess,
   fetchPartnerProfileSuccess,
+  onLanguagesChange,
+  onModeChange,
 } from "./dashboardSlice";
 
 import { AppThunk } from "../../app/store";
-import { Message } from "../../models";
 import { alert } from "../../utils";
 import { conversationService } from "../../services/conversation";
 
@@ -78,8 +80,6 @@ export const handleGetFriendRequest = (): AppThunk => async (dispatch) => {
   }
 };
 
-export const handleGetFriendList = (): AppThunk => async (dispatch) => {};
-
 export const handleUpdateRequest =
   (id: string, status: "accepted" | "deny"): AppThunk =>
   async () => {
@@ -124,3 +124,30 @@ export const handleSendInvitation =
       console.log("🚀 ~ file: dashboardThunk.ts:80 ~ error:", error);
     }
   };
+
+export const handleUpdateSettings =
+  (mode: Mode, language: Language): AppThunk =>
+  async () => {
+    try {
+      const res = await conversationService.updateSettings(mode, language);
+      console.log("🚀 ~ file: dashboardThunk.ts:132 ~ res:", res);
+    } catch (error) {
+      console.log("🚀 ~ file: dashboardThunk.ts:133 ~ error:", error);
+    }
+  };
+
+export const handleGetSettings = (): AppThunk => async (dispatch) => {
+  try {
+    const res = await conversationService.getSettings();
+    console.log("🚀 ~ file: dashboardThunk.ts:132 ~ res:", res.data);
+
+    if (res && res.data) {
+      dispatch(onModeChange(res.data.mode));
+      dispatch(onLanguagesChange(res.data.languages));
+    }
+  } catch (error) {
+    console.log("🚀 ~ file: dashboardThunk.ts:133 ~ error:", error);
+  }
+};
+
+// export const handleGetFriendList = (): AppThunk => async (dispatch) => {};

@@ -3,7 +3,7 @@ import "../pages/Dashboard.scss";
 import * as React from "react";
 
 import { Badge, Button, Divider, Icon, Tooltip } from "@mui/material";
-import { Language, Sides } from "../../../models";
+import { Language, Mode, Sides } from "../../../models";
 import { languageList, sideMenu, userMenu } from "../../../constants/";
 import {
   onLanguagesChange,
@@ -18,6 +18,7 @@ import { CustomMenu } from "../../../components/common/Menu/Menu";
 import { Images } from "../../../constants";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { cookies } from "../../../utils";
+import { handleUpdateSettings } from "../dashboardThunk";
 
 export interface ISideMenuProps {
   setSide: (side: Sides) => void;
@@ -37,18 +38,42 @@ export function SideMenu({ setSide }: ISideMenuProps) {
     setIsSelected(side);
   };
 
+  // const onUpdateSettings = (
+  //   settings: "mode" | "languages",
+  //   mode?: Mode,
+  //   language?: Language
+  // ) => {
+  //   console.log("🚀 ~ file: MenuSide.tsx:46 ~ SideMenu ~ language:", language);
+  //   dispatch(handleUpdateSettings(mode!, language!));
+
+  //   if (settings === "mode") {
+  //     if (mode === "dark") {
+  //       dispatch(onModeChange("light"));
+  //     } else {
+  //       dispatch(onModeChange("dark"));
+  //     }
+  //   } else {
+  //     dispatch(onLanguagesChange(language!));
+
+  //     setLanguage(language!);
+  //   }
+  // };
+
   const handleChangeMode = (id: number) => {
     if (id === 8) {
       if (mode === "dark") {
         dispatch(onModeChange("light"));
+        dispatch(handleUpdateSettings("light", language));
       } else {
         dispatch(onModeChange("dark"));
+        dispatch(handleUpdateSettings("dark", language));
       }
     }
   };
 
   const handleChangeLanguage = (language: Language) => {
     dispatch(onLanguagesChange(language));
+    dispatch(handleUpdateSettings(mode, language));
 
     setLanguage(language);
   };
