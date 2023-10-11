@@ -74,14 +74,15 @@ exports.signin = async (req, res) => {
 // UPDATE PROFILE
 exports.updateProfile = async (req, res) => {
   const { username, ...rest } = req.body;
+  const token = await req.decoded;
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username: token.user.username });
 
   if (!user) {
     return res.status(401).send({ message: "User Not Found!!" });
   } else {
     const doc = await User.findOneAndUpdate(
-      { username },
+      { username: token.user.username },
       { ...rest },
       {
         new: true,
@@ -125,9 +126,11 @@ exports.getUser = async (req, res) => {
   try {
     const { user } = await req.decoded;
 
-    const { password, ...rest } = user;
+    const findUser = await User.findOne({ username: user.username })
+      .populate("friends", "-password -__v -friends")
+      .select("-password -__v");
 
-    return res.status(200).send({ ...rest });
+    return res.status(200).send({ data: findUser });
   } catch (error) {
     res.status(500).send({ error });
   }

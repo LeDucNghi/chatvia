@@ -22,7 +22,7 @@ router.post("/generateToken", async (req, res) => {});
 
 router.post("/sendEmail", sendEmail);
 
-router.post("/updateProfile", updateProfile);
+router.post("/updateProfile", verifyToken, updateProfile);
 
 router.get("/getUser", verifyToken, getUser);
 

@@ -38,27 +38,6 @@ export function SideMenu({ setSide }: ISideMenuProps) {
     setIsSelected(side);
   };
 
-  // const onUpdateSettings = (
-  //   settings: "mode" | "languages",
-  //   mode?: Mode,
-  //   language?: Language
-  // ) => {
-  //   console.log("🚀 ~ file: MenuSide.tsx:46 ~ SideMenu ~ language:", language);
-  //   dispatch(handleUpdateSettings(mode!, language!));
-
-  //   if (settings === "mode") {
-  //     if (mode === "dark") {
-  //       dispatch(onModeChange("light"));
-  //     } else {
-  //       dispatch(onModeChange("dark"));
-  //     }
-  //   } else {
-  //     dispatch(onLanguagesChange(language!));
-
-  //     setLanguage(language!);
-  //   }
-  // };
-
   const handleChangeMode = (id: number) => {
     if (id === 8) {
       if (mode === "dark") {

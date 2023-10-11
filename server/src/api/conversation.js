@@ -27,7 +27,7 @@ router.post("/getConversation", getConversation);
 
 router.post("/sendInvitation/:id", verifyToken, sendInvitation);
 
-router.post("/friendRequestStt/:id", friendRequestStt);
+router.post("/friendRequestStt/:id", verifyToken, friendRequestStt);
 
 router.post("/settings", verifyToken, updateSettings);
 

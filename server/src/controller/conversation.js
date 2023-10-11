@@ -80,6 +80,7 @@ exports.getConversation = async (req, res) => {
   }
 };
 
+// GET FRIEND REQUEST
 exports.getFriendRequest = async (req, res) => {
   try {
     const token = await req.decoded;
@@ -103,6 +104,7 @@ exports.getFriendRequest = async (req, res) => {
   }
 };
 
+// SEND FRIEND INVITATION
 exports.sendInvitation = async (req, res) => {
   const _id = await req.params.id;
 
@@ -143,15 +145,37 @@ exports.sendInvitation = async (req, res) => {
   }
 };
 
+// UPDATE FRIEND REQUEST STATUS
 exports.friendRequestStt = async (req, res) => {
   const id = await req.params.id;
+  const token = await req.decoded;
   const { status } = await req.body;
 
-  const request = await Friend.findOne({ _id: id });
-
-  const newStatus = status[0].toUpperCase() + status.slice(1);
+  const request = await Friend.findOne({
+    _id: id,
+    friendShipStatus: "pending",
+  });
 
   if (request) {
+    if (request.friend._id.equals(token.user._id)) {
+      await User.findOneAndUpdate(
+        { username: token.user.username },
+        { $push: { friends: [request.sender._id] } },
+        {
+          new: true,
+        }
+      );
+    } else if (request.sender._id.equals(token.user._id)) {
+      await User.findOneAndUpdate(
+        { username: token.user.username },
+        { $push: { friends: [request.friend._id] } },
+        {
+          new: true,
+        }
+      );
+    }
+    const newStatus = status[0].toUpperCase() + status.slice(1);
+
     await Friend.findOneAndUpdate({ _id: id }, { friendShipStatus: status });
 
     return res.status(200).send({ message: newStatus });
@@ -160,6 +184,7 @@ exports.friendRequestStt = async (req, res) => {
   }
 };
 
+// UPDATE SETTINGS
 exports.updateSettings = async (req, res) => {
   const { language, mode } = await req.body;
   const token = await req.decoded;
@@ -190,6 +215,7 @@ exports.updateSettings = async (req, res) => {
   }
 };
 
+// GET SETTINGS
 exports.getSettings = async (req, res) => {
   const token = await req.decoded;
 
@@ -204,6 +230,7 @@ exports.getSettings = async (req, res) => {
   }
 };
 
+// GET FRIEND LIST
 exports.getFriendList = async (req, res) => {
   try {
     const id = await req.params.id;
