@@ -9,11 +9,17 @@ import { selectMode } from "../../../features/dashboard/dashboardSlice";
 import { useAppSelector } from "../../../app/store";
 
 export interface ICarouselProps {
-  option: UserProfile[];
+  option: UserProfile[] | undefined;
+
+  onUserSelected: (id: string) => void;
 }
 
-export function Carousel({ option }: ICarouselProps) {
+export function Carousel({ option, onUserSelected }: ICarouselProps) {
   const mode = useAppSelector(selectMode);
+
+  const onClick = (id: string) => {
+    onUserSelected(id);
+  };
 
   return (
     <Swiper
@@ -23,9 +29,9 @@ export function Carousel({ option }: ICarouselProps) {
       // onSwiper={(swiper) => console.log(swiper)}
       className="carousel"
     >
-      {option.map((user, key) => {
+      {option?.map((user, key) => {
         return (
-          <SwiperSlide key={key}>
+          <SwiperSlide key={key} onClick={() => onClick(user._id!)}>
             {" "}
             <div
               className="carousel-item relative rounded-2xl flex-center flex-col px-6"

@@ -71,13 +71,15 @@ export function SideMenu({ setSide }: ISideMenuProps) {
         <img src={Images.logo2} width={0} height={0} alt="logo" />
       </div>
 
-      <Divider sx={{ background: mode === "dark" ? "#a6b0cf" : "" }} />
+      <Divider
+        sx={{ background: mode === "dark" ? "#a6b0cf" : "", mb: "0.5rem" }}
+      />
 
       <div className="side-menu-pills w-full flex flex-col ">
         {sideMenu.slice(0, 6).map((menu, key) => {
           return (
             <Tooltip
-              className="pills-item mx-auto"
+              className="pills-item w-8 h-12 mx-auto"
               arrow
               key={key}
               title={menu.title}
@@ -106,13 +108,15 @@ export function SideMenu({ setSide }: ISideMenuProps) {
         })}
       </div>
 
-      <Divider sx={{ background: mode === "dark" ? "#a6b0cf" : "" }} />
+      <Divider
+        sx={{ background: mode === "dark" ? "#a6b0cf" : "", mb: "0.5rem" }}
+      />
 
       <div className="side-menu-pills w-full flex flex-col">
         {sideMenu.slice(6, 8).map((menu, key) => {
           return (
             <Tooltip
-              className="pills-item mx-auto"
+              className="pills-item w-8 h-12 "
               arrow
               key={key}
               title={menu.title}

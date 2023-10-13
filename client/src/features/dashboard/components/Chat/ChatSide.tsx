@@ -1,17 +1,22 @@
 import "./Chat.scss";
 
-import { recentMessage, users } from "../../../../mock";
-import { selectFetching, selectMode } from "../../dashboardSlice";
+import {
+  selectFetching,
+  selectMode,
+  selectRecentList,
+} from "../../dashboardSlice";
 
 import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
 import { Carousel } from "../../../../components/common/Carousel/Carousel";
 import ChatIcon from "@mui/icons-material/Chat";
 import { Images } from "../../../../constants";
 import { InputField } from "../../../../components/common/InputField/InputField";
+import { Messages } from "../../../../mock";
 import NotFound from "../../../../components/common/NotFound/NotFound";
 import { RecentChatItem } from "./RecentChatItem";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
+import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
@@ -22,6 +27,8 @@ export interface IChatSideProps {
 export function ChatSide({ curChatRoom }: IChatSideProps) {
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
+  const recentList = useAppSelector(selectRecentList);
+  const user = useAppSelector(selectUser);
 
   const [isSelected, setIsSelected] = useState("");
 
@@ -30,6 +37,10 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
       "🚀 ~ file: ChatSide.tsx:12 ~ handleFieldChange ~ value:",
       value
     );
+  };
+
+  const onSelectedFriend = (id: string) => {
+    curChatRoom(id);
   };
 
   const onItemChange = (id: string, partnerId: string) => {
@@ -54,9 +65,9 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
         />
       }
     >
-      {recentMessage.length !== 0 && (
+      {Messages.length !== 0 && (
         <div className="chat-user-onine mb-3">
-          <Carousel option={users} />
+          <Carousel option={user?.friends} onUserSelected={onSelectedFriend} />
         </div>
       )}
 
@@ -72,19 +83,19 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
         <div className="chat-recent-list overflow-auto py-2 w-full">
           {fetching.isConversation ? (
             <BaseItemLoader listToRender={4} />
-          ) : recentMessage.length === 0 ? (
+          ) : recentList?.length === 0 ? (
             <NotFound
               icon={Images.conversation}
               title="You don't have any conversation recently!!"
             />
           ) : (
-            recentMessage.map((msg, key) => {
+            recentList?.map((msg, key) => {
               return (
                 <RecentChatItem
                   onClick={onItemChange}
                   isSelected={msg._id === isSelected}
                   key={key}
-                  message={msg}
+                  message={msg.messages}
                 />
               );
             })

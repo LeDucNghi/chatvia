@@ -4,7 +4,11 @@ import "./Dashboard.scss";
 import { FriendRequest, Message, Sides } from "../../../models";
 import React, { useEffect } from "react";
 import { addNewMessage, addNewRequest, selectMode } from "../dashboardSlice";
-import { fetchConversation, handleGetFriendRequest } from "../dashboardThunk";
+import {
+  fetchAllUsersConversation,
+  fetchConversation,
+  handleGetFriendRequest,
+} from "../dashboardThunk";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import { AuthenticatedLayout } from "../../../components/layouts/Auth/Authenticate";
@@ -28,12 +32,10 @@ export default function Dashboard() {
   const dispatch = useAppDispatch();
 
   const [side, setSide] = React.useState<Sides>("chat");
-  const [curChatRoom, setCurChatRoom] = React.useState<string>(
-    "6509523b3693bf258f8467f0"
-  );
+  const [curChatRoom, setCurChatRoom] = React.useState<string>("");
 
   useEffect(() => {
-    if (user) {
+    if (curChatRoom && user) {
       dispatch(fetchConversation(false, [curChatRoom, String(user?._id)]));
     }
   }, [curChatRoom, user]);
@@ -60,6 +62,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     dispatch(handleGetFriendRequest());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAllUsersConversation());
   }, [dispatch]);
 
   return (

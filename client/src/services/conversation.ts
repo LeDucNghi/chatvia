@@ -1,12 +1,14 @@
 import {
+  ArrResponse,
+  Conversation,
   FriendRequest,
   Message,
-  MessageRes,
   RequestRes,
   Settings,
 } from "./../models";
 import { Language, Mode } from "./../models/dashboard";
 
+import { ObjResponse } from "./../models/common";
 import { axiosClient } from ".";
 
 export const conversationService = {
@@ -17,11 +19,15 @@ export const conversationService = {
   getConversation(
     isGroup: boolean,
     participant: string[]
-  ): Promise<MessageRes> {
+  ): Promise<ObjResponse<Conversation>> {
     return axiosClient.post(
       `/conversation/getConversation?isGroup=${isGroup}`,
       { participant }
     );
+  },
+
+  getAllConversation(): Promise<ArrResponse<Conversation>> {
+    return axiosClient.post(`/conversation/conversations`);
   },
 
   getFriendRequest(): Promise<RequestRes<FriendRequest>> {

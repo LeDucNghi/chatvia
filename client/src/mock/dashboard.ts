@@ -1,10 +1,10 @@
-import { Message, RecentMessage, UserProfile } from "../models";
+import { Message, UserProfile } from "../models";
 
 import { faker } from "@faker-js/faker";
 
 export const conversation: Message[] = [
   {
-    _id: 1,
+    _id: "1",
     message: faker.lorem.paragraph(2),
     sender: {
       _id: "1",
@@ -15,7 +15,7 @@ export const conversation: Message[] = [
     },
   },
   {
-    _id: 2,
+    _id: "2",
     message: faker.lorem.paragraph(2),
     sender: {
       _id: "1",
@@ -26,12 +26,12 @@ export const conversation: Message[] = [
     },
   },
   {
-    _id: 3,
+    _id: "3",
     message: faker.lorem.paragraph(2),
     hasImages: true,
     images: [
       {
-        id: 1,
+        id: "1",
         img: "https://images.unsplash.com/photo-1618519764620-7403abdbdfe9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
       },
     ],
@@ -44,12 +44,12 @@ export const conversation: Message[] = [
     },
   },
   {
-    _id: 4,
+    _id: "4",
     message: faker.lorem.paragraph(2),
     hasImages: true,
     images: [
       {
-        id: 1,
+        id: "1",
         img: "https://images.unsplash.com/photo-1618519764620-7403abdbdfe9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
       },
     ],
@@ -62,7 +62,7 @@ export const conversation: Message[] = [
     },
   },
   {
-    _id: 5,
+    _id: "5",
     message: faker.lorem.paragraph(2),
     sender: {
       _id: "2",
@@ -73,7 +73,7 @@ export const conversation: Message[] = [
     },
   },
   {
-    _id: 6,
+    _id: "6",
     message: faker.lorem.paragraph(2),
     sender: {
       _id: "1",
@@ -85,7 +85,7 @@ export const conversation: Message[] = [
   },
 ];
 
-export const recentMessage: RecentMessage[] = [
+export const Messages: Message[] = [
   {
     _id: "1",
     message: faker.lorem.paragraph(),

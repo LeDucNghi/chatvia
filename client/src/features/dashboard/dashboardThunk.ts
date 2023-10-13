@@ -4,6 +4,9 @@ import {
   fetchConversationSuccess,
   fetchFriendRequestsSuccess,
   fetchPartnerProfileSuccess,
+  fetchRecentList,
+  fetchingConversation,
+  fetchingRecentList,
   onLanguagesChange,
   onModeChange,
 } from "./dashboardSlice";
@@ -32,34 +35,40 @@ export const sendMsg =
 export const fetchConversation =
   (isGroup: boolean, participant: string[]): AppThunk =>
   async (dispatch, getState) => {
-    const user = getState().auth.user;
-    try {
-      const res = await conversationService.getConversation(
-        isGroup,
-        participant
-      );
+    dispatch(fetchingConversation());
 
-      if (res) {
-        res.data.messages.forEach((cons) => {
-          const { sender } = cons;
-
-          if (sender?._id !== user?._id) {
-            dispatch(fetchPartnerProfileSuccess(sender!));
-          }
-        });
-
-        dispatch(fetchConversationSuccess(res));
-      }
-    } catch (error: any) {
-      console.log("🚀 ~ file: dashboardThunk.ts:36 ~ error:", error);
-
+    if (participant.length < 0) {
       dispatch(fetchConversationFailed());
+    } else {
+      const user = getState().auth.user;
+      try {
+        const res = await conversationService.getConversation(
+          isGroup,
+          participant
+        );
 
-      alert({
-        content: `${error.response.data.message}`,
-        position: "top-center",
-        type: "error",
-      });
+        if (res) {
+          res.data.messages.forEach((cons) => {
+            const { sender } = cons;
+
+            if (sender?._id !== user?._id) {
+              dispatch(fetchPartnerProfileSuccess(sender!));
+            }
+          });
+
+          dispatch(fetchConversationSuccess(res.data));
+        }
+      } catch (error: any) {
+        console.log("🚀 ~ file: dashboardThunk.ts:36 ~ error:", error);
+
+        dispatch(fetchConversationFailed());
+
+        alert({
+          content: `Something went wrong!!`,
+          position: "top-center",
+          type: "error",
+        });
+      }
     }
   };
 
@@ -102,8 +111,7 @@ export const handleFindContact =
   (email: string): AppThunk =>
   async () => {
     try {
-      const res = await conversationService.findContact(email);
-      console.log("🚀 ~ file: dashboardThunk.ts:68 ~ res:", res);
+      await conversationService.findContact(email);
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:69 ~ error:", error);
     }
@@ -139,7 +147,6 @@ export const handleUpdateSettings =
 export const handleGetSettings = (): AppThunk => async (dispatch) => {
   try {
     const res = await conversationService.getSettings();
-    console.log("🚀 ~ file: dashboardThunk.ts:132 ~ res:", res.data);
 
     if (res && res.data) {
       dispatch(onModeChange(res.data.mode));
@@ -150,4 +157,30 @@ export const handleGetSettings = (): AppThunk => async (dispatch) => {
   }
 };
 
-// export const handleGetFriendList = (): AppThunk => async (dispatch) => {};
+export const fetchAllUsersConversation =
+  (): AppThunk => async (dispatch, getState) => {
+    dispatch(fetchingRecentList());
+
+    try {
+      const res = await conversationService.getAllConversation();
+
+      const user = getState().auth.user;
+
+      if (res) {
+        res.data.map((cons) => {
+          cons.messages.map((msg) => {
+            if (msg.sender?._id === user?._id) {
+              dispatch(fetchRecentList([]));
+            } else {
+              dispatch(fetchRecentList(res.data));
+            }
+          });
+        });
+      }
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: dashboardThunk.ts:163 ~ fetchAllUsersConversation ~ error:",
+        error
+      );
+    }
+  };

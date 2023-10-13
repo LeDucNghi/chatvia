@@ -1,9 +1,9 @@
 import {
+  Conversation,
   DashboardState,
   FriendRequest,
   Language,
   Message,
-  MessageRes,
   Mode,
   Settings,
   UserProfile,
@@ -14,23 +14,23 @@ import { RootState } from "../../app/store";
 
 const initialState: DashboardState = {
   fetching: {
-    isConversation: true,
+    isConversation: false,
     isFriendList: false,
     isFriendRequest: false,
+    isRecentList: false,
   },
 
   friends: [],
   friendRequests: [],
+  recentList: [],
 
   conversations: {
-    data: {
-      __v: 0,
-      _id: "",
-      groupName: "",
-      isGroup: false,
-      messages: [],
-      participant: [],
-    },
+    __v: 0,
+    _id: "",
+    groupName: "",
+    isGroup: false,
+    messages: [],
+    participant: [],
   },
 
   partner: null,
@@ -51,11 +51,15 @@ export const dashboard = createSlice({
       state.fetching.isConversation = true;
     },
 
+    fetchingRecentList(state) {
+      state.fetching.isRecentList = true;
+    },
+
     fetchingFriendRequest(state) {
       state.fetching.isFriendRequest = true;
     },
 
-    fetchConversationSuccess(state, action: PayloadAction<MessageRes>) {
+    fetchConversationSuccess(state, action: PayloadAction<Conversation>) {
       state.conversations = action.payload;
       state.fetching.isConversation = false;
     },
@@ -78,6 +82,11 @@ export const dashboard = createSlice({
       state.settings = action.payload;
     },
 
+    fetchRecentList(state, action: PayloadAction<Conversation[]>) {
+      state.fetching.isRecentList = false;
+      state.recentList = action.payload;
+    },
+
     fetchConversationFailed(state) {
       state.fetching.isConversation = false;
     },
@@ -91,7 +100,7 @@ export const dashboard = createSlice({
     },
 
     addNewMessage(state, action: PayloadAction<Message>) {
-      state.conversations.data.messages.push(action.payload);
+      state.conversations.messages.push(action.payload);
     },
 
     addNewRequest(state, action: PayloadAction<FriendRequest>) {
@@ -108,6 +117,8 @@ export const {
   fetchUserListSuccess,
   fetchPartnerProfileSuccess,
   fetchSettings,
+  fetchRecentList,
+  fetchingRecentList,
   fetchConversationFailed,
   onModeChange,
   onLanguagesChange,
@@ -125,5 +136,7 @@ export const selectPartner = (state: RootState) => state.dashboard.partner;
 export const selectSettings = (state: RootState) => state.dashboard.settings;
 export const selectFriendRequest = (state: RootState) =>
   state.dashboard.friendRequests;
+export const selectRecentList = (state: RootState) =>
+  state.dashboard.recentList;
 
 export const dashboardReducer = dashboard.reducer;

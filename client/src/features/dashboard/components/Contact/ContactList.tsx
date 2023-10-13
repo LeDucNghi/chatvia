@@ -1,16 +1,19 @@
 import { AlphabetItem } from "./AlphabetItem";
 import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
+import { Images } from "../../../../constants";
+import NotFound from "../../../../components/common/NotFound/NotFound";
 import { UserProfile } from "../../../../models";
 import { selectFetching } from "../../dashboardSlice";
+import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
-import { users } from "../../../../mock";
 
 export function ContactList() {
   const fetching = useAppSelector(selectFetching);
+  const user = useAppSelector(selectUser);
 
   const itemsByLetter: UserProfile = {};
 
-  users.forEach((item) => {
+  user?.friends?.forEach((item) => {
     const firstLetter = item.username?.charAt(0).toUpperCase();
     if (!itemsByLetter[firstLetter!]) {
       itemsByLetter[firstLetter!] = [];
@@ -20,13 +23,19 @@ export function ContactList() {
 
   return (
     <div className="contacts w-full h-[500px] overflow-auto">
-      <div className="contact-item">
-        {fetching.isConversation ? (
-          <BaseItemLoader listToRender={5} />
-        ) : (
-          <AlphabetItem itemsByLetter={itemsByLetter} />
-        )}
-      </div>
+      {user?.friends?.length === 0 ? (
+        <div className="w-full h-full ">
+          <NotFound title="You don't have any friends!!" icon={Images.users} />
+        </div>
+      ) : (
+        <div className="contact-item">
+          {fetching.isConversation ? (
+            <BaseItemLoader listToRender={5} />
+          ) : (
+            <AlphabetItem itemsByLetter={itemsByLetter} />
+          )}
+        </div>
+      )}
     </div>
   );
 }

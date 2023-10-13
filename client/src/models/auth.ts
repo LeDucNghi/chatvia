@@ -6,6 +6,7 @@ export interface UserProfile {
   token?: string;
   message?: string;
   avatar?: string;
+  friends?: UserProfile[];
 }
 
 export interface AuthState {

@@ -60,7 +60,7 @@ export const handleGetUser = (): AppThunk => async (dispatch) => {
   try {
     const res = await authService.getUser();
 
-    dispatch(fetchUser(res));
+    dispatch(fetchUser(res.data));
   } catch (error) {
     console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
   }

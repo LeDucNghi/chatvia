@@ -54,31 +54,35 @@ export function Header() {
             </Typography>
           </Skeleton>
         </div>
-      ) : conversations.data.messages.length === 0 ? (
-        <div></div>
       ) : (
         <>
-          <div className="header-name flex justify-between items-center">
-            <img
-              className="w-9 h-9 object-contain "
-              src={partner?.avatar}
-              alt="logo"
-            />
+          {conversations.messages?.length !== 0 && (
+            <div className="header-name flex justify-between items-center">
+              <img
+                className="w-9 h-9 object-contain"
+                src={partner?.avatar}
+                alt="logo"
+              />
 
-            <h5 className="flex font-semibold items-center w-4/5 capitalize">
-              {partner?.username}
-              <FiberManualRecordIcon className="icon online ml-1" />
-            </h5>
-          </div>
+              <h5 className="flex font-semibold items-center w-4/5 capitalize">
+                {partner?.username}
+                <FiberManualRecordIcon className="icon online ml-1" />
+              </h5>
+            </div>
+          )}
 
-          <HeaderTool call={handleOpenModal} />
+          {conversations.messages?.length === 0 && (
+            <>
+              <HeaderTool call={handleOpenModal} />
 
-          <Calling
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            modalType={modalType}
-            partner={partner!}
-          />
+              <Calling
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                modalType={modalType}
+                partner={partner!}
+              />
+            </>
+          )}
         </>
       )}
     </div>

@@ -11,42 +11,58 @@ exports.sendMessage = async (req, res) => {
   const { message, consId, partnerId } = await req.body;
   const token = await req.decoded;
 
-  await pusher.trigger("message", "my-event", {
-    message: message,
-    sender: { ...token.user },
-  });
-
-  const conversation = await Conversation.findById(consId);
-
-  if (!conversation) {
-    const newConversation = await Conversation.create({
-      _id: new mongoose.Types.ObjectId(),
-      isGroup: false,
-      groupName: "",
-      participant: [token.user._id, partnerId],
-    });
-
-    await newConversation.save();
-
-    const newMessage = await new Message({
+  try {
+    await pusher.trigger("message", "my-event", {
       message: message,
-      sender: token.user,
-      conversation: newConversation._id,
+      sender: { ...token.user },
     });
 
-    await newMessage.save();
+    const conversation = await Conversation.findById(consId);
+    const newMsgId = new mongoose.Types.ObjectId();
+    const newConsId = new mongoose.Types.ObjectId();
 
-    return res.status(200).send({ message: newMessage });
-  } else {
-    const newMessage = await Message.create({
-      message: message,
-      sender: token.user,
-      conversation: conversation._id,
-    });
+    if (!conversation) {
+      const newConversation = await Conversation.create({
+        _id: newConsId,
+        isGroup: false,
+        groupName: "",
+        participant: [token.user._id, partnerId],
+        messages: [newMsgId],
+      });
 
-    await newMessage.save();
+      await newConversation.save();
 
-    return res.status(200).send({ message: newMessage });
+      const newMessage = await new Message({
+        _id: newMsgId,
+        message: message,
+        sender: token.user,
+        conversation: newConsId,
+      });
+
+      await newMessage.save();
+
+      return res.status(200).send({ message: newMessage });
+    } else {
+      const newMessage = await Message.create({
+        _id: newMsgId,
+        message: message,
+        sender: token.user,
+        conversation: newConsId,
+      });
+
+      await newMessage.save();
+
+      await Conversation.findOneAndUpdate(
+        {
+          _id: conversation._id,
+        },
+        { $push: { messages: message } }
+      );
+
+      return res.status(200).send({ message: newMessage });
+    }
+  } catch (error) {
+    return res.status(500).send(`Infernal server error ${error}`);
   }
 };
 
@@ -55,28 +71,36 @@ exports.getConversation = async (req, res) => {
   const isGroup = await req.query.isGroup;
   const { participant } = await req.body;
 
-  const conversation = await Conversation.findOne({
-    isGroup,
-    participant: { $in: participant },
-  });
-
-  if (conversation) {
-    const message = await Message.find({
-      conversation: conversation._id,
-    })
-      .populate("sender", "-password -__v -messages")
-      .exec();
-
-    conversation.messages = [...message];
-
-    return res.status(200).send({
-      data: conversation,
+  try {
+    const conversation = await Conversation.findOne({
+      isGroup,
+      participant: { $in: participant },
     });
-  } else {
-    return res.status(404).send({
-      message:
-        "This conversation is empty. Enter something to your partner to show how you think",
-    });
+
+    if (conversation) {
+      const message = await Message.find({
+        conversation: conversation._id,
+      })
+        .populate("sender", "-password -__v -messages")
+        .exec();
+
+      conversation.messages = [...message];
+
+      return res.status(200).send({
+        data: conversation,
+      });
+    } else {
+      return res.status(404).send({
+        message:
+          "This conversation is empty. Enter something to your partner to show how you think",
+      });
+    }
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: conversation.js:83 ~ exports.getConversation= ~ error:",
+      error
+    );
+    return res.status(500).send(`Infernal server error ${error}`);
   }
 };
 

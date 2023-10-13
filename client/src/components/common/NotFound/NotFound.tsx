@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { Button } from "@mui/material";
 import { Images } from "../../../constants";
+import { selectMode } from "../../../features/dashboard/dashboardSlice";
+import { useAppSelector } from "../../../app/store";
 import { useNavigate } from "react-router-dom";
 
 export interface INotFoundProps {
@@ -31,6 +33,8 @@ export default function NotFound({
 }: INotFoundProps) {
   const navigate = useNavigate();
 
+  const mode = useAppSelector(selectMode);
+
   return (
     <div
       className={`w-full h-full relative flex flex-col justify-center items-center ${className}`}
@@ -46,10 +50,18 @@ export default function NotFound({
 
       <div className="flex flex-col items-center">
         <div className="my-4 flex flex-col justify-center items-center">
-          <h3 className="font-semibold text-2xl text-center">
+          <h3
+            className={`font-semibold text-2xl max-w-md text-center ${
+              mode === "dark" ? "text-white" : ""
+            }`}
+          >
             {title ? title : "Oops... Look like you get lost 🤔"}{" "}
           </h3>
-          {subTitle && <h5>{subTitle} </h5>}
+          {subTitle && (
+            <h5 style={{ color: mode === "dark" ? "#93a7cc" : "" }}>
+              {subTitle}{" "}
+            </h5>
+          )}
         </div>
 
         {hasButton && (

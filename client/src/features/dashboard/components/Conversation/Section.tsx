@@ -38,7 +38,7 @@ export function Section({ partnerId }: ISectionProps) {
     if (msg) {
       dispatch(
         sendMsg({
-          consId: conversation?.data._id,
+          consId: conversation?._id,
           partnerId: partnerId,
           message: msg,
         })

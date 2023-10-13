@@ -25,16 +25,15 @@ export function Conversation() {
     <div className="chat-content-wrapper w-full p-6 relative flex flex-col overflow-auto">
       {fetching.isConversation ? (
         <ChatItemLoader listToRender={6} />
-      ) : conversations.data.messages.length === 0 ? (
+      ) : conversations.messages?.length === 0 ? (
         <NotFound
           hasButton={false}
-          title="You have never talked to this person before."
-          subTitle="Let's get started"
+          title="Choose any user to see the conversation or get started to chat with them."
           icon={Images.robot}
           iconStyle={{ width: "200px", height: "200px" }}
         />
       ) : (
-        conversations.data.messages.map((cons, key) => {
+        conversations.messages?.map((cons, key) => {
           return (
             <ChatItem
               key={key}

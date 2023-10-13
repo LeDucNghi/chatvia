@@ -1,3 +1,7 @@
-export interface DataResponse<T> {
+export interface ArrResponse<T> {
   data: T[];
+}
+
+export interface ObjResponse<T> {
+  data: T;
 }

@@ -13,15 +13,17 @@ export type Mode = "dark" | "light";
 
 export type Language = "vietnamese" | "english";
 
-export interface MessageRes {
-  data: {
-    _id: string;
-    isGroup: boolean;
-    messages: Message[];
-    participant: string[];
-    groupName: string;
-    __v: number;
-  };
+export interface RequestRes<T> {
+  data: T[];
+}
+
+export interface Conversation {
+  _id: string;
+  isGroup: boolean;
+  messages: Message[];
+  participant: UserProfile[];
+  groupName: string;
+  __v: number;
 }
 
 export interface Settings {
@@ -34,18 +36,15 @@ export interface Settings {
   };
 }
 
-export interface RequestRes<T> {
-  data: T[];
-}
-
 export interface DashboardState {
   fetching: {
     isConversation: boolean;
     isFriendList: boolean;
     isFriendRequest: boolean;
+    isRecentList: boolean;
   };
 
-  conversations: MessageRes;
+  conversations: Conversation;
   friendRequests: FriendRequest[];
   friends: UserProfile[];
   partner: UserProfile | null;
@@ -53,27 +52,28 @@ export interface DashboardState {
   languages: Language;
   message: Message | null;
   settings: Settings | null;
+  recentList: Conversation[];
 
   conversationId: string;
 }
 
 export interface Message {
-  _id?: number;
+  _id?: string;
   partnerId?: number | string;
   consId?: number | string;
   message: string;
   sender?: UserProfile;
   hasImages?: boolean;
-  images?: [{ id: number; img: string }];
-  status?: "sent" | "delivered" | "read" | "unread";
+  images?: [{ id: string; img: string }];
+  status?:
+    | "sent"
+    | "delivered"
+    | "read"
+    | "unread"
+    | "online"
+    | "leave"
+    | "off";
   timeStamp?: string;
-}
-
-export interface RecentMessage {
-  _id: string;
-  message: string;
-  sender: UserProfile;
-  status: "online" | "leave" | "off";
 }
 
 export interface Groups {

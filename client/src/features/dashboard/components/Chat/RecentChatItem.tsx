@@ -1,12 +1,13 @@
 import { AvatarBadge } from "../../../../components/common/Avatar/AvatarBadge";
 import { Badge } from "../../../../components/common/Badge/Badge";
 import { Button } from "@mui/material";
-import { RecentMessage } from "../../../../models";
+import { Message } from "../../../../models";
+import moment from "moment";
 import { selectMode } from "../../dashboardSlice";
 import { useAppSelector } from "../../../../app/store";
 
 export interface IRecentChatItemProps {
-  message: RecentMessage;
+  message: Message[];
 
   isSelected: boolean;
 
@@ -22,7 +23,7 @@ export function RecentChatItem({
 
   return (
     <Button
-      onClick={() => onClick(message._id, message.sender._id!)}
+      onClick={() => onClick(message[0]._id!, message[0].sender!._id!)}
       className={
         isSelected
           ? `chat-recent-item isActive ${mode === "dark" ? "dark" : ""}`
@@ -31,9 +32,9 @@ export function RecentChatItem({
     >
       <div className="w-full h-full flex justify-between items-center">
         <AvatarBadge
-          alt={message.sender.username}
-          status={message.status}
-          avatar={message.sender.avatar!}
+          alt={message[0].sender!.username}
+          status={message[0].status}
+          avatar={message[0].sender!.avatar!}
         />
 
         <div className="recent-msg text-left">
@@ -42,13 +43,13 @@ export function RecentChatItem({
               mode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            {message.sender.username}{" "}
+            {message[0].sender!.username}{" "}
           </h5>
-          <p className=" text-gray-400">{message.message} </p>
+          <p className=" text-gray-400">{message[0].message} </p>
         </div>
 
         <div className="text-gray-300 flex items-end flex-col">
-          02:50pm
+          {moment(message[0].timeStamp).format("LT")}
           <Badge content={10} />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { DataResponse, UserProfile } from "./../models";
+import { ArrResponse, ObjResponse, UserProfile } from "./../models";
 
 import { axiosClient } from "./axiosClient";
 
@@ -15,11 +15,11 @@ export const authService = {
     return axiosClient.post("/auth/resetPassword", params);
   },
 
-  getUser(): Promise<UserProfile> {
+  getUser(): Promise<ObjResponse<UserProfile>> {
     return axiosClient.get("/auth/getUser");
   },
 
-  getAllUsers(): Promise<DataResponse<UserProfile>> {
+  getAllUsers(): Promise<ArrResponse<UserProfile>> {
     return axiosClient.get("/auth/users");
   },
 

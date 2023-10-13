@@ -3,10 +3,18 @@ import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 
 export interface IAvatarBadgeProps {
-  avatar: string;
+  avatar: string | undefined;
   alt?: string;
 
-  status: "online" | "leave" | "off";
+  status:
+    | "online"
+    | "leave"
+    | "off"
+    | "sent"
+    | "delivered"
+    | "read"
+    | "unread"
+    | undefined;
 }
 
 export function AvatarBadge({ avatar, status }: IAvatarBadgeProps) {
