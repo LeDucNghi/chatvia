@@ -1,19 +1,18 @@
 import CallIcon from "@mui/icons-material/Call";
+import { Conversation } from "../../../../models";
 import { IconButton } from "@mui/material";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
-import { selectConversations } from "../../dashboardSlice";
-import { useAppSelector } from "../../../../app/store";
 
 export interface IHeaderToolProps {
   call: (value: "isVoice" | "isVideo") => void;
+
+  conversation: Conversation;
 }
 
-export function HeaderTool({ call }: IHeaderToolProps) {
-  const conversation = useAppSelector(selectConversations);
-
+export function HeaderTool({ call, conversation }: IHeaderToolProps) {
   return (
     <div
       className={` flex justify-end ${

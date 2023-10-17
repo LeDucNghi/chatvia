@@ -7,6 +7,7 @@ import { UserProfile } from "../../../../models";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import { selectMode } from "../../dashboardSlice";
 import { useAppSelector } from "../../../../app/store";
+import { useTranslation } from "react-i18next";
 
 export interface ICallingProps {
   partner: UserProfile;
@@ -28,6 +29,7 @@ export function Calling({
   isOpen,
 }: ICallingProps) {
   const mode = useAppSelector(selectMode);
+  const { t } = useTranslation();
 
   return (
     <CustomModal
@@ -54,7 +56,9 @@ export function Calling({
           </h5>
 
           <p className="w-full text-sm text-gray-400 text-center capitalize">
-            start audio call
+            {t(
+              `${modalType.isVoice ? "start audio call" : "start video call"}`
+            )}
           </p>
         </div>
 

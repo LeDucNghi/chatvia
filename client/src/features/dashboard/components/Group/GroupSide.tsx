@@ -27,13 +27,13 @@ export function GroupSide() {
 
   return (
     <SideWrapper
-      title="Groups"
+      title="groups"
       icon={<PeopleOutlineIcon />}
       header={
         <InputField
           onChange={handleFieldChange}
           type="email"
-          label="Find users"
+          label="Find groups"
           prependIcon={<SearchIcon />}
           autoFocus={false}
         />

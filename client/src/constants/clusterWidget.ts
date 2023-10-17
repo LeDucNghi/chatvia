@@ -4,12 +4,12 @@ import { Options } from "../models";
 export const languageList: Options[] = [
   {
     id: 1,
-    name: "vietnamese",
+    name: "vi",
     img: Images.vietnam,
   },
   {
     id: 2,
-    name: "english",
+    name: "en",
     img: Images.usa,
   },
 ];
@@ -120,7 +120,7 @@ export const messageOptions = [
   },
   {
     id: 3,
-    name: "reply",
+    name: "reply this message",
   },
   {
     id: 4,

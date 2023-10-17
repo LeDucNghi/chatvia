@@ -38,7 +38,7 @@ const initialState: DashboardState = {
   message: null,
 
   mode: "light",
-  languages: "english",
+  languages: "en",
   conversationId: "",
 };
 

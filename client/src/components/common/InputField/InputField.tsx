@@ -7,6 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { selectMode } from "../../../features/dashboard/dashboardSlice";
 import { useAppSelector } from "../../../app/store";
+import { useTranslation } from "react-i18next";
 
 export interface ICustomTextfieldProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -48,6 +49,7 @@ export function InputField({
   style,
 }: ICustomTextfieldProps) {
   const mode = useAppSelector(selectMode);
+  const { t } = useTranslation();
 
   return (
     <div
@@ -55,17 +57,20 @@ export function InputField({
       className={`${className} input-field ${mode === "dark" ? "dark" : ""}`}
     >
       <FormControl fullWidth variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password"> {label} </InputLabel>
+        <InputLabel htmlFor="outlined-adornment-password">
+          {" "}
+          {t(label)}{" "}
+        </InputLabel>
         <OutlinedInput
           id="outlined-adornment-password"
           type={type}
-          placeholder={placeholder}
+          placeholder={t(placeholder!)}
           onChange={onChange}
           onBlur={onBlur}
-          name={name}
+          name={t(name!)}
           endAdornment={appendIcon}
           startAdornment={prependIcon}
-          label={label}
+          label={t(label)}
           error={error}
           autoFocus={autoFocus}
           value={value}

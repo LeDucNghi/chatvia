@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../../app/store";
 import { UserProfile } from "../../../../models";
 import { handleUpdateRequest } from "../../dashboardThunk";
 import { selectMode } from "../../dashboardSlice";
+import { useTranslation } from "react-i18next";
 
 export interface IRequestItemProps {
   user: UserProfile;
@@ -25,6 +26,7 @@ export function RequestItem({
 }: IRequestItemProps) {
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMode);
+  const { t } = useTranslation();
 
   const handleChooseItem = (user: UserProfile) => {
     if (onClick) {
@@ -68,7 +70,7 @@ export function RequestItem({
                 size="small"
                 variant="contained"
               >
-                Accept
+                {t("Accept")}
               </Button>
               <Button
                 className="w-2/5"
@@ -78,7 +80,7 @@ export function RequestItem({
                 variant="outlined"
                 onClick={() => onUpdateRequestStt("deny")}
               >
-                Deny
+                {t("Deny")}
               </Button>
             </div>
           )}

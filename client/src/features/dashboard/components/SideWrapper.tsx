@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { selectMode } from "../dashboardSlice";
 import { useAppSelector } from "../../../app/store";
+import { useTranslation } from "react-i18next";
 
 export interface ISidesProps {
   title: string;
@@ -25,6 +26,7 @@ export function SideWrapper({
   style,
 }: ISidesProps) {
   const mode = useAppSelector(selectMode);
+  const { t } = useTranslation();
 
   return (
     <div
@@ -34,7 +36,7 @@ export function SideWrapper({
       <div className="side-header">
         <h4 className="mb-4 font-semibold flex justify-between">
           {" "}
-          {title} {icon}{" "}
+          {t(title)} {icon}{" "}
         </h4>
 
         {header}

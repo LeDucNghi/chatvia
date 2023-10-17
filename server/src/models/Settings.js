@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const SettingSchema = new mongoose.Schema({
   languages: {
     type: String,
-    enum: ["vietnamese", "english"],
+    enum: ["vi", "en"],
     default: "english",
   },
 

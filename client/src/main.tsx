@@ -1,6 +1,7 @@
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/styles/main.scss";
 import "./assets/styles/index.scss";
+import "./constants/i18n.ts";
 
 import App from "./App.tsx";
 import { CssBaseline } from "@mui/material";

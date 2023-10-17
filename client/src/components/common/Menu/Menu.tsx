@@ -9,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Options } from "../../../models";
 import { selectMode } from "../../../features/dashboard/dashboardSlice";
 import { useAppSelector } from "../../../app/store";
+import { useTranslation } from "react-i18next";
 
 export interface IMenuProps {
   menu: Options[];
@@ -35,6 +36,7 @@ export function CustomMenu({
   isActive,
 }: IMenuProps) {
   const mode = useAppSelector(selectMode);
+  const { t } = useTranslation();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -141,7 +143,7 @@ export function CustomMenu({
                     />{" "}
                   </div>
                 )}
-                <p className="text-left">{item.name}</p>{" "}
+                <p className="text-left">{t(item.name)}</p>{" "}
                 <div className="icon ml-4">
                   <Icon
                     sx={{ color: mode === "dark" ? "dark-mode-color" : "" }}

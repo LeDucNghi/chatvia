@@ -10,6 +10,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
 import { handleGetAllUser } from "../../../auth/authThunk";
+import { selectMode } from "../../dashboardSlice";
 import { selectUserList } from "../../../auth/authSlice";
 
 export interface IContactSideProps {
@@ -19,6 +20,7 @@ export interface IContactSideProps {
 export function ContactSide() {
   const dispatch = useAppDispatch();
   const userList = useAppSelector(selectUserList);
+  const mode = useAppSelector(selectMode);
 
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -37,7 +39,10 @@ export function ContactSide() {
     <SideWrapper
       title="contacts"
       icon={
-        <IconButton onClick={() => setIsOpen(true)}>
+        <IconButton
+          style={{ color: mode === "dark" ? "#93a7cc" : "" }}
+          onClick={() => setIsOpen(true)}
+        >
           <PersonAddIcon />
         </IconButton>
       }

@@ -5,6 +5,7 @@ import { Images } from "../../../constants";
 import { selectMode } from "../../../features/dashboard/dashboardSlice";
 import { useAppSelector } from "../../../app/store";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export interface INotFoundProps {
   style?: React.CSSProperties;
@@ -34,6 +35,7 @@ export default function NotFound({
   const navigate = useNavigate();
 
   const mode = useAppSelector(selectMode);
+  const { t } = useTranslation();
 
   return (
     <div
@@ -55,11 +57,11 @@ export default function NotFound({
               mode === "dark" ? "text-white" : ""
             }`}
           >
-            {title ? title : "Oops... Look like you get lost 🤔"}{" "}
+            {title ? t(title) : t("Oops... Look like you get lost 🤔")}{" "}
           </h3>
           {subTitle && (
             <h5 style={{ color: mode === "dark" ? "#93a7cc" : "" }}>
-              {subTitle}{" "}
+              {t(subTitle)}{" "}
             </h5>
           )}
         </div>
@@ -67,7 +69,7 @@ export default function NotFound({
         {hasButton && (
           <Button variant="outlined" onClick={() => navigate(route!)}>
             <div className="w-full h-full text-black font-semibold">
-              {buttonContent ? buttonContent : "Back to Home"}{" "}
+              {buttonContent ? t(buttonContent) : t("Back to Home")}{" "}
             </div>
           </Button>
         )}

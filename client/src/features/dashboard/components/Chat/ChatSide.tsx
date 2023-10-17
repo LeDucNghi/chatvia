@@ -19,6 +19,7 @@ import { SideWrapper } from "../SideWrapper";
 import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface IChatSideProps {
   curChatRoom: (value: string) => void;
@@ -29,6 +30,7 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
   const mode = useAppSelector(selectMode);
   const recentList = useAppSelector(selectRecentList);
   const user = useAppSelector(selectUser);
+  const { t } = useTranslation();
 
   const [isSelected, setIsSelected] = useState("");
 
@@ -77,11 +79,11 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
             mode === "dark" ? "text-white" : ""
           }`}
         >
-          Recent
+          {t("Recent")}
         </h5>
 
         <div className="chat-recent-list overflow-auto py-2 w-full">
-          {fetching.isConversation ? (
+          {fetching.isRecentList ? (
             <BaseItemLoader listToRender={4} />
           ) : recentList?.length === 0 ? (
             <NotFound

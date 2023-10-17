@@ -3,7 +3,12 @@ import "./Dashboard.scss";
 
 import { FriendRequest, Message, Sides } from "../../../models";
 import React, { useEffect } from "react";
-import { addNewMessage, addNewRequest, selectMode } from "../dashboardSlice";
+import {
+  addNewMessage,
+  addNewRequest,
+  selectLanguage,
+  selectMode,
+} from "../dashboardSlice";
 import {
   fetchAllUsersConversation,
   fetchConversation,
@@ -25,11 +30,14 @@ import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
 import { selectUser } from "../../auth/authSlice";
 import { subscribeChannel } from "../../../utils";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const user = useAppSelector(selectUser);
   const mode = useAppSelector(selectMode);
+  const language = useAppSelector(selectLanguage);
   const dispatch = useAppDispatch();
+  const { i18n } = useTranslation();
 
   const [side, setSide] = React.useState<Sides>("chat");
   const [curChatRoom, setCurChatRoom] = React.useState<string>("");
@@ -67,6 +75,10 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(fetchAllUsersConversation());
   }, [dispatch]);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
 
   return (
     <AuthenticatedLayout>

@@ -19,6 +19,7 @@ import { Images } from "../../../constants";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { cookies } from "../../../utils";
 import { handleUpdateSettings } from "../dashboardThunk";
+import { useTranslation } from "react-i18next";
 
 export interface ISideMenuProps {
   setSide: (side: Sides) => void;
@@ -29,6 +30,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const mode = useAppSelector(selectMode);
   const languages = useAppSelector(selectLanguage);
   const friendRequest = useAppSelector(selectFriendRequest);
+  const { i18n } = useTranslation();
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
@@ -55,6 +57,8 @@ export function SideMenu({ setSide }: ISideMenuProps) {
     dispatch(handleUpdateSettings(mode, language));
 
     setLanguage(language);
+
+    i18n.changeLanguage(language);
   };
 
   const handleMenuChange = (values: "profile" | "setting" | "logout") => {

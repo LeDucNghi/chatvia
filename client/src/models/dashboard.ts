@@ -11,7 +11,7 @@ export type Sides =
 
 export type Mode = "dark" | "light";
 
-export type Language = "vietnamese" | "english";
+export type Language = "vi" | "en";
 
 export interface RequestRes<T> {
   data: T[];

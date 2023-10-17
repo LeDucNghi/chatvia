@@ -15,6 +15,7 @@ import { Emoji } from "../../../../models";
 import { FileList } from "./FileList";
 import { SectionTool } from "./SectionTool";
 import { sendMsg } from "../../dashboardThunk";
+import { useTranslation } from "react-i18next";
 
 export interface ISectionProps {
   partnerId: string;
@@ -25,6 +26,7 @@ export function Section({ partnerId }: ISectionProps) {
   const conversation = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
+  const { t } = useTranslation();
 
   const [msg, setMsg] = useState<string>("");
   const [openEmoji, setOpenEmoji] = useState<boolean>(false);
@@ -95,7 +97,7 @@ export function Section({ partnerId }: ISectionProps) {
         id="outlined-basic"
         type="text"
         variant="outlined"
-        label="Enter Message"
+        label={t("Enter Message")}
         placeholder="Your Message..."
         className="textfield"
         autoComplete="off"

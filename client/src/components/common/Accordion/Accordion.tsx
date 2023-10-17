@@ -5,6 +5,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Typography from "@mui/material/Typography";
+import { useTranslation } from "react-i18next";
 
 export interface ICustomAccordionProps {
   panelOrder: string;
@@ -24,6 +25,8 @@ export function CustomAccordion({
   appendIcon,
   panelOrder,
 }: ICustomAccordionProps) {
+  const { t } = useTranslation();
+
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
   const handleChange =
@@ -44,7 +47,7 @@ export function CustomAccordion({
       >
         <Typography sx={{ width: "50%", flexShrink: 0 }}>
           {" "}
-          {preprendIcon} {title} {appendIcon}{" "}
+          {preprendIcon} {t(title)} {appendIcon}{" "}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>

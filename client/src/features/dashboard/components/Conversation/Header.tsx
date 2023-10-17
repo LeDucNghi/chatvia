@@ -71,18 +71,14 @@ export function Header() {
             </div>
           )}
 
-          {conversations.messages?.length === 0 && (
-            <>
-              <HeaderTool call={handleOpenModal} />
+          <HeaderTool call={handleOpenModal} conversation={conversations} />
 
-              <Calling
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                modalType={modalType}
-                partner={partner!}
-              />
-            </>
-          )}
+          <Calling
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            modalType={modalType}
+            partner={partner!}
+          />
         </>
       )}
     </div>
