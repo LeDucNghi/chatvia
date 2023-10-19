@@ -9,6 +9,8 @@ export type Sides =
   | "request"
   | "notifications";
 
+export type EditContactType = "block" | "remove";
+
 export type Mode = "dark" | "light";
 
 export type Language = "vi" | "en";
@@ -43,6 +45,8 @@ export interface DashboardState {
     isFriendRequest: boolean;
     isRecentList: boolean;
   };
+
+  blockedStatus: "blocked" | "unBlocked" | null;
 
   conversations: Conversation;
   friendRequests: FriendRequest[];

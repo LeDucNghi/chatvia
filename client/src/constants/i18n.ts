@@ -5,6 +5,7 @@ const resources = {
   en: {
     translation: {
       "Welcome to React": "Welcome to React and react-i18next",
+      "hồ sơ của tôi" : "my profile" ,
     },
   },
   vi: {
@@ -28,6 +29,8 @@ const resources = {
       "select all": "chọn tất cả",
       "add a reaction": "thả icon",
       "reply this message": "trả lời tin nhắn này",
+      share: "chia sẻ liên hệ",
+      block: "chặn liên hệ",
       profile: "hồ sơ",
       setting: "cài đặt",
       logout: "đăng xuất",
@@ -41,6 +44,7 @@ const resources = {
       About: "Về tôi",
       Edit: "chỉnh sửa",
       chats: "cuộc trò chuyện",
+      contacts: "liên hệ"
     },
   },
 };

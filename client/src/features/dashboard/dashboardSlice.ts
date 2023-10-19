@@ -36,6 +36,7 @@ const initialState: DashboardState = {
   partner: null,
   settings: null,
   message: null,
+  blockedStatus: null,
 
   mode: "light",
   languages: "en",
@@ -99,6 +100,13 @@ export const dashboard = createSlice({
       state.languages = action.payload;
     },
 
+    onBlockedStatusChange(
+      state,
+      action: PayloadAction<"blocked" | "unBlocked">
+    ) {
+      state.blockedStatus = action.payload;
+    },
+
     addNewMessage(state, action: PayloadAction<Message>) {
       state.conversations.messages.push(action.payload);
     },
@@ -122,6 +130,7 @@ export const {
   fetchConversationFailed,
   onModeChange,
   onLanguagesChange,
+  onBlockedStatusChange,
   addNewMessage,
   addNewRequest,
 } = dashboard.actions;
@@ -133,6 +142,8 @@ export const selectFetching = (state: RootState) => state.dashboard.fetching;
 export const selectMode = (state: RootState) => state.dashboard.mode;
 export const selectLanguage = (state: RootState) => state.dashboard.languages;
 export const selectPartner = (state: RootState) => state.dashboard.partner;
+export const selectBlockedStatus = (state: RootState) =>
+  state.dashboard.blockedStatus;
 export const selectSettings = (state: RootState) => state.dashboard.settings;
 export const selectFriendRequest = (state: RootState) =>
   state.dashboard.friendRequests;

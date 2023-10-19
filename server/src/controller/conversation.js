@@ -5,6 +5,7 @@ const pusher = require("../config/pusher");
 const { Friend } = require("../models/Friend");
 const { User } = require("../models/Users");
 const { Settings } = require("../models/Settings");
+const { Blocked } = require("../models/Block");
 
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
@@ -189,10 +190,26 @@ exports.friendRequestStt = async (req, res) => {
           new: true,
         }
       );
+
+      await User.findOneAndUpdate(
+        { _id: request.sender._id },
+        { $push: { friends: [token.user._id] } },
+        {
+          new: true,
+        }
+      );
     } else if (request.sender._id.equals(token.user._id)) {
       await User.findOneAndUpdate(
         { username: token.user.username },
         { $push: { friends: [request.friend._id] } },
+        {
+          new: true,
+        }
+      );
+
+      await User.findOneAndUpdate(
+        { _id: request.friend._id },
+        { $push: { friends: [token.user._id] } },
         {
           new: true,
         }
@@ -278,5 +295,94 @@ exports.getFriendList = async (req, res) => {
     return res
       .status(500)
       .send({ error: `${error}`, message: `Internal Server Error` });
+  }
+};
+
+// GET USER ALL CONVERSATION
+exports.conversations = async (req, res) => {
+  const token = await req.decoded;
+
+  try {
+    const conversations = await Conversation.find({
+      participant: { $in: token.user._id },
+    })
+      .populate({
+        path: "messages",
+        populate: {
+          path: "sender",
+          select: "-password -friends -__v -messages",
+        },
+      })
+      .populate("participant", "-password -__v -friends")
+      .exec();
+
+    return res.status(200).send({ data: conversations });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: `${error}`, message: `Internal Server Error` });
+  }
+};
+
+// EDIT CONTACT
+exports.editContact = async (req, res) => {
+  const token = await req.decoded;
+  const { contactId, type } = await req.body;
+
+  const friends = await User.findOne({
+    friends: { $in: contactId },
+  });
+
+  if (!friends) {
+    return res
+      .status(200)
+      .send({ message: "You do not have this friend in your list 🤔" });
+  } else {
+    if (type === "block") {
+      const user = await User.findOne({ blocked: { $in: contactId } });
+      const blocked = await Blocked.findOne({ blocked: contactId });
+
+      if (!user && !blocked) {
+        await User.findOneAndUpdate(
+          { _id: token.user._id },
+          { $push: { blocked: contactId } },
+          {
+            new: true,
+          }
+        );
+
+        const newUserBlocked = await Blocked.create({
+          _id: new mongoose.Types.ObjectId(),
+          user: token.user._id,
+          blocked: contactId,
+        });
+
+        await newUserBlocked.save();
+
+        return res.status(200).send({ message: "Blocked" });
+      } else {
+        await Blocked.deleteOne({
+          user: blocked.user,
+        });
+
+        await User.updateOne(
+          { _id: token.user._id },
+          {
+            $pull: { blocked: { $in: [contactId] } },
+          }
+        );
+
+        return res.status(200).send({ message: "Unblocked" });
+      }
+    } else if (type === "remove") {
+      const response = await User.updateOne(
+        { _id: token.user._id },
+        {
+          $pull: { friends: { $in: [contactId] } },
+        }
+      );
+
+      return res.status(200).send({ response });
+    }
   }
 };

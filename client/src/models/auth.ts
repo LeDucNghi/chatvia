@@ -7,6 +7,7 @@ export interface UserProfile {
   message?: string;
   avatar?: string;
   friends?: UserProfile[];
+  blocked?: UserProfile[];
 }
 
 export interface AuthState {

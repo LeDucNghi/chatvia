@@ -127,6 +127,13 @@ exports.getUser = async (req, res) => {
     const { user } = await req.decoded;
 
     const findUser = await User.findOne({ username: user.username })
+      .populate({
+        path: "blocked",
+        populate: {
+          path: "blocked",
+          select: "-password -friends -__v -messages",
+        },
+      })
       .populate("friends", "-password -__v -friends")
       .select("-password -__v");
 

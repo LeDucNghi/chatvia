@@ -1,11 +1,13 @@
 import { Avatar, Button } from "@mui/material";
+import { EditContactType, UserProfile } from "../../../../models";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { UserProfile } from "../../../../models";
 import { contactOptions } from "../../../../constants";
+import { handleEditContact } from "../../dashboardThunk";
 import { selectMode } from "../../dashboardSlice";
-import { useAppSelector } from "../../../../app/store";
+import { useState } from "react";
 
 export interface IAlphabetItemProps {
   itemsByLetter: UserProfile;
@@ -13,8 +15,15 @@ export interface IAlphabetItemProps {
 
 export function AlphabetItem({ itemsByLetter }: IAlphabetItemProps) {
   const mode = useAppSelector(selectMode);
+  const dispatch = useAppDispatch();
+
+  const [id, setId] = useState<string>("");
 
   const alphabet = Object.keys(itemsByLetter).sort();
+
+  const editContact = (value: string) => {
+    dispatch(handleEditContact(id, value as EditContactType));
+  };
 
   return (
     <>
@@ -54,6 +63,10 @@ export function AlphabetItem({ itemsByLetter }: IAlphabetItemProps) {
                       menu={contactOptions}
                       menuItemStyle={{
                         color: "#7a7f9a",
+                      }}
+                      onChange={(value: string) => {
+                        setId(user._id);
+                        editContact(value);
                       }}
                     />
                   </li>

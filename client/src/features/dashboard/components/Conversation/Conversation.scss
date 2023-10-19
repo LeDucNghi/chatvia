@@ -133,11 +133,22 @@
 }
 
 .chat-input-section {
-    height: auto;
-
     border-top: 0.01rem solid #f0eff5;
 
     padding: 1.2rem 1.5rem;
+
+    .block-button {
+        background-color: rgb(244, 244, 244);
+        margin: 0 0.5rem;
+        color: #000;
+        font-weight: 600;
+
+        text-transform: capitalize;
+
+        &:hover {
+            background-color: rgba(244, 244, 244, 0.9);
+        }
+    }
 
     &.dark {
         border-top: 0.01rem solid #93a7cc;

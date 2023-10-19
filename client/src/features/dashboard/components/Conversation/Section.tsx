@@ -1,20 +1,23 @@
 import "./Conversation.scss";
 
-import { ChangeEvent, useState } from "react";
-import { IconButton, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
+import { EditContactType, Emoji } from "../../../../models";
+import { handleEditContact, sendMsg } from "../../dashboardThunk";
 import {
+  selectBlockedStatus,
   selectConversations,
   selectFetching,
   selectMode,
+  selectPartner,
 } from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
-import { Emoji } from "../../../../models";
 import { FileList } from "./FileList";
 import { SectionTool } from "./SectionTool";
-import { sendMsg } from "../../dashboardThunk";
+import { selectUser } from "../../../auth/authSlice";
 import { useTranslation } from "react-i18next";
 
 export interface ISectionProps {
@@ -26,15 +29,47 @@ export function Section({ partnerId }: ISectionProps) {
   const conversation = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
+  const user = useAppSelector(selectUser);
+  const partner = useAppSelector(selectPartner);
+  const blockedStatus = useAppSelector(selectBlockedStatus);
   const { t } = useTranslation();
 
   const [msg, setMsg] = useState<string>("");
-  const [openEmoji, setOpenEmoji] = useState<boolean>(false);
-  const [files, setFiles] = useState<File[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
   const [img, setImg] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isUserBlocked, setIsUserBlocked] = useState(false);
+  const [isPartnerBlocked, setIsPartnerBlocked] = useState(false);
+  const [openEmoji, setOpenEmoji] = useState<boolean>(false);
 
   let [emojies, setEmojies] = useState<string[]>([]);
+
+  useEffect(() => {
+    const userBlocked = user?.blocked?.filter(
+      (item) => partner?._id === item._id
+    );
+
+    const partnerBlocked = partner?.blocked?.filter((id) => user?._id === id);
+
+    if (userBlocked && userBlocked?.length !== 0) {
+      setIsUserBlocked(true);
+      setIsPartnerBlocked(false);
+    } else if (partnerBlocked && partnerBlocked?.length !== 0) {
+      setIsUserBlocked(false);
+      setIsPartnerBlocked(true);
+    }
+  }, [user, partner]);
+
+  useEffect(() => {
+    if (blockedStatus === "blocked") {
+      setIsUserBlocked(true);
+      setIsPartnerBlocked(false);
+    } else {
+      setIsUserBlocked(false);
+      setIsPartnerBlocked(false);
+    }
+  }, [blockedStatus]);
 
   const handleSendMessage = () => {
     if (msg) {
@@ -87,82 +122,107 @@ export function Section({ partnerId }: ISectionProps) {
     setFiles(newFiles);
   };
 
+  const editContact = (type: EditContactType) => {
+    dispatch(handleEditContact(partner!._id!, type));
+  };
+
   return (
     <div
       className={`chat-input-section flex items-center justify-between ${
         mode === "dark" && "dark"
       }`}
     >
-      <TextField
-        id="outlined-basic"
-        type="text"
-        variant="outlined"
-        label={t("Enter Message")}
-        placeholder="Your Message..."
-        className="textfield"
-        autoComplete="off"
-        value={msg}
-        disabled={fetching.isConversation ? true : false}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleMsgChange(e)
-        }
-        sx={{
-          ".MuiOutlinedInput-root": {
-            paddingTop: files.length !== 0 ? "1rem" : 0,
-            flexDirection: "column",
-            alignItems: "flex-start",
-          },
-        }}
-        InputProps={{
-          startAdornment:
-            files.length === 0 ? null : (
-              <FileList
-                files={files}
-                openImage={handleOpenImg}
-                deleteFile={handleDeleteFile}
-              />
-            ),
-        }}
-      />
+      {isUserBlocked || isPartnerBlocked ? (
+        <div className="w-full h-full bg-blue-400">
+          <p className="text-center text-white p-2">
+            {isPartnerBlocked
+              ? "You can't reply to this conversation"
+              : "You have blocked this user 🤧"}
 
-      <SectionTool
-        msg={msg}
-        openEmoji={openEmoji}
-        setOpenEmoji={setOpenEmoji}
-        selectEmoji={handleSelectEmoji}
-        selectFile={handleSelectFile}
-        sendMsg={handleSendMessage}
-      />
-
-      <CustomModal
-        styles={{ backgroundColor: "none", boxShadow: "none" }}
-        isOpen={isOpen}
-        onClose={setIsOpen}
-      >
-        <div className="w-[800px] h-[550px] relative">
-          <img
-            className="rounded-2xl w-full h-full object-contain"
-            src={img}
-            alt=""
-          />
-
-          <IconButton
+            {isUserBlocked ? (
+              <Button
+                onClick={() => editContact("block")}
+                className="block-button"
+              >
+                Unblock
+              </Button>
+            ) : null}
+          </p>
+        </div>
+      ) : (
+        <>
+          <TextField
+            id="outlined-basic"
+            type="text"
+            variant="outlined"
+            label={t("Enter Message")}
+            placeholder="Your Message..."
+            className="textfield"
+            autoComplete="off"
+            value={msg}
+            disabled={fetching.isConversation ? true : false}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleMsgChange(e)
+            }
             sx={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              color: "#000",
-              bgcolor: "#fff",
-              ":hover": {
-                bgcolor: "#fff",
+              ".MuiOutlinedInput-root": {
+                paddingTop: files.length !== 0 ? "1rem" : 0,
+                flexDirection: "column",
+                alignItems: "flex-start",
               },
             }}
-            onClick={() => setIsOpen(!isOpen)}
+            InputProps={{
+              startAdornment:
+                files.length === 0 ? null : (
+                  <FileList
+                    files={files}
+                    openImage={handleOpenImg}
+                    deleteFile={handleDeleteFile}
+                  />
+                ),
+            }}
+          />
+
+          <SectionTool
+            msg={msg}
+            openEmoji={openEmoji}
+            setOpenEmoji={setOpenEmoji}
+            selectEmoji={handleSelectEmoji}
+            selectFile={handleSelectFile}
+            sendMsg={handleSendMessage}
+          />
+
+          <CustomModal
+            styles={{ backgroundColor: "none", boxShadow: "none" }}
+            isOpen={isOpen}
+            onClose={setIsOpen}
           >
-            <ClearIcon />
-          </IconButton>
-        </div>
-      </CustomModal>
+            <div className="w-[800px] h-[550px] relative">
+              <img
+                className="rounded-2xl w-full h-full object-contain"
+                src={img}
+                alt=""
+              />
+
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  color: "#000",
+                  bgcolor: "#fff",
+                  ":hover": {
+                    bgcolor: "#fff",
+                  },
+                }}
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <ClearIcon />
+              </IconButton>
+            </div>
+          </CustomModal>
+        </>
+      )}
     </div>
   );
 }

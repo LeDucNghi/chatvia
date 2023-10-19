@@ -1,6 +1,7 @@
 import {
   ArrResponse,
   Conversation,
+  EditContactType,
   FriendRequest,
   Message,
   RequestRes,
@@ -51,6 +52,10 @@ export const conversationService = {
 
   updateSettings(mode: Mode, language: Language): Promise<any> {
     return axiosClient.post(`/conversation/settings`, { language, mode });
+  },
+
+  editContact(contactId: string, type: EditContactType): Promise<any> {
+    return axiosClient.post(`/conversation/editContact`, { contactId, type });
   },
 
   getSettings(): Promise<Settings> {

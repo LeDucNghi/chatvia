@@ -1,4 +1,4 @@
-import { Language, Message, Mode } from "../../models";
+import { EditContactType, Language, Message, Mode } from "../../models";
 import {
   fetchConversationFailed,
   fetchConversationSuccess,
@@ -7,6 +7,7 @@ import {
   fetchRecentList,
   fetchingConversation,
   fetchingRecentList,
+  onBlockedStatusChange,
   onLanguagesChange,
   onModeChange,
 } from "./dashboardSlice";
@@ -182,5 +183,38 @@ export const fetchAllUsersConversation =
         "🚀 ~ file: dashboardThunk.ts:163 ~ fetchAllUsersConversation ~ error:",
         error
       );
+    }
+  };
+
+export const handleEditContact =
+  (contactId: string, type: EditContactType): AppThunk =>
+  async (dispatch) => {
+    try {
+      const res = await conversationService.editContact(contactId, type);
+
+      if (res) {
+        if (res.message === "Blocked") {
+          dispatch(onBlockedStatusChange("blocked"));
+          alert({
+            content: res.message,
+            position: "top-center",
+            type: "success",
+          });
+        } else {
+          dispatch(onBlockedStatusChange("unBlocked"));
+          alert({
+            content: res.message,
+            position: "top-center",
+            type: "success",
+          });
+        }
+      }
+    } catch (error) {
+      console.log("🚀 ~ file: dashboardThunk.ts:194 ~ error:", error);
+      alert({
+        content: "Something went wrong!!",
+        position: "top-center",
+        type: "error",
+      });
     }
   };
