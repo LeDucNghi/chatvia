@@ -61,4 +61,11 @@ export const conversationService = {
   getSettings(): Promise<Settings> {
     return axiosClient.get(`/conversation/settings`);
   },
+
+  createGroup(participant: string[], groupName?: string): Promise<any> {
+    return axiosClient.post(`/conversation/groupConversation`, {
+      participant,
+      groupName,
+    });
+  },
 };

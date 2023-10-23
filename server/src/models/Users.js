@@ -22,6 +22,8 @@ const UserSchema = new mongoose.Schema({
   messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
 
   blocked: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+
+  groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
 });
 
 const User = mongoose.model("User", UserSchema);

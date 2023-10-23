@@ -1,13 +1,18 @@
 const mongoose = require("mongoose");
 
 const GroupSchema = new mongoose.Schema({
-  member: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  name: String,
 
-  role: {
-    type: String,
-    enum: ["member", "admin"],
-    default: "member",
-  },
+  members: [
+    {
+      member: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      role: {
+        type: String,
+        enum: ["member", "admin"],
+        default: "member",
+      },
+    },
+  ],
 });
 
 const Group = mongoose.model("Group", GroupSchema);

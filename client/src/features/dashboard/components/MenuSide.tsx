@@ -30,7 +30,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const mode = useAppSelector(selectMode);
   const languages = useAppSelector(selectLanguage);
   const friendRequest = useAppSelector(selectFriendRequest);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
@@ -86,7 +86,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               className="pills-item w-8 h-12 mx-auto"
               arrow
               key={key}
-              title={menu.title}
+              title={t(menu.title)}
               placement="left"
               onClick={() => handleChangeSide(menu.value as Sides)}
               sx={{
@@ -123,7 +123,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               className="pills-item w-8 h-12 "
               arrow
               key={key}
-              title={menu.title}
+              title={t(menu.title)}
               placement="left"
               sx={{ color: mode === "dark" ? "#a6b0cf" : "#000" }}
               onClick={() => handleChangeMode(menu.id)}

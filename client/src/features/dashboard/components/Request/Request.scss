@@ -9,9 +9,11 @@
         }
 
         background-color: #313a43;
+
+        transition: background 0.3s ease-in-out;
     }
 
     &:hover {
-        background: #dcdde1;
+        background: rgba(166, 176, 207, 0.5);
     }
 }

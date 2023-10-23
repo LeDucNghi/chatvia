@@ -2,21 +2,24 @@ import "../Side.scss";
 
 import * as React from "react";
 
-import { Avatar, Button } from "@mui/material";
-import { selectFetching, selectMode } from "../../dashboardSlice";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
-import { Badge } from "../../../../components/common/Badge/Badge";
-import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
+import { CreateGroup } from "./CreateGroup";
+import { GroupList } from "./GroupList";
+import { IconButton } from "@mui/material";
 import { InputField } from "../../../../components/common/InputField/InputField";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
-import { useAppSelector } from "../../../../app/store";
-import { users } from "../../../../mock";
+import { handleGetAllUser } from "../../../auth/authThunk";
+import { selectMode } from "../../dashboardSlice";
 
 export function GroupSide() {
-  const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
+
+  const dispatch = useAppDispatch();
+
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleFieldChange = (value: React.ChangeEvent<HTMLInputElement>) => {
     console.log(
@@ -25,10 +28,21 @@ export function GroupSide() {
     );
   };
 
+  React.useEffect(() => {
+    dispatch(handleGetAllUser());
+  }, [dispatch]);
+
   return (
     <SideWrapper
       title="groups"
-      icon={<PeopleOutlineIcon />}
+      icon={
+        <IconButton
+          style={{ color: mode === "dark" ? "#93a7cc" : "" }}
+          onClick={() => setIsOpen(true)}
+        >
+          <PeopleOutlineIcon />
+        </IconButton>
+      }
       header={
         <InputField
           onChange={handleFieldChange}
@@ -39,35 +53,9 @@ export function GroupSide() {
         />
       }
     >
-      <div className="group-wrapper w-full h-[500px] overflow-auto ">
-        {fetching.isConversation ? (
-          <BaseItemLoader listToRender={5} />
-        ) : (
-          users.map((group, key) => {
-            return (
-              <Button
-                sx={{ padding: "1rem" }}
-                className="w-full group-items"
-                key={key}
-              >
-                <div className="w-full flex justify-between items-center">
-                  <Avatar src={group.avatar} alt={group.username} />
+      <GroupList />
 
-                  <h5
-                    className={`text-left text-sm ${
-                      mode === "dark" ? "text-white" : "text-black"
-                    } w-9/12 font-semibold ml-2`}
-                  >
-                    #{group.username}
-                  </h5>
-
-                  <Badge content={10} />
-                </div>
-              </Button>
-            );
-          })
-        )}
-      </div>
+      <CreateGroup isOpen={isOpen} setIsOpen={setIsOpen} />
     </SideWrapper>
   );
 }

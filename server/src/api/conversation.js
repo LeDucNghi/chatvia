@@ -11,6 +11,7 @@ const {
   getFriendList,
   conversations,
   editContact,
+  createGroupConversation,
 } = require("../controller/conversation");
 
 const router = express.Router();
@@ -34,5 +35,7 @@ router.post("/settings", verifyToken, updateSettings);
 router.post("/conversations", verifyToken, conversations);
 
 router.post("/editContact", verifyToken, editContact);
+
+router.post("/groupConversation", verifyToken, createGroupConversation);
 
 module.exports = router;

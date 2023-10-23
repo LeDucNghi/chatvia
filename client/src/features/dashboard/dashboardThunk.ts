@@ -3,6 +3,7 @@ import {
   fetchConversationFailed,
   fetchConversationSuccess,
   fetchFriendRequestsSuccess,
+  fetchGroupListSuccessfully,
   fetchPartnerProfileSuccess,
   fetchRecentList,
   fetchingConversation,
@@ -164,6 +165,7 @@ export const fetchAllUsersConversation =
 
     try {
       const res = await conversationService.getAllConversation();
+      console.log("🚀 ~ file: dashboardThunk.ts:167 ~ res:", res);
 
       const user = getState().auth.user;
 
@@ -177,6 +179,12 @@ export const fetchAllUsersConversation =
             }
           });
         });
+
+        const newGroupList = res.data.filter((data) => data.isGroup === true);
+
+        if (newGroupList) {
+          dispatch(fetchGroupListSuccessfully(newGroupList));
+        }
       }
     } catch (error) {
       console.log(
@@ -216,5 +224,16 @@ export const handleEditContact =
         position: "top-center",
         type: "error",
       });
+    }
+  };
+
+export const handleCreateGroup =
+  (participant: string[], groupName?: string): AppThunk =>
+  async () => {
+    try {
+      const res = await conversationService.createGroup(participant, groupName);
+      console.log("🚀 ~ file: dashboardThunk.ts:226 ~ res:", res);
+    } catch (error) {
+      console.log("🚀 ~ file: dashboardThunk.ts:228 ~ error:", error);
     }
   };

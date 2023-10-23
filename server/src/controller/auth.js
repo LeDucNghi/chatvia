@@ -134,7 +134,14 @@ exports.getUser = async (req, res) => {
           select: "-password -friends -__v -messages",
         },
       })
-      .populate("friends", "-password -__v -friends")
+      .populate({
+        path: "friends",
+        populate: {
+          path: "blocked",
+          select: "-password -friends -__v -messages -groups",
+        },
+      })
+      .populate("groups", "-password -__v -friends")
       .select("-password -__v");
 
     return res.status(200).send({ data: findUser });

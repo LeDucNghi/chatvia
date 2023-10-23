@@ -1,11 +1,12 @@
 const { Message } = require("../models/Message");
-const { Schema, default: mongoose } = require("mongoose");
+const { default: mongoose } = require("mongoose");
 const { Conversation } = require("../models/Conversation");
 const pusher = require("../config/pusher");
 const { Friend } = require("../models/Friend");
 const { User } = require("../models/Users");
 const { Settings } = require("../models/Settings");
 const { Blocked } = require("../models/Block");
+const { Group } = require("../models/Group");
 
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
@@ -384,5 +385,60 @@ exports.editContact = async (req, res) => {
 
       return res.status(200).send({ response });
     }
+  }
+};
+
+// CREATE GROUP CONVERSATION
+exports.createGroupConversation = async (req, res) => {
+  const { participant, groupName } = await req.body;
+  const token = await req.decoded;
+
+  const index = participant.filter((item) => item === token.user._id);
+
+  try {
+    if (index.length !== 0) {
+      return res.status(404).send({ message: "Duplicate Id" });
+    } else {
+      const newParticipant = [...participant, token.user._id];
+
+      const newGroupConversation = await Conversation.create({
+        _id: new mongoose.Types.ObjectId(),
+        isGroup: true,
+        groupName: groupName ? groupName : `${token.user.username}'s group`,
+        participant: newParticipant,
+      });
+
+      const newGroup = await Group.create({
+        name: groupName,
+
+        members: [],
+      });
+
+      for (const memId of newParticipant) {
+        const member = await Group.findOne({ _id: newGroup._id });
+
+        if (member) {
+          newGroup.members.push({
+            member: memId,
+            role: memId === token.user._id ? "admin" : "member",
+          });
+        }
+      }
+
+      await newGroup.save();
+
+      await newGroupConversation.save();
+
+      await User.updateOne(
+        { _id: token.user._id },
+        { $push: { groups: newGroup._id } }
+      );
+
+      return res.status(200).send({ message: "Create successfully!!" });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: `${error}`, message: `Internal Server Error` });
   }
 };

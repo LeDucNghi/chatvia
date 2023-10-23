@@ -23,6 +23,7 @@ const initialState: DashboardState = {
   friends: [],
   friendRequests: [],
   recentList: [],
+  group: [],
 
   conversations: {
     __v: 0,
@@ -58,6 +59,10 @@ export const dashboard = createSlice({
 
     fetchingFriendRequest(state) {
       state.fetching.isFriendRequest = true;
+    },
+
+    fetchGroupListSuccessfully(state, action: PayloadAction<Conversation[]>) {
+      state.group = action.payload;
     },
 
     fetchConversationSuccess(state, action: PayloadAction<Conversation>) {
@@ -124,6 +129,7 @@ export const {
   fetchConversationSuccess,
   fetchUserListSuccess,
   fetchPartnerProfileSuccess,
+  fetchGroupListSuccessfully,
   fetchSettings,
   fetchRecentList,
   fetchingRecentList,
@@ -142,6 +148,7 @@ export const selectFetching = (state: RootState) => state.dashboard.fetching;
 export const selectMode = (state: RootState) => state.dashboard.mode;
 export const selectLanguage = (state: RootState) => state.dashboard.languages;
 export const selectPartner = (state: RootState) => state.dashboard.partner;
+export const selectGroupList = (state: RootState) => state.dashboard.group;
 export const selectBlockedStatus = (state: RootState) =>
   state.dashboard.blockedStatus;
 export const selectSettings = (state: RootState) => state.dashboard.settings;

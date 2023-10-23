@@ -57,6 +57,7 @@ export interface DashboardState {
   message: Message | null;
   settings: Settings | null;
   recentList: Conversation[];
+  group: Conversation[];
 
   conversationId: string;
 }
