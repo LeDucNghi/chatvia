@@ -9,6 +9,8 @@ const ConversationSchema = new mongoose.Schema({
 
   participant: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
+  group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" },
+
   groupName: String,
 });
 

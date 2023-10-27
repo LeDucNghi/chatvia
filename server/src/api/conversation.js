@@ -38,4 +38,12 @@ router.post("/editContact", verifyToken, editContact);
 
 router.post("/groupConversation", verifyToken, createGroupConversation);
 
+router.post("/updateGroup", async (req, res) => {
+  console.log("🚀 ~ file: conversation.js:42 ~ router.post ~ req:", req.body);
+
+  return res.status(200).send({
+    data: "not gud",
+  });
+});
+
 module.exports = router;

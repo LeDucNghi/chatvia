@@ -77,7 +77,7 @@ exports.getConversation = async (req, res) => {
     const conversation = await Conversation.findOne({
       isGroup,
       participant: { $in: participant },
-    });
+    }).populate("group");
 
     if (conversation) {
       const message = await Message.find({
@@ -92,9 +92,8 @@ exports.getConversation = async (req, res) => {
         data: conversation,
       });
     } else {
-      return res.status(404).send({
-        message:
-          "This conversation is empty. Enter something to your partner to show how you think",
+      return res.status(200).send({
+        data: conversation,
       });
     }
   } catch (error) {
@@ -401,16 +400,22 @@ exports.createGroupConversation = async (req, res) => {
     } else {
       const newParticipant = [...participant, token.user._id];
 
+      const conversationId = new mongoose.Types.ObjectId();
+      const groupId = new mongoose.Types.ObjectId();
+
       const newGroupConversation = await Conversation.create({
-        _id: new mongoose.Types.ObjectId(),
+        _id: conversationId,
         isGroup: true,
         groupName: groupName ? groupName : `${token.user.username}'s group`,
         participant: newParticipant,
+        group: groupId,
       });
 
       const newGroup = await Group.create({
+        _id: groupId,
         name: groupName,
-
+        conversation: conversationId,
+        avatar: "",
         members: [],
       });
 

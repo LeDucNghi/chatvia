@@ -25,7 +25,7 @@ export function Conversation() {
     <div className="chat-content-wrapper w-full p-6 relative flex flex-col overflow-auto">
       {fetching.isConversation ? (
         <ChatItemLoader listToRender={6} />
-      ) : conversations.messages?.length === 0 ? (
+      ) : !conversations || conversations.messages?.length === 0 ? (
         <NotFound
           hasButton={false}
           title="Choose any user to see the conversation or get started to chat with them."

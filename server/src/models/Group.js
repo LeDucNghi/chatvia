@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const GroupSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+
   name: String,
+
+  avatar: String,
 
   members: [
     {
@@ -13,6 +17,8 @@ const GroupSchema = new mongoose.Schema({
       },
     },
   ],
+
+  conversation: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
 });
 
 const Group = mongoose.model("Group", GroupSchema);

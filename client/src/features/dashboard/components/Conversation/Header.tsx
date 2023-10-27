@@ -15,10 +15,10 @@ import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
 export function Header() {
-  const conversations = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
   const partner = useAppSelector(selectPartner);
   const mode = useAppSelector(selectMode);
+  const conversation = useAppSelector(selectConversations);
 
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState({
@@ -56,22 +56,30 @@ export function Header() {
         </div>
       ) : (
         <>
-          {conversations.messages?.length !== 0 && (
+          {(conversation || partner) && (
             <div className="header-name flex justify-between items-center">
               <img
                 className="w-9 h-9 object-contain"
-                src={partner?.avatar}
+                src={
+                  conversation.isGroup
+                    ? conversation.group?.avatar
+                    : partner?.avatar
+                }
                 alt="logo"
               />
 
               <h5 className="flex font-semibold items-center w-4/5 capitalize">
-                {partner?.username}
-                <FiberManualRecordIcon className="icon online ml-1" />
+                {conversation.isGroup
+                  ? conversation.group?.name
+                  : partner?.username}
+                {!conversation.isGroup && (
+                  <FiberManualRecordIcon className="icon online ml-1" />
+                )}
               </h5>
             </div>
           )}
 
-          <HeaderTool call={handleOpenModal} conversation={conversations} />
+          <HeaderTool call={handleOpenModal} />
 
           <Calling
             isOpen={isOpen}

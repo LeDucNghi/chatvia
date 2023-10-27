@@ -1,11 +1,11 @@
 import { Avatar, IconButton } from "@mui/material";
+import { selectConversations, selectMode } from "../../dashboardSlice";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { UserProfile } from "../../../../models";
 import VideocamIcon from "@mui/icons-material/Videocam";
-import { selectMode } from "../../dashboardSlice";
 import { useAppSelector } from "../../../../app/store";
 import { useTranslation } from "react-i18next";
 
@@ -29,6 +29,8 @@ export function Calling({
   isOpen,
 }: ICallingProps) {
   const mode = useAppSelector(selectMode);
+  const conversation = useAppSelector(selectConversations);
+
   const { t } = useTranslation();
 
   return (
@@ -40,7 +42,11 @@ export function Calling({
       <div className="modal-wrappe p-6 flex flex-col items-center">
         <div className="avatar w-28 h-28">
           <Avatar
-            src={partner?.avatar}
+            src={
+              conversation.isGroup
+                ? conversation.group?.avatar
+                : partner?.avatar
+            }
             sx={{ width: "100%", height: "100%", objectFit: "contain" }}
           />
         </div>
@@ -52,7 +58,9 @@ export function Calling({
             }`}
           >
             {" "}
-            {partner?.username}
+            {conversation.isGroup
+              ? conversation.group?.name
+              : partner?.username}
           </h5>
 
           <p className="w-full text-sm text-gray-400 text-center capitalize">

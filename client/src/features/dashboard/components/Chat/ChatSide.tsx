@@ -27,8 +27,10 @@ export interface IChatSideProps {
 
 export function ChatSide({ curChatRoom }: IChatSideProps) {
   const fetching = useAppSelector(selectFetching);
+
   const mode = useAppSelector(selectMode);
   const recentList = useAppSelector(selectRecentList);
+
   const user = useAppSelector(selectUser);
   const { t } = useTranslation();
 

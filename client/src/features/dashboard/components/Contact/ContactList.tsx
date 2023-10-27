@@ -7,7 +7,11 @@ import { selectFetching } from "../../dashboardSlice";
 import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
 
-export function ContactList() {
+export interface ContactListProps {
+  userList: UserProfile[];
+}
+
+export function ContactList({ userList }: ContactListProps) {
   const fetching = useAppSelector(selectFetching);
   const user = useAppSelector(selectUser);
 
@@ -32,7 +36,7 @@ export function ContactList() {
           {fetching.isConversation ? (
             <BaseItemLoader listToRender={5} />
           ) : (
-            <AlphabetItem itemsByLetter={itemsByLetter} />
+            <AlphabetItem userList={userList} itemsByLetter={itemsByLetter} />
           )}
         </div>
       )}

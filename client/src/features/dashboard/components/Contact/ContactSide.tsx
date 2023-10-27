@@ -9,6 +9,7 @@ import { InputField } from "../../../../components/common/InputField/InputField"
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
+import { UserProfile } from "../../../../models";
 import { handleGetAllUser } from "../../../auth/authThunk";
 import { selectMode } from "../../dashboardSlice";
 import { selectUserList } from "../../../auth/authSlice";
@@ -23,16 +24,22 @@ export function ContactSide() {
   const mode = useAppSelector(selectMode);
 
   const [isOpen, setIsOpen] = React.useState(false);
+  const [users, setUsers] = React.useState<UserProfile[]>([]);
 
   React.useEffect(() => {
     dispatch(handleGetAllUser());
   }, [dispatch]);
 
-  const handleFieldChange = (value: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(
-      "🚀 ~ file: ChatSide.tsx:12 ~ handleFieldChange ~ value:",
-      value.target.value
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const contact = userList.filter((user) =>
+      user.username?.includes(e.target.value)
     );
+
+    if (!e.target.value) {
+      setUsers([]);
+    } else {
+      setUsers(contact);
+    }
   };
 
   return (
@@ -58,7 +65,7 @@ export function ContactSide() {
     >
       <AddContact isOpen={isOpen} setIsOpen={setIsOpen} userList={userList} />
 
-      <ContactList />
+      <ContactList userList={users} />
     </SideWrapper>
   );
 }

@@ -65,8 +65,11 @@ export const dashboard = createSlice({
       state.group = action.payload;
     },
 
-    fetchConversationSuccess(state, action: PayloadAction<Conversation>) {
-      state.conversations = action.payload;
+    fetchConversationSuccess(
+      state,
+      action: PayloadAction<Conversation | null>
+    ) {
+      state.conversations = action.payload!;
       state.fetching.isConversation = false;
     },
 

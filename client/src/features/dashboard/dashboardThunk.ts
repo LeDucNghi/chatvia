@@ -48,8 +48,9 @@ export const fetchConversation =
           isGroup,
           participant
         );
+        console.log("🚀 ~ file: dashboardThunk.ts:51 ~ res:", res);
 
-        if (res) {
+        if (res.data !== null) {
           res.data.messages.forEach((cons) => {
             const { sender } = cons;
 
@@ -59,6 +60,13 @@ export const fetchConversation =
           });
 
           dispatch(fetchConversationSuccess(res.data));
+        } else {
+          const friends = user?.friends?.filter((user) =>
+            participant.includes(user._id!)
+          );
+
+          dispatch(fetchPartnerProfileSuccess(friends![0]));
+          dispatch(fetchConversationSuccess(null));
         }
       } catch (error: any) {
         console.log("🚀 ~ file: dashboardThunk.ts:36 ~ error:", error);
@@ -165,26 +173,35 @@ export const fetchAllUsersConversation =
 
     try {
       const res = await conversationService.getAllConversation();
-      console.log("🚀 ~ file: dashboardThunk.ts:167 ~ res:", res);
 
       const user = getState().auth.user;
 
       if (res) {
-        res.data.map((cons) => {
-          cons.messages.map((msg) => {
+        // res.data.map((cons) => {
+        //   cons.messages.map((msg) => {
+        //     if (msg.sender?._id === user?._id) {
+        //       dispatch(fetchRecentList([]));
+        //     } else {
+        //       dispatch(fetchRecentList(res.data));
+        //     }
+        //   });
+        // });
+
+        const recentList = res.data.filter((data) => {
+          data.messages.map((msg) => {
             if (msg.sender?._id === user?._id) {
-              dispatch(fetchRecentList([]));
+              return [];
             } else {
-              dispatch(fetchRecentList(res.data));
+              return msg;
             }
           });
         });
 
+        dispatch(fetchRecentList(recentList));
+
         const newGroupList = res.data.filter((data) => data.isGroup === true);
 
-        if (newGroupList) {
-          dispatch(fetchGroupListSuccessfully(newGroupList));
-        }
+        dispatch(fetchGroupListSuccessfully(newGroupList));
       }
     } catch (error) {
       console.log(

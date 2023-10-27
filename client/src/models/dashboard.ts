@@ -25,7 +25,23 @@ export interface Conversation {
   messages: Message[];
   participant: UserProfile[];
   groupName: string;
+  group?: Group;
   __v: number;
+}
+
+export interface Group {
+  _id: string;
+  name: string;
+  avatar: string;
+  members: MemberRole[];
+  conversation: string;
+  __v: number | string;
+}
+
+export interface MemberRole {
+  member: string;
+  role: "member" | "admin";
+  _id: string;
 }
 
 export interface Settings {
