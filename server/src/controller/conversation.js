@@ -77,7 +77,10 @@ exports.getConversation = async (req, res) => {
     const conversation = await Conversation.findOne({
       isGroup,
       participant: { $in: participant },
-    }).populate("group");
+    }).populate(
+      "group participant",
+      "-password -friends -__v -groups -blocked -messages"
+    );
 
     if (conversation) {
       const message = await Message.find({
