@@ -43,8 +43,8 @@ export function Calling({
         <div className="avatar w-28 h-28">
           <Avatar
             src={
-              conversation.isGroup
-                ? conversation.group?.avatar
+              conversation?.isGroup
+                ? conversation?.group?.avatar
                 : partner?.avatar
             }
             sx={{ width: "100%", height: "100%", objectFit: "contain" }}
@@ -58,8 +58,8 @@ export function Calling({
             }`}
           >
             {" "}
-            {conversation.isGroup
-              ? conversation.group?.name
+            {conversation?.isGroup
+              ? conversation?.group?.name
               : partner?.username}
           </h5>
 

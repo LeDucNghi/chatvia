@@ -19,13 +19,11 @@ import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { AuthenticatedLayout } from "../../../components/layouts/Auth/Authenticate";
 import { ChatSide } from "../components/Chat/ChatSide";
 import { ContactSide } from "../components/Contact/ContactSide";
-import { Conversation } from "../components/Conversation/Conversation";
+import { ConversationMain } from "../components/Conversation/ConversationMain";
 import { GroupSide } from "../components/Group/GroupSide";
-import { Header } from "../components/Conversation/Header";
 import { NotificationSide } from "../components/Notifications/NotificationSide";
 import { ProfileSide } from "../components/Profile/ProfileSide";
 import { RequestSide } from "../components/Request/RequestSide";
-import { Section } from "../components/Conversation/Section";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
 import { selectUser } from "../../auth/authSlice";
@@ -110,15 +108,11 @@ export default function Dashboard() {
         </div>
 
         <div
-          className={`dashboard-chat h-auto w-8/12 ${
+          className={`dashboard-chat h-auto  relative ${
             mode === "dark" && "dark"
           }`}
         >
-          <Header />
-
-          <Conversation />
-
-          <Section partnerId={curChatRoom} />
+          <ConversationMain />
         </div>
       </div>
     </AuthenticatedLayout>

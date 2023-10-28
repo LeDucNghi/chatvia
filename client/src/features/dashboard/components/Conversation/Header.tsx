@@ -14,7 +14,11 @@ import { HeaderTool } from "./HeaderTool";
 import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
-export function Header() {
+export interface HeaderProps {
+  openDrawer: (value: boolean) => void;
+}
+
+export function Header({ openDrawer }: HeaderProps) {
   const fetching = useAppSelector(selectFetching);
   const partner = useAppSelector(selectPartner);
   const mode = useAppSelector(selectMode);
@@ -38,7 +42,7 @@ export function Header() {
 
   return (
     <div
-      className={`chat-header w-full px-4 py-6 flex ${
+      className={`chat-header w-full px-2 py-4 flex ${
         mode === "dark" && "dark"
       }`}
     >
@@ -61,25 +65,25 @@ export function Header() {
               <img
                 className="w-9 h-9 object-contain"
                 src={
-                  conversation.isGroup
-                    ? conversation.group?.avatar
+                  conversation?.isGroup
+                    ? conversation?.group?.avatar
                     : partner?.avatar
                 }
                 alt="logo"
               />
 
               <h5 className="flex font-semibold items-center w-4/5 capitalize">
-                {conversation.isGroup
-                  ? conversation.group?.name
+                {conversation?.isGroup
+                  ? conversation?.group?.name
                   : partner?.username}
-                {!conversation.isGroup && (
+                {!conversation?.isGroup && (
                   <FiberManualRecordIcon className="icon online ml-1" />
                 )}
               </h5>
             </div>
           )}
 
-          <HeaderTool call={handleOpenModal} />
+          <HeaderTool openDrawer={openDrawer} call={handleOpenModal} />
 
           <Calling
             isOpen={isOpen}

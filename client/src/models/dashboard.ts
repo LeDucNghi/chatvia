@@ -64,7 +64,7 @@ export interface DashboardState {
 
   blockedStatus: "blocked" | "unBlocked" | null;
 
-  conversations: Conversation;
+  conversations: Conversation | null;
   friendRequests: FriendRequest[];
   friends: UserProfile[];
   partner: UserProfile | null;
@@ -74,6 +74,7 @@ export interface DashboardState {
   settings: Settings | null;
   recentList: Conversation[];
   group: Conversation[];
+  groupInfo: Group | null;
 
   conversationId: string;
 }

@@ -3,6 +3,7 @@ import {
   fetchConversationFailed,
   fetchConversationSuccess,
   fetchFriendRequestsSuccess,
+  fetchGroupInformationSuccess,
   fetchGroupListSuccessfully,
   fetchPartnerProfileSuccess,
   fetchRecentList,
@@ -60,6 +61,10 @@ export const fetchConversation =
           });
 
           dispatch(fetchConversationSuccess(res.data));
+
+          if (res.data.isGroup === true) {
+            dispatch(fetchGroupInformationSuccess(res.data.group!));
+          }
         } else {
           const friends = user?.friends?.filter((user) =>
             participant.includes(user._id!)

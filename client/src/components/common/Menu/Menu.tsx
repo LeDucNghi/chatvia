@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
 import { Icon } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -55,7 +54,9 @@ export function CustomMenu({
 
   return (
     <>
-      <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+      <div
+        style={{ display: "flex", alignItems: "center", textAlign: "center" }}
+      >
         <IconButton
           onClick={handleClick}
           size="small"
@@ -73,7 +74,7 @@ export function CustomMenu({
             <Avatar sx={{ width: 32, height: 32 }} src={img} />
           ) : null}
         </IconButton>
-      </Box>
+      </div>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"

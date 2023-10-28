@@ -191,3 +191,8 @@ export const friendRequests: UserProfile[] = [
     avatar: faker.image.avatar(),
   },
 ];
+
+export const images = [...Array(22)].map(() => ({
+  id: "1",
+  image: faker.image.avatar(),
+}));

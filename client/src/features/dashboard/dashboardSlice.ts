@@ -2,6 +2,7 @@ import {
   Conversation,
   DashboardState,
   FriendRequest,
+  Group,
   Language,
   Message,
   Mode,
@@ -25,19 +26,12 @@ const initialState: DashboardState = {
   recentList: [],
   group: [],
 
-  conversations: {
-    __v: 0,
-    _id: "",
-    groupName: "",
-    isGroup: false,
-    messages: [],
-    participant: [],
-  },
-
+  conversations: null,
   partner: null,
   settings: null,
   message: null,
   blockedStatus: null,
+  groupInfo: null,
 
   mode: "light",
   languages: "en",
@@ -96,6 +90,10 @@ export const dashboard = createSlice({
       state.recentList = action.payload;
     },
 
+    fetchGroupInformationSuccess(state, action: PayloadAction<Group>) {
+      state.groupInfo = action.payload;
+    },
+
     fetchConversationFailed(state) {
       state.fetching.isConversation = false;
     },
@@ -116,7 +114,7 @@ export const dashboard = createSlice({
     },
 
     addNewMessage(state, action: PayloadAction<Message>) {
-      state.conversations.messages.push(action.payload);
+      state.conversations?.messages.push(action.payload);
     },
 
     addNewRequest(state, action: PayloadAction<FriendRequest>) {
@@ -136,6 +134,7 @@ export const {
   fetchSettings,
   fetchRecentList,
   fetchingRecentList,
+  fetchGroupInformationSuccess,
   fetchConversationFailed,
   onModeChange,
   onLanguagesChange,
@@ -155,6 +154,7 @@ export const selectGroupList = (state: RootState) => state.dashboard.group;
 export const selectBlockedStatus = (state: RootState) =>
   state.dashboard.blockedStatus;
 export const selectSettings = (state: RootState) => state.dashboard.settings;
+export const selectGroupInfo = (state: RootState) => state.dashboard.groupInfo;
 export const selectFriendRequest = (state: RootState) =>
   state.dashboard.friendRequests;
 export const selectRecentList = (state: RootState) =>
