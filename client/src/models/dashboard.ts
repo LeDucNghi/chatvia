@@ -19,6 +19,10 @@ export interface RequestRes<T> {
   data: T[];
 }
 
+export interface MessageRes {
+  message: string;
+}
+
 export interface Conversation {
   _id: string;
   isGroup: boolean;
@@ -77,6 +81,8 @@ export interface DashboardState {
   groupInfo: Group | null;
 
   conversationId: string;
+
+  openConversation: boolean;
 }
 
 export interface Message {

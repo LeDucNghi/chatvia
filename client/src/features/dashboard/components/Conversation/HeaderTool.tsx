@@ -17,9 +17,7 @@ export function HeaderTool({ call, openDrawer }: IHeaderToolProps) {
 
   return (
     <div
-      className={` flex justify-end ${
-        !conversation ? "w-full" : "header-tool"
-      }`}
+      className={`flex justify-end ${!conversation ? "w-full" : "header-tool"}`}
     >
       <IconButton
         disabled={!conversation ? true : false}

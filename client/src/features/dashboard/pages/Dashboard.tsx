@@ -8,6 +8,7 @@ import {
   addNewRequest,
   selectLanguage,
   selectMode,
+  selectOpenConversation,
 } from "../dashboardSlice";
 import {
   fetchAllUsersConversation,
@@ -36,6 +37,11 @@ export default function Dashboard() {
   const language = useAppSelector(selectLanguage);
   const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
+  const openConversation = useAppSelector(selectOpenConversation);
+  console.log(
+    "🚀 ~ file: Dashboard.tsx:41 ~ Dashboard ~ openConversation:",
+    openConversation
+  );
 
   const [side, setSide] = React.useState<Sides>("chat");
   const [curChatRoom, setCurChatRoom] = React.useState<string>("");
@@ -108,9 +114,9 @@ export default function Dashboard() {
         </div>
 
         <div
-          className={`dashboard-chat h-auto  relative ${
+          className={`dashboard-chat h-auto relative ${
             mode === "dark" && "dark"
-          }`}
+          } ${openConversation ? "active" : ""} `}
         >
           <ConversationMain />
         </div>

@@ -52,3 +52,69 @@
         }
     }
 }
+
+@media only screen and (max-width: 1024px) {
+    .dashboard-container {
+        overflow: hidden;
+
+        .dashboard-side {
+            width: 100%;
+
+            .dashboard-side-menu {
+                position: absolute;
+
+                width: 100%;
+                height: auto;
+
+                bottom: 0;
+
+                display: flex;
+                flex-direction: row;
+
+                .side-menu-pills {
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+
+                    padding: 0.5rem 2rem;
+
+                    .pills-item {
+                        margin: auto;
+                    }
+                }
+            }
+        }
+
+        .dashboard-chat {
+            position: absolute;
+
+            width: 100%;
+
+            right: 200%;
+
+            transition: right 0.5s;
+
+            &.active {
+                right: 0;
+
+                z-index: 10;
+            }
+
+            .appbar {
+                background-color: transparent;
+
+                visibility: hidden;
+                opacity: 0;
+
+                transition:
+                    visibility 0s,
+                    opacity 0.5s linear;
+
+                &.active {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

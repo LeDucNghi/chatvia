@@ -2,9 +2,14 @@ import "../pages/Dashboard.scss";
 
 import * as React from "react";
 
+import {
+  BREAK_POINTS_NUMBER,
+  languageList,
+  sideMenu,
+  userMenu,
+} from "../../../constants/";
 import { Badge, Button, Divider, Icon, Tooltip } from "@mui/material";
 import { Language, Sides } from "../../../models";
-import { languageList, sideMenu, userMenu } from "../../../constants/";
 import {
   onLanguagesChange,
   onModeChange,
@@ -20,6 +25,7 @@ import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { cookies } from "../../../utils";
 import { handleUpdateSettings } from "../dashboardThunk";
 import { useTranslation } from "react-i18next";
+import { useWindowSize } from "../../../hooks/useWindow";
 
 export interface ISideMenuProps {
   setSide: (side: Sides) => void;
@@ -31,6 +37,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const languages = useAppSelector(selectLanguage);
   const friendRequest = useAppSelector(selectFriendRequest);
   const { i18n, t } = useTranslation();
+  const { windowInnerWidth } = useWindowSize();
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
@@ -71,9 +78,11 @@ export function SideMenu({ setSide }: ISideMenuProps) {
 
   return (
     <div className={`dashboard-side-menu ${mode === "dark" ? "dark" : ""}`}>
-      <div className="side-menu-logo flex-center mb-2">
-        <img src={Images.logo2} width={0} height={0} alt="logo" />
-      </div>
+      {windowInnerWidth > BREAK_POINTS_NUMBER.md && (
+        <div className="side-menu-logo flex-center mb-2">
+          <img src={Images.logo2} width={0} height={0} alt="logo" />
+        </div>
+      )}
 
       <Divider
         sx={{ background: mode === "dark" ? "#a6b0cf" : "", mb: "0.5rem" }}
@@ -87,7 +96,9 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               arrow
               key={key}
               title={t(menu.title)}
-              placement="left"
+              placement={
+                windowInnerWidth < BREAK_POINTS_NUMBER.md ? "top" : "left"
+              }
               onClick={() => handleChangeSide(menu.value as Sides)}
               sx={{
                 color:
@@ -110,56 +121,72 @@ export function SideMenu({ setSide }: ISideMenuProps) {
             </Tooltip>
           );
         })}
+
+        {windowInnerWidth < BREAK_POINTS_NUMBER.md && (
+          <CustomMenu
+            onChange={handleMenuChange}
+            direction="ltr"
+            menuItemStyle={{
+              color: "#7a7f9a",
+            }}
+            menu={userMenu}
+            img={Images.avatar1}
+          />
+        )}
       </div>
 
       <Divider
         sx={{ background: mode === "dark" ? "#a6b0cf" : "", mb: "0.5rem" }}
       />
 
-      <div className="side-menu-pills w-full flex flex-col">
-        {sideMenu.slice(6, 8).map((menu, key) => {
-          return (
-            <Tooltip
-              className="pills-item w-8 h-12 "
-              arrow
-              key={key}
-              title={t(menu.title)}
-              placement="left"
-              sx={{ color: mode === "dark" ? "#a6b0cf" : "#000" }}
-              onClick={() => handleChangeMode(menu.id)}
-            >
-              <Button variant="text">
-                {menu.id === 7 ? (
-                  <CustomMenu
-                    onChange={handleChangeLanguage}
-                    direction="ltr"
-                    menuItemStyle={{
-                      background: "#fff",
-                    }}
-                    isActive={languages === language ? true : false}
-                    icon={menu.icon}
-                    menu={languageList}
-                  />
-                ) : mode === "dark" ? (
-                  <Icon>{menu.icon}</Icon>
-                ) : (
-                  <WbSunnyIcon fontSize="small" />
-                )}
-              </Button>
-            </Tooltip>
-          );
-        })}
+      {windowInnerWidth > BREAK_POINTS_NUMBER.md && (
+        <div className="side-menu-pills w-full flex flex-col">
+          {sideMenu.slice(6, 8).map((menu, key) => {
+            return (
+              <Tooltip
+                className="pills-item w-8 h-12"
+                arrow
+                key={key}
+                title={t(menu.title)}
+                placement={
+                  windowInnerWidth < BREAK_POINTS_NUMBER.md ? "top" : "left"
+                }
+                sx={{ color: mode === "dark" ? "#a6b0cf" : "#000" }}
+                onClick={() => handleChangeMode(menu.id)}
+              >
+                <Button variant="text">
+                  {menu.id === 7 ? (
+                    <CustomMenu
+                      onChange={handleChangeLanguage}
+                      direction="ltr"
+                      menuItemStyle={{
+                        background: "#fff",
+                      }}
+                      isActive={languages === language ? true : false}
+                      icon={menu.icon}
+                      menu={languageList}
+                    />
+                  ) : mode === "dark" ? (
+                    <Icon>{menu.icon}</Icon>
+                  ) : (
+                    <WbSunnyIcon fontSize="small" />
+                  )}
+                </Button>
+              </Tooltip>
+            );
+          })}
 
-        <CustomMenu
-          onChange={handleMenuChange}
-          direction="ltr"
-          menuItemStyle={{
-            color: "#7a7f9a",
-          }}
-          menu={userMenu}
-          img={Images.avatar1}
-        />
-      </div>
+          <CustomMenu
+            onChange={handleMenuChange}
+            direction="ltr"
+            menuItemStyle={{
+              color: "#7a7f9a",
+            }}
+            menu={userMenu}
+            img={Images.avatar1}
+          />
+        </div>
+      )}
     </div>
   );
 }

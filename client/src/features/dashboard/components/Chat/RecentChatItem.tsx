@@ -1,10 +1,11 @@
+import { onOpenConversation, selectMode } from "../../dashboardSlice";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
+
 import { AvatarBadge } from "../../../../components/common/Avatar/AvatarBadge";
 import { Badge } from "../../../../components/common/Badge/Badge";
 import { Button } from "@mui/material";
 import { Message } from "../../../../models";
 import moment from "moment";
-import { selectMode } from "../../dashboardSlice";
-import { useAppSelector } from "../../../../app/store";
 
 export interface IRecentChatItemProps {
   message: Message[];
@@ -19,13 +20,20 @@ export function RecentChatItem({
   isSelected,
   onClick,
 }: IRecentChatItemProps) {
+  const dispatch = useAppDispatch();
+
   const mode = useAppSelector(selectMode);
+
+  const handleOpenConversation = () => {
+    dispatch(onOpenConversation(true));
+    onClick(message[0]._id!, message[0].sender!._id!);
+  };
 
   return (
     <>
       {message.length === 0 ? null : (
         <Button
-          onClick={() => onClick(message[0]._id!, message[0].sender!._id!)}
+          onClick={handleOpenConversation}
           className={
             isSelected
               ? `chat-recent-item isActive ${mode === "dark" ? "dark" : ""}`

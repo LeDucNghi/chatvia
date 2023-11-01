@@ -1,8 +1,17 @@
+import "../../pages/Dashboard.scss";
+
 import * as React from "react";
 
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import {
+  onOpenConversation,
+  selectMode,
+  selectOpenConversation,
+} from "../../dashboardSlice";
 import { styled, useTheme } from "@mui/material/styles";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
+import { BREAK_POINTS_NUMBER } from "../../../../constants";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Conversation } from "./Conversation";
@@ -13,6 +22,7 @@ import IconButton from "@mui/material/IconButton";
 import { Section } from "./Section";
 import { Settings } from "./Settings";
 import Toolbar from "@mui/material/Toolbar";
+import { useWindowSize } from "../../../../hooks/useWindow";
 
 const drawerWidth = 280;
 
@@ -75,6 +85,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export function ConversationMain() {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const mode = useAppSelector(selectMode);
+  const openConversation = useAppSelector(selectOpenConversation);
+  const { windowInnerWidth } = useWindowSize();
+
   const [open, setOpen] = React.useState(false);
 
   //   const handleDrawerOpen = () => {
@@ -87,8 +102,20 @@ export function ConversationMain() {
 
   return (
     <div style={{ display: "flex" }}>
-      <AppBar sx={{ backgroundColor: "transparent" }} open={open}>
+      <AppBar
+        sx={{ background: "transparent" }}
+        className={`${openConversation ? "active" : ""} appbar`}
+        open={open}
+      >
         <Toolbar>
+          {windowInnerWidth < BREAK_POINTS_NUMBER.md && (
+            <IconButton
+              sx={{ color: mode === "dark" ? "#fff" : "" }}
+              onClick={() => dispatch(onOpenConversation(false))}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+          )}
           <Header openDrawer={setOpen} />
         </Toolbar>
       </AppBar>

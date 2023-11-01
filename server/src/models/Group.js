@@ -20,7 +20,9 @@ const GroupSchema = new mongoose.Schema({
 
   conversation: { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
 
-  images: [],
+  images: [{ type: String }],
+
+  files : [{type : String}]
 });
 
 const Group = mongoose.model("Group", GroupSchema);

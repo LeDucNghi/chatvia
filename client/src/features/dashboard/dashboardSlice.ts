@@ -21,6 +21,8 @@ const initialState: DashboardState = {
     isRecentList: false,
   },
 
+  openConversation: false,
+
   friends: [],
   friendRequests: [],
   recentList: [],
@@ -102,6 +104,10 @@ export const dashboard = createSlice({
       state.mode = action.payload;
     },
 
+    onOpenConversation(state, action: PayloadAction<boolean>) {
+      state.openConversation = action.payload;
+    },
+
     onLanguagesChange(state, action: PayloadAction<Language>) {
       state.languages = action.payload;
     },
@@ -137,6 +143,7 @@ export const {
   fetchGroupInformationSuccess,
   fetchConversationFailed,
   onModeChange,
+  onOpenConversation,
   onLanguagesChange,
   onBlockedStatusChange,
   addNewMessage,
@@ -151,6 +158,8 @@ export const selectMode = (state: RootState) => state.dashboard.mode;
 export const selectLanguage = (state: RootState) => state.dashboard.languages;
 export const selectPartner = (state: RootState) => state.dashboard.partner;
 export const selectGroupList = (state: RootState) => state.dashboard.group;
+export const selectOpenConversation = (state: RootState) =>
+  state.dashboard.openConversation;
 export const selectBlockedStatus = (state: RootState) =>
   state.dashboard.blockedStatus;
 export const selectSettings = (state: RootState) => state.dashboard.settings;

@@ -11,6 +11,7 @@ import {
 import { Calling } from "./Calling";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { HeaderTool } from "./HeaderTool";
+import { Images } from "../../../../constants";
 import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
@@ -65,9 +66,11 @@ export function Header({ openDrawer }: HeaderProps) {
               <img
                 className="w-9 h-9 object-contain"
                 src={
-                  conversation?.isGroup
+                  conversation?.isGroup && conversation?.group?.avatar
                     ? conversation?.group?.avatar
-                    : partner?.avatar
+                    : !conversation?.isGroup
+                    ? partner?.avatar
+                    : Images.avatar1
                 }
                 alt="logo"
               />

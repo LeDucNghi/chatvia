@@ -65,11 +65,14 @@ export function Section({ partnerId }: ISectionProps) {
     if (blockedStatus === "blocked") {
       setIsUserBlocked(true);
       setIsPartnerBlocked(false);
+    } else if (conversation?.isGroup) {
+      setIsUserBlocked(false);
+      setIsPartnerBlocked(false);
     } else {
       setIsUserBlocked(false);
       setIsPartnerBlocked(false);
     }
-  }, [blockedStatus]);
+  }, [blockedStatus, conversation]);
 
   const handleSendMessage = () => {
     if (msg) {

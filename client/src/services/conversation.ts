@@ -4,6 +4,7 @@ import {
   EditContactType,
   FriendRequest,
   Message,
+  MessageRes,
   RequestRes,
   Settings,
 } from "./../models";
@@ -39,22 +40,22 @@ export const conversationService = {
     return axiosClient.post(`/conversation/findContact`, { email });
   },
 
-  sendInvitation(id: string): Promise<any> {
+  sendInvitation(id: string): Promise<MessageRes> {
     return axiosClient.post(`/conversation/sendInvitation/${id}`);
   },
 
   updateFriendRequestStt(
     id: string,
     status: "accepted" | "deny"
-  ): Promise<any> {
+  ): Promise<MessageRes> {
     return axiosClient.post(`/conversation/friendRequestStt/${id}`, { status });
   },
 
-  updateSettings(mode: Mode, language: Language): Promise<any> {
+  updateSettings(mode: Mode, language: Language): Promise<MessageRes> {
     return axiosClient.post(`/conversation/settings`, { language, mode });
   },
 
-  editContact(contactId: string, type: EditContactType): Promise<any> {
+  editContact(contactId: string, type: EditContactType): Promise<MessageRes> {
     return axiosClient.post(`/conversation/editContact`, { contactId, type });
   },
 
@@ -62,10 +63,16 @@ export const conversationService = {
     return axiosClient.get(`/conversation/settings`);
   },
 
-  createGroup(participant: string[], groupName?: string): Promise<any> {
+  createGroup(participant: string[], groupName?: string): Promise<MessageRes> {
     return axiosClient.post(`/conversation/groupConversation`, {
       participant,
       groupName,
+    });
+  },
+
+  addUserToGroup(conversationId: string, userId: string): Promise<MessageRes> {
+    return axiosClient.post(`/conversation/addUser/${conversationId}`, {
+      userId,
     });
   },
 };

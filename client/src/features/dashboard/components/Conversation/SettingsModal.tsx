@@ -33,6 +33,19 @@ export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
   const user = useAppSelector(selectUser);
 
   const [users, setUsers] = React.useState<UserProfile[]>([]);
+  const [members, setMembers] = React.useState<UserProfile[]>([]);
+
+  React.useEffect(() => {
+    groupInfo?.members.forEach((item) => {
+      const { member } = item;
+
+      const newMember = user?.friends?.filter((friend) => {
+        return friend._id === member;
+      });
+
+      setMembers(newMember!);
+    });
+  }, [groupInfo, user]);
 
   const findFriend = (e: React.ChangeEvent<HTMLInputElement>) => {
     const friend = user?.friends?.filter((friend) =>
@@ -176,7 +189,7 @@ export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
             </div>
 
             <div className="h-[300px] overflow-auto">
-              {user?.friends?.map((friend, key) => {
+              {members.map((friend, key) => {
                 return (
                   <Paper
                     elevation={5}
