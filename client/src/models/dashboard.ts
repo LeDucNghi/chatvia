@@ -66,6 +66,11 @@ export interface DashboardState {
     isRecentList: boolean;
   };
 
+  submitting: {
+    isAccepting: boolean;
+    isDenying: boolean;
+  };
+
   blockedStatus: "blocked" | "unBlocked" | null;
 
   conversations: Conversation | null;
@@ -83,6 +88,7 @@ export interface DashboardState {
   conversationId: string;
 
   openConversation: boolean;
+  isDisabledConversation: boolean;
 }
 
 export interface Message {

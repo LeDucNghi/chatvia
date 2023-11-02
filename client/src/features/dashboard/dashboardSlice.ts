@@ -21,7 +21,13 @@ const initialState: DashboardState = {
     isRecentList: false,
   },
 
+  submitting: {
+    isAccepting: false,
+    isDenying: false,
+  },
+
   openConversation: false,
+  isDisabledConversation: true,
 
   friends: [],
   friendRequests: [],
@@ -119,12 +125,30 @@ export const dashboard = createSlice({
       state.blockedStatus = action.payload;
     },
 
+    onSubmitting(
+      state,
+      action: PayloadAction<{
+        type: "isAccepting" | "isDenying";
+        status: boolean;
+      }>
+    ) {
+      if (action.payload.type === "isAccepting") {
+        state.submitting.isAccepting = action.payload.status;
+      } else {
+        state.submitting.isDenying = action.payload.status;
+      }
+    },
+
     addNewMessage(state, action: PayloadAction<Message>) {
       state.conversations?.messages.push(action.payload);
     },
 
     addNewRequest(state, action: PayloadAction<FriendRequest>) {
       state.friendRequests.push(action.payload);
+    },
+
+    disabledConversation(state, action: PayloadAction<boolean>) {
+      state.isDisabledConversation = action.payload;
     },
   },
 });
@@ -143,11 +167,13 @@ export const {
   fetchGroupInformationSuccess,
   fetchConversationFailed,
   onModeChange,
+  onSubmitting,
   onOpenConversation,
   onLanguagesChange,
   onBlockedStatusChange,
   addNewMessage,
   addNewRequest,
+  disabledConversation,
 } = dashboard.actions;
 
 export const selectConversations = (state: RootState) =>
@@ -158,6 +184,9 @@ export const selectMode = (state: RootState) => state.dashboard.mode;
 export const selectLanguage = (state: RootState) => state.dashboard.languages;
 export const selectPartner = (state: RootState) => state.dashboard.partner;
 export const selectGroupList = (state: RootState) => state.dashboard.group;
+export const selectSubmit = (state: RootState) => state.dashboard.submitting;
+export const selectDisabledConversation = (state: RootState) =>
+  state.dashboard.isDisabledConversation;
 export const selectOpenConversation = (state: RootState) =>
   state.dashboard.openConversation;
 export const selectBlockedStatus = (state: RootState) =>

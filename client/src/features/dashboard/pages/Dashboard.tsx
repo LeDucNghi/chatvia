@@ -38,10 +38,6 @@ export default function Dashboard() {
   const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
   const openConversation = useAppSelector(selectOpenConversation);
-  console.log(
-    "🚀 ~ file: Dashboard.tsx:41 ~ Dashboard ~ openConversation:",
-    openConversation
-  );
 
   const [side, setSide] = React.useState<Sides>("chat");
   const [curChatRoom, setCurChatRoom] = React.useState<string>("");

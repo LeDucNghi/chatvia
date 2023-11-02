@@ -4,7 +4,7 @@ import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
-import { selectConversations } from "../../dashboardSlice";
+import { selectDisabledConversation } from "../../dashboardSlice";
 import { useAppSelector } from "../../../../app/store";
 
 export interface IHeaderToolProps {
@@ -13,21 +13,20 @@ export interface IHeaderToolProps {
 }
 
 export function HeaderTool({ call, openDrawer }: IHeaderToolProps) {
-  const conversation = useAppSelector(selectConversations);
+  const disabledConversation = useAppSelector(selectDisabledConversation);
 
   return (
     <div
-      className={`flex justify-end ${!conversation ? "w-full" : "header-tool"}`}
+      className={`flex justify-end ${
+        disabledConversation ? "w-full" : "header-tool"
+      }`}
     >
-      <IconButton
-        disabled={!conversation ? true : false}
-        className="px-4 tool-icon"
-      >
+      <IconButton disabled={disabledConversation} className="px-4 tool-icon">
         <SearchIcon />
       </IconButton>
 
       <IconButton
-        disabled={!conversation ? true : false}
+        disabled={disabledConversation}
         onClick={() => call("isVoice")}
         className="px-4 tool-icon"
       >
@@ -35,22 +34,19 @@ export function HeaderTool({ call, openDrawer }: IHeaderToolProps) {
       </IconButton>
 
       <IconButton
-        disabled={!conversation ? true : false}
+        disabled={disabledConversation}
         onClick={() => call("isVideo")}
         className="px-4 tool-icon"
       >
         <VideocamOutlinedIcon />
       </IconButton>
 
-      <IconButton
-        disabled={!conversation ? true : false}
-        className="px-4 tool-icon"
-      >
+      <IconButton disabled={disabledConversation} className="px-4 tool-icon">
         <PersonOutlineOutlinedIcon />
       </IconButton>
 
       <IconButton
-        disabled={!conversation ? true : false}
+        disabled={disabledConversation}
         className="px-4 tool-icon"
         onClick={() => openDrawer(true)}
       >

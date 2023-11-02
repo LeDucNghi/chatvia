@@ -41,7 +41,7 @@ export function Section({ partnerId }: ISectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isUserBlocked, setIsUserBlocked] = useState(false);
   const [isPartnerBlocked, setIsPartnerBlocked] = useState(false);
-  const [openEmoji, setOpenEmoji] = useState<boolean>(false);
+  const [openEmoji, setOpenEmoji] = useState(false);
 
   let [emojies, setEmojies] = useState<string[]>([]);
 
@@ -52,12 +52,15 @@ export function Section({ partnerId }: ISectionProps) {
 
     const partnerBlocked = partner?.blocked?.filter((id) => user?._id === id);
 
-    if (userBlocked && userBlocked?.length !== 0) {
+    if (userBlocked?.length !== 0) {
       setIsUserBlocked(true);
       setIsPartnerBlocked(false);
-    } else if (partnerBlocked && partnerBlocked?.length !== 0) {
+    } else if (partnerBlocked?.length !== 0) {
       setIsUserBlocked(false);
       setIsPartnerBlocked(true);
+    } else {
+      setIsUserBlocked(false);
+      setIsPartnerBlocked(false);
     }
   }, [user, partner]);
 
@@ -72,7 +75,7 @@ export function Section({ partnerId }: ISectionProps) {
       setIsUserBlocked(false);
       setIsPartnerBlocked(false);
     }
-  }, [blockedStatus, conversation]);
+  }, [blockedStatus, conversation, isPartnerBlocked]);
 
   const handleSendMessage = () => {
     if (msg) {
@@ -132,8 +135,8 @@ export function Section({ partnerId }: ISectionProps) {
   return (
     <div
       className={`chat-input-section flex items-center justify-between ${
-        mode === "dark" && "dark"
-      }`}
+        mode === "dark" ? "dark" : ""
+      } ${files.length !== 0 ? "files" : ""}`}
     >
       {isUserBlocked || isPartnerBlocked ? (
         <div className="w-full h-full bg-blue-400">
@@ -169,7 +172,7 @@ export function Section({ partnerId }: ISectionProps) {
             }
             sx={{
               ".MuiOutlinedInput-root": {
-                paddingTop: files.length !== 0 ? "1rem" : 0,
+                pt: files.length !== 0 ? "1rem" : 0,
                 flexDirection: "column",
                 alignItems: "flex-start",
               },

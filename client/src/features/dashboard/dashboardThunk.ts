@@ -1,5 +1,6 @@
 import { EditContactType, Language, Message, Mode } from "../../models";
 import {
+  disabledConversation,
   fetchConversationFailed,
   fetchConversationSuccess,
   fetchFriendRequestsSuccess,
@@ -12,6 +13,7 @@ import {
   onBlockedStatusChange,
   onLanguagesChange,
   onModeChange,
+  onSubmitting,
 } from "./dashboardSlice";
 
 import { AppThunk } from "../../app/store";
@@ -49,7 +51,6 @@ export const fetchConversation =
           isGroup,
           participant
         );
-        console.log("🚀 ~ file: dashboardThunk.ts:51 ~ res:", res);
 
         if (res.data !== null) {
           res.data.messages.forEach((cons) => {
@@ -73,6 +74,8 @@ export const fetchConversation =
           dispatch(fetchPartnerProfileSuccess(friends![0]));
           dispatch(fetchConversationSuccess(null));
         }
+
+        dispatch(disabledConversation(false));
       } catch (error: any) {
         console.log("🚀 ~ file: dashboardThunk.ts:36 ~ error:", error);
 
@@ -106,12 +109,34 @@ export const handleGetFriendRequest = (): AppThunk => async (dispatch) => {
 
 export const handleUpdateRequest =
   (id: string, status: "accepted" | "deny"): AppThunk =>
-  async () => {
+  async (dispatch, getState) => {
+    if (status === "accepted") {
+      dispatch(onSubmitting({ status: true, type: "isAccepting" }));
+    } else {
+      dispatch(onSubmitting({ status: true, type: "isDenying" }));
+    }
+
     try {
       const res = await conversationService.updateFriendRequestStt(id, status);
 
+      const request = getState().dashboard.friendRequests;
+
       if (res) {
-        alert({ content: "Accepted", position: "top-center", type: "success" });
+        alert({
+          content: status === "accepted" ? "Accepted" : "Denied",
+          position: "top-center",
+          type: "success",
+        });
+
+        if (status === "accepted") {
+          dispatch(onSubmitting({ status: false, type: "isAccepting" }));
+        } else {
+          dispatch(onSubmitting({ status: false, type: "isDenying" }));
+        }
+
+        const updatedRequest = request.filter((item) => item._id !== id);
+
+        dispatch(fetchFriendRequestsSuccess(updatedRequest));
       }
     } catch (error) {
       console.log(

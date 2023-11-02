@@ -131,7 +131,15 @@
 .chat-input-section {
     border-top: 0.01rem solid #f0eff5;
 
-    padding: 1.2rem 1.5rem;
+    height: 6rem;
+
+    padding: 0 1rem;
+
+    &.files {
+        background: red;
+
+        // height: 9rem;
+    }
 
     .block-button {
         background-color: rgb(244, 244, 244);

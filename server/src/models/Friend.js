@@ -10,6 +10,11 @@ const FriendSchema = new mongoose.Schema({
     enum: ["pending", "accepted", "deny"],
     default: "pending",
   },
+
+  timeStamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Friend = mongoose.model("Friend", FriendSchema);
