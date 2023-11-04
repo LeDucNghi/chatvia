@@ -92,7 +92,7 @@ export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
         </IconButton>
 
         {type === "members" ? (
-          <div>
+          <div className="p-4">
             <div className="w-full h-[300px] overflow-auto px-10 text-white">
               {conversation?.participant.map((member, key) => {
                 return (

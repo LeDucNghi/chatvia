@@ -1,5 +1,6 @@
 import { Button, Divider, IconButton } from "@mui/material";
 import { selectConversations, selectGroupInfo } from "../../dashboardSlice";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Images } from "../../../../constants";
@@ -8,7 +9,7 @@ import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { SettingsModal } from "./SettingsModal";
 import { friendRequests } from "../../../../mock";
-import { useAppSelector } from "../../../../app/store";
+import { leaveGroup } from "../../dashboardThunk";
 import { useState } from "react";
 
 // export interface ISettingsProps {
@@ -16,6 +17,7 @@ import { useState } from "react";
 // }
 
 export function Settings() {
+  const dispatch = useAppDispatch();
   const groupInfo = useAppSelector(selectGroupInfo);
   const conversation = useAppSelector(selectConversations);
 
@@ -123,10 +125,15 @@ export function Settings() {
 
       {/* BUTTON */}
       <div className="w-full flex justify-center p-4">
-        <Button className="w-full" color="error" variant="text">
+        <Button
+          onClick={() => dispatch(leaveGroup(groupInfo!._id!))}
+          className="w-full"
+          color="error"
+          variant="text"
+        >
           <div className="w-full h-full flex justify-start capitalize">
             <LogoutIcon className="mr-2" />
-            Leave Chat
+            leave chat
           </div>
         </Button>
       </div>

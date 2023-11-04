@@ -23,6 +23,15 @@ export interface MessageRes {
   message: string;
 }
 
+export interface Notification {
+  id: string;
+  user: UserProfile;
+  readStatus: boolean;
+  content: string;
+  type: "newMsg" | "friendRequest" | "missedCall";
+  timeStamp: Date;
+}
+
 export interface Conversation {
   _id: string;
   isGroup: boolean;

@@ -1,6 +1,7 @@
-import { Message, UserProfile } from "../models";
+import { Message, Notification, UserProfile } from "../models";
 
 import { faker } from "@faker-js/faker";
+import { v4 as uuidv4 } from "uuid";
 
 export const conversation: Message[] = [
   {
@@ -195,4 +196,17 @@ export const friendRequests: UserProfile[] = [
 export const images = [...Array(22)].map(() => ({
   id: "1",
   image: faker.image.avatar(),
+}));
+
+export const notifications: Notification[] = [...Array(15)].map(() => ({
+  id: `${uuidv4()}`,
+  user: {
+    _id: uuidv4(),
+    avatar: faker.image.avatar(),
+    username: faker.person.fullName(),
+  },
+  readStatus: false,
+  content: faker.lorem.paragraph(),
+  type: "newMsg",
+  timeStamp: new Date(),
 }));

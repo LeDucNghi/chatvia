@@ -71,11 +71,13 @@ exports.sendMessage = async (req, res) => {
 // GET CONVERSATION LIST
 exports.getConversation = async (req, res) => {
   const isGroup = await req.query.isGroup;
+  const groupName = await req.params.groupName;
   const { participant } = await req.body;
 
   try {
     const conversation = await Conversation.findOne({
       isGroup,
+      groupName: groupName ? groupName : "",
       participant: { $in: participant },
     }).populate(
       "group participant",
@@ -416,7 +418,7 @@ exports.createGroupConversation = async (req, res) => {
 
       const newGroup = await Group.create({
         _id: groupId,
-        name: groupName,
+        name: groupName ? groupName : `${token.user.username}'s group`,
         conversation: conversationId,
         avatar: "",
         members: [],

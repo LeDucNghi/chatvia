@@ -75,4 +75,8 @@ export const conversationService = {
       userId,
     });
   },
+
+  leaveGroup(groupId: string): Promise<MessageRes> {
+    return axiosClient.post(`/conversation/leaveGroup/${groupId}`);
+  },
 };

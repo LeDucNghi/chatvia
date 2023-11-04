@@ -18,7 +18,7 @@ import { RequestItem } from "../Request/RequestItem";
 import { UserProfile } from "../../../../models";
 import { handleCreateGroup } from "../../dashboardThunk";
 import { selectMode } from "../../dashboardSlice";
-import { selectUserList } from "../../../auth/authSlice";
+import { selectUser } from "../../../auth/authSlice";
 
 export interface ICreateGroupProps {
   isOpen: boolean;
@@ -26,7 +26,7 @@ export interface ICreateGroupProps {
 }
 
 export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
-  const userList = useAppSelector(selectUserList);
+  const user = useAppSelector(selectUser);
   const mode = useAppSelector(selectMode);
   const dispatch = useAppDispatch();
 
@@ -36,15 +36,15 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
   const [usersList, setUsersList] = React.useState<UserProfile[]>([]);
   const [participant, setParticipant] = React.useState<UserProfile[]>([]);
 
-  // const handleDelete = (chipToDelete: ChipData) => () => {
-  //   setChipData((chips) =>
-  //     chips.filter((chip) => chip.key !== chipToDelete.key)
-  //   );
-  // };
-
   React.useEffect(() => {
     handleFindUser();
   }, [email]);
+
+  const handleDelete = (user: UserProfile) => () => {
+    setParticipant((participants) =>
+      participants.filter((item) => item._id !== user._id)
+    );
+  };
 
   const handleSelectUser = (user: UserProfile) => {
     const newParticipant = [...participant, user];
@@ -59,7 +59,9 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
 
     setFetchingUsersList(true);
 
-    const findUser = userList.filter((user) => user.email?.includes(email!));
+    const findUser = user?.friends?.filter((item) =>
+      item.email?.includes(email!)
+    );
 
     clearTimeout(timer);
 
@@ -70,7 +72,7 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
       } else {
         setFetchingUsersList(false);
 
-        setUsersList(findUser);
+        setUsersList(findUser!);
       }
     }, 1000);
   };
@@ -98,7 +100,7 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
           mode === "dark" ? "text-white" : ""
         } modal-header flex justify-between items-center py-4`}
       >
-        <h5 className="font-semibold capitalize"> add contact </h5>
+        <h5 className="font-semibold capitalize"> create group </h5>
         <IconButton onClick={() => setIsOpen(false)}>
           <ClearIcon />
         </IconButton>
@@ -126,9 +128,7 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
                     avatar={<Avatar alt={user.username} src={user.avatar} />}
                     label={user.username}
                     variant="outlined"
-                    // onDelete={
-                    //    handleDelete(data)
-                    // }
+                    onDelete={handleDelete(user)}
                   />
                 </ListItem>
               );

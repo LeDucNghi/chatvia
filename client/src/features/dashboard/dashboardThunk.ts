@@ -279,8 +279,41 @@ export const handleCreateGroup =
   async () => {
     try {
       const res = await conversationService.createGroup(participant, groupName);
-      console.log("🚀 ~ file: dashboardThunk.ts:226 ~ res:", res);
+      alert({
+        content: res.message,
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:228 ~ error:", error);
+      alert({
+        content: "Something went wrong!!",
+        position: "top-center",
+        type: "error",
+      });
+    }
+  };
+
+export const leaveGroup =
+  (groupId: string): AppThunk =>
+  async () => {
+    try {
+      const res = await conversationService.leaveGroup(groupId);
+
+      alert({
+        content: res.message,
+        position: "top-center",
+        type: "success",
+      });
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: dashboardThunk.ts:292 ~ leaveGroup ~ error:",
+        error
+      );
+      alert({
+        content: "Something went wrong!!",
+        position: "top-center",
+        type: "error",
+      });
     }
   };

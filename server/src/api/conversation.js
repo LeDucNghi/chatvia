@@ -27,7 +27,7 @@ router.get("/friendList/:id", verifyToken, getFriendList);
 
 router.post("/sendMessage", verifyToken, sendMessage);
 
-router.post("/getConversation", getConversation);
+router.post("/getConversation/:groupName?", getConversation);
 
 router.post("/sendInvitation/:id", verifyToken, sendInvitation);
 
@@ -40,21 +40,6 @@ router.post("/conversations", verifyToken, conversations);
 router.post("/editContact", verifyToken, editContact);
 
 router.post("/groupConversation", verifyToken, createGroupConversation);
-
-// router.post("/updateGroup/:id", async (req, res) => {
-//   console.log("🚀 ~ file: conversation.js:42 ~ router.post ~ req:", req.body);
-
-//   const {type} = await req.body
-//   const groupId = await req.params.id
-
-// if(type === "addUser") {
-
-// }
-
-//   return res.status(200).send({
-//     data: "not gud",
-//   });
-// });
 
 router.post("/addUser/:id", async (req, res) => {
   const _id = await req.params.id;
@@ -92,8 +77,32 @@ router.post("/addUser/:id", async (req, res) => {
   }
 });
 
-router.post("/", async(req, res) => {
-  
+router.post("/leaveGroup/:id", verifyToken, async (req, res) => {
+  try {
+    const token = await req.decoded;
+    const groupId = await req.params.id;
+
+    const group = await Group.findOne({ _id: groupId });
+    const conversation = await Conversation.findOne({ group: groupId });
+
+    if (group && conversation) {
+      await Group.updateOne(
+        { _id: groupId },
+        { $pull: { members: { $in: [token.user._id] } } }
+      );
+      await Conversation.updateOne(
+        { group: groupId },
+        { $pull: { participant: { $in: [token.user._id] } } }
+      );
+      return res.status(200).send({ message: "You leaved the group !!" });
+    } else {
+      return res.status(404).send({ message: "This is no group !!" });
+    }
+  } catch (error) {
+    return res.status(500).send(`Infernal server error ${error}`);
+  }
 });
+
+router.post("/notifications", async (req, res) => {});
 
 module.exports = router;

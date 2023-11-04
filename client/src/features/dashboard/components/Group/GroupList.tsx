@@ -6,6 +6,7 @@ import { Badge } from "../../../../components/common/Badge/Badge";
 import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
 import { Conversation } from "../../../../models";
 import { Images } from "../../../../constants";
+import NotFound from "../../../../components/common/NotFound/NotFound";
 import { fetchConversation } from "../../dashboardThunk";
 
 export interface GroupListProps {
@@ -31,6 +32,11 @@ export function GroupList({ groupList }: GroupListProps) {
     <div className="group-wrapper w-full h-[500px] overflow-auto ">
       {fetching.isConversation ? (
         <BaseItemLoader listToRender={5} />
+      ) : groupList.length === 0 ? (
+        <NotFound
+          title="You haven't joined any group yet🤔"
+          icon={Images.groups}
+        />
       ) : (
         groupList.map((group, key) => {
           return (

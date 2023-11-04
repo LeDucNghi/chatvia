@@ -13,7 +13,7 @@ export function RequestSide() {
 
   return (
     <SideWrapper title="friend request" icon={<GroupAddIcon />}>
-      <div className="h-[600px] overflow-auto">
+      <div className="h-[550px] overflow-auto">
         {friendRequest.length === 0 ? (
           <NotFound
             icon={Images.users}

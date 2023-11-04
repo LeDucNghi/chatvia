@@ -7,10 +7,10 @@ import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import { Conversation } from "../../../../models";
 import { CreateGroup } from "./CreateGroup";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { GroupList } from "./GroupList";
 import { IconButton } from "@mui/material";
 import { InputField } from "../../../../components/common/InputField/InputField";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
 import { handleGetAllUser } from "../../../auth/authThunk";
@@ -48,7 +48,7 @@ export function GroupSide() {
           style={{ color: mode === "dark" ? "#93a7cc" : "" }}
           onClick={() => setIsOpen(true)}
         >
-          <PeopleOutlineIcon />
+          <GroupAddIcon />
         </IconButton>
       }
       header={
