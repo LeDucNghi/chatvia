@@ -20,10 +20,11 @@ export const conversationService = {
 
   getConversation(
     isGroup: boolean,
-    participant: string[]
+    participant: string[],
+    groupName?: string
   ): Promise<ObjResponse<Conversation>> {
     return axiosClient.post(
-      `/conversation/getConversation?isGroup=${isGroup}`,
+      `/conversation/getConversation/${groupName}?isGroup=${isGroup}`,
       { participant }
     );
   },

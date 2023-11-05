@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const errorHandler = require("./middleware/errorHandler");
 const http = require("http");
 const api = require("./api");
+const multer = require("multer");
+const upload = multer();
 
 require("dotenv").config();
 
@@ -15,6 +17,7 @@ const server = http.createServer(app);
 // });
 
 app.use(helmet());
+app.use(upload.array());
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));

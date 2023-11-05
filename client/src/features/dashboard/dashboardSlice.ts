@@ -24,6 +24,7 @@ const initialState: DashboardState = {
   submitting: {
     isAccepting: false,
     isDenying: false,
+    isBlocking: false,
   },
 
   openConversation: false,
@@ -128,12 +129,14 @@ export const dashboard = createSlice({
     onSubmitting(
       state,
       action: PayloadAction<{
-        type: "isAccepting" | "isDenying";
+        type: "isAccepting" | "isDenying" | "isBlocking";
         status: boolean;
       }>
     ) {
       if (action.payload.type === "isAccepting") {
         state.submitting.isAccepting = action.payload.status;
+      } else if (action.payload.type === "isBlocking") {
+        state.submitting.isBlocking = action.payload.status;
       } else {
         state.submitting.isDenying = action.payload.status;
       }

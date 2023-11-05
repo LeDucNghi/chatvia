@@ -1,15 +1,21 @@
-import { Button, Divider, IconButton } from "@mui/material";
-import { selectConversations, selectGroupInfo } from "../../dashboardSlice";
+import { Divider, IconButton } from "@mui/material";
+import { handleEditContact, leaveGroup } from "../../dashboardThunk";
+import {
+  selectConversations,
+  selectGroupInfo,
+  selectPartner,
+  selectSubmit,
+} from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Images } from "../../../../constants";
+import LoadingButton from "@mui/lab/LoadingButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { SettingsModal } from "./SettingsModal";
 import { friendRequests } from "../../../../mock";
-import { leaveGroup } from "../../dashboardThunk";
 import { useState } from "react";
 
 // export interface ISettingsProps {
@@ -20,15 +26,34 @@ export function Settings() {
   const dispatch = useAppDispatch();
   const groupInfo = useAppSelector(selectGroupInfo);
   const conversation = useAppSelector(selectConversations);
+  const partner = useAppSelector(selectPartner);
+  const submitStatus = useAppSelector(selectSubmit);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState<"addUser" | "members" | "images">(
-    "addUser"
-  );
+  const [modalType, setModalType] = useState<
+    "addUser" | "members" | "imagesList" | "image"
+  >("addUser");
 
-  const openModal = (open: boolean, type: "addUser" | "members" | "images") => {
+  const openModal = (
+    open: boolean,
+    type: "addUser" | "members" | "imagesList" | "image"
+  ) => {
     setIsOpen(open);
     setModalType(type);
+  };
+  const [img, setImg] = useState<string>("");
+
+  const handleSelectImage = (image: string) => {
+    setImg(image);
+    openModal(true, "image");
+  };
+
+  const editContact = (type: "block" | "leave") => {
+    if (type === "block") {
+      dispatch(handleEditContact(partner!._id!, "block"));
+    } else {
+      dispatch(leaveGroup(groupInfo!._id!));
+    }
   };
 
   return (
@@ -37,59 +62,72 @@ export function Settings() {
         <div className="w-24 h-24 mb-4">
           <img
             className="w-full h-full object-contain rounded-full"
-            src={groupInfo?.avatar ? groupInfo.avatar : Images.avatar1}
+            src={
+              groupInfo && groupInfo?.avatar
+                ? groupInfo.avatar
+                : partner
+                ? partner.avatar
+                : Images.avatar1
+            }
             alt=""
           />
         </div>
 
-        <h2 className="font-semibold mb-4"> {groupInfo?.name} </h2>
+        <h2 className="font-semibold mb-4">
+          {" "}
+          {groupInfo ? groupInfo?.name : partner?.username}{" "}
+        </h2>
 
-        <div className="flex w-full justify-between px-10">
-          <div className="capitalize flex flex-col font-semibold items-center">
-            <IconButton onClick={() => openModal(true, "addUser")}>
-              <PersonAddIcon />
-            </IconButton>
-            add
-          </div>
+        {groupInfo && (
+          <div className="flex w-full justify-between px-10">
+            <div className="capitalize flex flex-col font-semibold items-center">
+              <IconButton onClick={() => openModal(true, "addUser")}>
+                <PersonAddIcon />
+              </IconButton>
+              add
+            </div>
 
-          <div className="capitalize flex flex-col font-semibold items-center">
-            <IconButton>
-              <NotificationsOffIcon />
-            </IconButton>
-            mute
+            <div className="capitalize flex flex-col font-semibold items-center">
+              <IconButton>
+                <NotificationsOffIcon />
+              </IconButton>
+              mute
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <Divider />
 
       {/* GROUP MEMBERS */}
-      <div className="flex items-center justify-between p-4">
-        <div className="w-6 h-6">
-          <img
-            className="w-full h-full object-cover rounded-full"
-            src={groupInfo?.avatar ? groupInfo.avatar : Images.avatar1}
-            alt=""
-          />
-        </div>
+      {groupInfo && (
+        <div className="flex items-center justify-between p-4">
+          <div className="w-6 h-6">
+            <img
+              className="w-full h-full object-cover rounded-full"
+              src={groupInfo?.avatar ? groupInfo.avatar : Images.avatar1}
+              alt=""
+            />
+          </div>
 
-        <div className="flex flex-col text-sm">
-          <h2 className="w-full font-semibold">
-            {groupInfo?.members.length} chat members{" "}
-          </h2>
-          <div className="w-40 flex flex-row truncate">
-            {conversation?.participant.map((user, key) => {
-              return <p key={key}> {user.username}, &nbsp; </p>;
-            })}
+          <div className="flex flex-col text-sm">
+            <h2 className="w-full font-semibold">
+              {groupInfo?.members?.length} chat members{" "}
+            </h2>
+            <div className="w-40 flex flex-row truncate">
+              {conversation?.participant.map((user, key) => {
+                return <p key={key}> {user.username}, &nbsp; </p>;
+              })}
+            </div>
+          </div>
+
+          <div className="" onClick={() => openModal(true, "members")}>
+            <IconButton>
+              <ChevronRightIcon />
+            </IconButton>
           </div>
         </div>
-
-        <div className="" onClick={() => openModal(true, "members")}>
-          <IconButton>
-            <ChevronRightIcon />
-          </IconButton>
-        </div>
-      </div>
+      )}
 
       <Divider />
 
@@ -100,7 +138,7 @@ export function Settings() {
 
           <button
             className="text-blue-400 capitalize"
-            onClick={() => openModal(true, "images")}
+            onClick={() => openModal(true, "imagesList")}
           >
             see all
           </button>
@@ -109,7 +147,11 @@ export function Settings() {
         <div className="flex justify-between">
           {friendRequests.slice(0, 3).map((user, key) => {
             return (
-              <div key={key} className="w-20 h-20 ">
+              <div
+                key={key}
+                className="w-20 h-20 "
+                onClick={() => handleSelectImage(user.avatar!)}
+              >
                 <img
                   className="w-full h-full object-contain rounded-xl"
                   src={user.avatar}
@@ -125,20 +167,27 @@ export function Settings() {
 
       {/* BUTTON */}
       <div className="w-full flex justify-center p-4">
-        <Button
-          onClick={() => dispatch(leaveGroup(groupInfo!._id!))}
+        <LoadingButton
+          onClick={() => editContact(groupInfo ? "leave" : "block")}
           className="w-full"
           color="error"
           variant="text"
+          disabled={submitStatus.isBlocking}
+          loading={submitStatus.isBlocking}
         >
           <div className="w-full h-full flex justify-start capitalize">
             <LogoutIcon className="mr-2" />
-            leave chat
+            {groupInfo ? "leave chat" : "block this user"}
           </div>
-        </Button>
+        </LoadingButton>
       </div>
 
-      <SettingsModal setOpen={setIsOpen} open={isOpen} type={modalType} />
+      <SettingsModal
+        setOpen={setIsOpen}
+        open={isOpen}
+        type={modalType}
+        image={img!}
+      />
     </div>
   );
 }

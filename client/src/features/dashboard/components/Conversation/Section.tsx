@@ -134,7 +134,7 @@ export function Section({ partnerId }: ISectionProps) {
 
   return (
     <div
-      className={`chat-input-section flex items-center justify-between ${
+      className={`chat-input-section w-full flex items-center justify-between ${
         mode === "dark" ? "dark" : ""
       } ${files.length !== 0 ? "files" : ""}`}
     >
@@ -172,13 +172,14 @@ export function Section({ partnerId }: ISectionProps) {
             }
             sx={{
               ".MuiOutlinedInput-root": {
-                pt: files.length !== 0 ? "1rem" : 0,
+                pb: files.length !== 0 ? "1rem" : 0,
+                px: files.length !== 0 ? "1rem" : 0,
                 flexDirection: "column",
                 alignItems: "flex-start",
               },
             }}
             InputProps={{
-              startAdornment:
+              endAdornment:
                 files.length === 0 ? null : (
                   <FileList
                     files={files}
@@ -190,6 +191,7 @@ export function Section({ partnerId }: ISectionProps) {
           />
 
           <SectionTool
+            files={files}
             msg={msg}
             openEmoji={openEmoji}
             setOpenEmoji={setOpenEmoji}

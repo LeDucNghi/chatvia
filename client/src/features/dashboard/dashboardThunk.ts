@@ -38,7 +38,7 @@ export const sendMsg =
   };
 
 export const fetchConversation =
-  (isGroup: boolean, participant: string[]): AppThunk =>
+  (isGroup: boolean, participant: string[], groupName?: string): AppThunk =>
   async (dispatch, getState) => {
     dispatch(fetchingConversation());
 
@@ -49,7 +49,8 @@ export const fetchConversation =
       try {
         const res = await conversationService.getConversation(
           isGroup,
-          participant
+          participant,
+          groupName
         );
 
         if (res.data !== null) {
@@ -244,6 +245,7 @@ export const fetchAllUsersConversation =
 export const handleEditContact =
   (contactId: string, type: EditContactType): AppThunk =>
   async (dispatch) => {
+    dispatch(onSubmitting({ type: "isBlocking", status: true }));
     try {
       const res = await conversationService.editContact(contactId, type);
 
@@ -263,6 +265,7 @@ export const handleEditContact =
             type: "success",
           });
         }
+        dispatch(onSubmitting({ type: "isBlocking", status: false }));
       }
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:194 ~ error:", error);
@@ -271,6 +274,7 @@ export const handleEditContact =
         position: "top-center",
         type: "error",
       });
+      dispatch(onSubmitting({ type: "isBlocking", status: false }));
     }
   };
 

@@ -78,6 +78,7 @@ export interface DashboardState {
   submitting: {
     isAccepting: boolean;
     isDenying: boolean;
+    isBlocking: boolean;
   };
 
   blockedStatus: "blocked" | "unBlocked" | null;

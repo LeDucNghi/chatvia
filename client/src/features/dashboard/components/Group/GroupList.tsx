@@ -23,7 +23,8 @@ export function GroupList({ groupList }: GroupListProps) {
     dispatch(
       fetchConversation(
         true,
-        participant.participant.map((user) => user._id!)
+        participant.participant.map((user) => user._id!),
+        participant.groupName
       )
     );
   };

@@ -2,13 +2,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 
 export interface IFileListProps {
-    files : File[]
+  files: File[];
 
-    openImage: (value : File) => void
-    deleteFile: (value: File) => void
+  openImage: (value: File) => void;
+  deleteFile: (value: File) => void;
 }
 
-export function FileList ({files, deleteFile, openImage }: IFileListProps) {
+export function FileList({ files, deleteFile, openImage }: IFileListProps) {
   return (
     <div className="flex w-full overflow-x-auto">
       {files.map((item, key) => {

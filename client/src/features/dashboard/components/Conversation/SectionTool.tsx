@@ -13,6 +13,7 @@ import data from "@emoji-mart/data";
 import { useAppSelector } from "../../../../app/store";
 
 export interface ISectionToolProps {
+  files: File[];
   selectEmoji: (value: Emoji) => void;
   selectFile: (value: React.ChangeEvent<HTMLInputElement>) => void;
   setOpenEmoji: (value: boolean) => void;
@@ -30,7 +31,9 @@ export function SectionTool({
   openEmoji,
   sendMsg,
   msg,
+  files,
 }: ISectionToolProps) {
+  console.log("🚀 ~ file: SectionTool.tsx:36 ~ files:", files);
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
 
@@ -78,7 +81,7 @@ export function SectionTool({
 
       <div
         className={
-          fetching.isConversation || !msg
+          fetching.isConversation || !msg || files.length === 0
             ? "section-tool p-2 relative send-icon cursor-not-allowed bg-slate-500"
             : "section-tool p-2 relative send-icon"
         }
@@ -86,7 +89,9 @@ export function SectionTool({
         <IconButton
           className="icon"
           component="label"
-          disabled={fetching.isConversation || !msg ? true : false}
+          disabled={
+            fetching.isConversation || !msg || files.length === 0 ? true : false
+          }
           onClick={() => sendMsg()}
         >
           <SendOutlinedIcon />

@@ -131,14 +131,14 @@
 .chat-input-section {
     border-top: 0.01rem solid #f0eff5;
 
-    height: 6rem;
-
-    padding: 0 1rem;
+    padding: 1.2rem 1.5rem;
 
     &.files {
-        background: red;
+        position: absolute;
 
-        // height: 9rem;
+        width: 95%;
+
+        bottom: -5rem;
     }
 
     .block-button {

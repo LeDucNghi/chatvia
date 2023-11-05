@@ -75,14 +75,26 @@ exports.getConversation = async (req, res) => {
   const { participant } = await req.body;
 
   try {
-    const conversation = await Conversation.findOne({
-      isGroup,
-      groupName: groupName ? groupName : "",
-      participant: { $in: participant },
-    }).populate(
-      "group participant",
-      "-password -friends -__v -groups -blocked -messages"
-    );
+    var conversation;
+
+    if (isGroup && groupName) {
+      conversation = await Conversation.findOne({
+        isGroup,
+        groupName: groupName,
+        participant: { $in: participant },
+      }).populate(
+        "group participant",
+        "-password -friends -__v -groups -blocked -messages"
+      );
+    } else {
+      conversation = await Conversation.findOne({
+        isGroup,
+        participant: { $in: participant },
+      }).populate(
+        "participant",
+        "-password -friends -__v -groups -blocked -messages"
+      );
+    }
 
     if (conversation) {
       const message = await Message.find({

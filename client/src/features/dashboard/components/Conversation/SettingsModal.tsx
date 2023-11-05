@@ -24,10 +24,17 @@ export interface ISettingsModalProps {
   open: boolean;
   setOpen: (value: boolean) => void;
 
-  type: "addUser" | "members" | "images";
+  type: "addUser" | "members" | "imagesList" | "image";
+
+  image?: string;
 }
 
-export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
+export function SettingsModal({
+  open,
+  setOpen,
+  type,
+  image,
+}: ISettingsModalProps) {
   const groupInfo = useAppSelector(selectGroupInfo);
   const conversation = useAppSelector(selectConversations);
   const user = useAppSelector(selectUser);
@@ -36,7 +43,7 @@ export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
   const [members, setMembers] = React.useState<UserProfile[]>([]);
 
   React.useEffect(() => {
-    groupInfo?.members.forEach((item) => {
+    groupInfo?.members?.forEach((item) => {
       const { member } = item;
 
       const newMember = user?.friends?.filter((friend) => {
@@ -77,10 +84,12 @@ export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
         onClose={() => setOpen(!open)}
       >
         <h2 className="w-full text-center p-4 text-white">
-          {type === "images"
+          {type === "imagesList"
             ? "Media, Files & Links"
             : type === "members"
             ? `${groupInfo?.members.length} members`
+            : type === "image"
+            ? "Images"
             : "Add user"}
         </h2>
 
@@ -124,7 +133,7 @@ export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
               Add User
             </Button>
           </div>
-        ) : type === "images" ? (
+        ) : type === "imagesList" ? (
           <div className="flex flex-wrap px-4 h-[300px] overflow-auto">
             {images.map((img, key) => {
               return (
@@ -137,6 +146,10 @@ export function SettingsModal({ open, setOpen, type }: ISettingsModalProps) {
                 </div>
               );
             })}
+          </div>
+        ) : type === "image" ? (
+          <div className="w-[500px] h-[500px]">
+            <img className="w-full h-full object-cover" src={image} alt="" />
           </div>
         ) : (
           <div className="p-4">
