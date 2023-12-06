@@ -11,6 +11,10 @@
         .carousel-item {
             background: #e6ebf5;
 
+            &.isFetching {
+                background: none;
+            }
+
             .MuiBadge-root {
                 position: relative;
 

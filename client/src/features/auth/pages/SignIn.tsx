@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
+import { selectSignedIn, selectSubmit } from "../authSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { useEffect, useState } from "react";
 
@@ -13,7 +14,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { UserProfile } from "../../../models";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { selectSignedIn } from "../authSlice";
 import { signin } from "../authThunk";
 import { specialAndSpace } from "../../../constants";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const signinStatus = useAppSelector(selectSignedIn);
+  const submitStatus = useAppSelector(selectSubmit);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -74,7 +75,6 @@ export default function SignIn() {
             const {
               dirty,
               isValid,
-              isSubmitting,
               handleBlur,
               handleChange,
               touched,
@@ -148,7 +148,7 @@ export default function SignIn() {
                     type="submit"
                     variant="contained"
                     disabled={!dirty || !isValid}
-                    loading={isSubmitting}
+                    loading={submitStatus.isLogging}
                   >
                     <div
                       className={

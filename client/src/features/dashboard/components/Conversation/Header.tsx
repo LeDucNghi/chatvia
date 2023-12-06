@@ -22,6 +22,7 @@ export interface HeaderProps {
 export function Header({ openDrawer }: HeaderProps) {
   const fetching = useAppSelector(selectFetching);
   const partner = useAppSelector(selectPartner);
+  console.log("🚀 ~ file: Header.tsx:25 ~ Header ~ partner:", partner);
   const mode = useAppSelector(selectMode);
   const conversation = useAppSelector(selectConversations);
 
@@ -68,8 +69,8 @@ export function Header({ openDrawer }: HeaderProps) {
                 src={
                   conversation?.isGroup && conversation?.group?.avatar
                     ? conversation?.group?.avatar
-                    : !conversation?.isGroup
-                    ? partner?.avatar
+                    : !conversation?.isGroup && partner!.avatar
+                    ? partner!.avatar
                     : Images.avatar1
                 }
                 alt="logo"

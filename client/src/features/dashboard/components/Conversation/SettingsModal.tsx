@@ -1,22 +1,13 @@
 import * as React from "react";
 
-import {
-  Button,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  IconButton,
-  Paper,
-  TextField,
-} from "@mui/material";
-import { selectConversations, selectGroupInfo } from "../../dashboardSlice";
-
+import { AddUser } from "./AddUser";
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
-import { Images } from "../../../../constants";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { IconButton } from "@mui/material";
+import { ImageList } from "./ImageList";
+import { Member } from "./Member";
 import { UserProfile } from "../../../../models";
-import { images } from "../../../../mock";
+import { selectGroupInfo } from "../../dashboardSlice";
 import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
 
@@ -36,7 +27,6 @@ export function SettingsModal({
   image,
 }: ISettingsModalProps) {
   const groupInfo = useAppSelector(selectGroupInfo);
-  const conversation = useAppSelector(selectConversations);
   const user = useAppSelector(selectUser);
 
   const [users, setUsers] = React.useState<UserProfile[]>([]);
@@ -101,147 +91,20 @@ export function SettingsModal({
         </IconButton>
 
         {type === "members" ? (
-          <div className="p-4">
-            <div className="w-full h-[300px] overflow-auto px-10 text-white">
-              {conversation?.participant.map((member, key) => {
-                return (
-                  <div
-                    className="flex justify-between items-center py-3"
-                    key={key}
-                  >
-                    <div className="w-12 h-10">
-                      <img
-                        className="w-full h-full object-cover rounded-full"
-                        src={member.avatar ? member.avatar : Images.avatar1}
-                        alt={member.username}
-                      />
-                    </div>
-
-                    <p className="w-full px-3"> {member.username} </p>
-
-                    <IconButton>
-                      <MoreHorizIcon />
-                    </IconButton>
-
-                    <Divider />
-                  </div>
-                );
-              })}
-            </div>
-
-            <Button className="w-full" color="info" variant="contained">
-              Add User
-            </Button>
-          </div>
+          <Member />
         ) : type === "imagesList" ? (
-          <div className="flex flex-wrap px-4 h-[300px] overflow-auto">
-            {images.map((img, key) => {
-              return (
-                <div key={key} className="w-28 h-28 mb-4 p-2 cursor-pointer">
-                  <img
-                    className="w-full h-full object-contain rounded-xl"
-                    src={img.image}
-                    alt=""
-                  />
-                </div>
-              );
-            })}
-          </div>
+          <ImageList />
         ) : type === "image" ? (
           <div className="w-[500px] h-[500px]">
             <img className="w-full h-full object-cover" src={image} alt="" />
           </div>
         ) : (
-          <div className="p-4">
-            <TextField
-              placeholder="Nguyen Van A..."
-              label="Search User"
-              fullWidth
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                findFriend(e)
-              }
-            />
-
-            <div className="flex">
-              {users?.length !== 0 &&
-                users?.map((item, key) => {
-                  return (
-                    <div
-                      key={key}
-                      className="flex items-center flex-col p-4 relative"
-                    >
-                      <IconButton
-                        sx={{
-                          position: "absolute",
-                          width: "1.2rem",
-                          height: "1.2rem",
-                          right: "2.2rem",
-                          top: "0.6rem",
-                          background: "#fff",
-
-                          ":hover": {
-                            background: "#fff",
-                          },
-                        }}
-                        onClick={() => selectFriend(item)}
-                      >
-                        <ClearIcon fontSize="small" />
-                      </IconButton>
-
-                      <div className="w-12 h-12">
-                        <img
-                          className="h-full w-full object-cover rounded-full"
-                          src={item.avatar}
-                          alt=""
-                        />
-                      </div>
-                      <p className="w-1/2 truncate">{item.username}</p>
-                    </div>
-                  );
-                })}
-            </div>
-
-            <div className="h-[300px] overflow-auto">
-              {members.map((friend, key) => {
-                return (
-                  <Paper
-                    elevation={5}
-                    sx={{ backgroundColor: "transparent", margin: "0.5rem 0" }}
-                    key={key}
-                  >
-                    <FormControlLabel
-                      value="start"
-                      control={<Checkbox sx={{ ml: "15rem" }} />}
-                      sx={{ color: "#fff", py: "0.5rem" }}
-                      label={
-                        <div className="flex justify-between items-center py-3">
-                          <div className="w-12 h-10">
-                            <img
-                              className="w-full h-full object-cover rounded-full"
-                              src={
-                                friend.avatar ? friend.avatar : Images.avatar1
-                              }
-                              alt={friend.username}
-                            />
-                          </div>
-
-                          <p className="w-full px-3"> {friend.username} </p>
-                        </div>
-                      }
-                      labelPlacement="start"
-                      onChange={() => selectFriend(friend)}
-                    />
-
-                    <Divider />
-                  </Paper>
-                );
-              })}
-            </div>
-
-            <Button className="w-full" color="info" variant="contained">
-              Add User
-            </Button>
-          </div>
+          <AddUser
+            findFriend={findFriend}
+            selectFriend={selectFriend}
+            members={members}
+            users={users}
+          />
         )}
       </CustomModal>
     </>

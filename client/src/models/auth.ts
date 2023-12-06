@@ -15,6 +15,10 @@ export interface AuthState {
     isContacts: boolean;
   };
 
+  submitting: {
+    isLogging: boolean;
+  };
+
   isSignedIn: boolean;
   isValidUser: boolean;
 

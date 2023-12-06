@@ -16,6 +16,7 @@ const {
 const { Group } = require("../models/Group");
 const { default: mongoose } = require("mongoose");
 const { Conversation } = require("../models/Conversation");
+const { uploadImage } = require("../utils/cloudinary");
 
 const router = express.Router();
 
@@ -104,5 +105,13 @@ router.post("/leaveGroup/:id", verifyToken, async (req, res) => {
 });
 
 router.post("/notifications", async (req, res) => {});
+
+router.post("/uploadImg", async (req, res) => {
+  const { imgPath } = await req.body;
+
+  const img = await uploadImage(imgPath);
+
+  return res.status(200).send({ img });
+});
 
 module.exports = router;

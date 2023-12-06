@@ -71,7 +71,11 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
     >
       {Messages.length !== 0 && (
         <div className="chat-user-onine mb-3">
-          <Carousel option={user?.friends} onUserSelected={onSelectedFriend} />
+          <Carousel
+            isFetching={fetching.isFriendList}
+            option={user?.friends}
+            onUserSelected={onSelectedFriend}
+          />
         </div>
       )}
 

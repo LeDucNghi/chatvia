@@ -12,7 +12,7 @@ export function FileList({ files, deleteFile, openImage }: IFileListProps) {
   return (
     <div className="flex w-full overflow-x-auto">
       {files.map((item, key) => {
-        return (
+        return !item ? null : (
           <div
             key={key}
             className="relative mr-4 w-20 h-20 flex justify-center items-center border-4 border-current rounded-lg"
@@ -44,8 +44,8 @@ export function FileList({ files, deleteFile, openImage }: IFileListProps) {
               className="w-full h-full cursor-pointer"
             >
               <img
-                src={URL.createObjectURL(item)}
-                alt={item.name}
+                src={item ? URL.createObjectURL(item) : ""}
+                alt={item ? item.name : ""}
                 className="w-full h-full object-cover"
               />
             </div>

@@ -2,6 +2,7 @@ import { alert, cookies } from "../../utils";
 import {
   fetchUser,
   fetchUserListSuccess,
+  onSubmittingAuth,
   onValidateUser,
   signinStatus,
 } from "./authSlice";
@@ -13,6 +14,8 @@ import { authService } from "../../services";
 export const signin =
   (values: UserProfile): AppThunk =>
   async (dispatch) => {
+    dispatch(onSubmittingAuth(true));
+
     try {
       const res = await authService.signin(values);
 
@@ -32,6 +35,8 @@ export const signin =
         position: "top-center",
         type: "error",
       });
+
+      dispatch(onSubmittingAuth(false));
     }
   };
 

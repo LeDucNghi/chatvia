@@ -1,6 +1,8 @@
 import { Divider, IconButton } from "@mui/material";
 import { handleEditContact, leaveGroup } from "../../dashboardThunk";
 import {
+  onSubmitting,
+  selectBlockedStatus,
   selectConversations,
   selectGroupInfo,
   selectPartner,
@@ -28,6 +30,7 @@ export function Settings() {
   const conversation = useAppSelector(selectConversations);
   const partner = useAppSelector(selectPartner);
   const submitStatus = useAppSelector(selectSubmit);
+  const blockStatus = useAppSelector(selectBlockedStatus);
 
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState<
@@ -49,6 +52,8 @@ export function Settings() {
   };
 
   const editContact = (type: "block" | "leave") => {
+    dispatch(onSubmitting({ type: "isBlocking", status: true }));
+
     if (type === "block") {
       dispatch(handleEditContact(partner!._id!, "block"));
     } else {
@@ -65,7 +70,7 @@ export function Settings() {
             src={
               groupInfo && groupInfo?.avatar
                 ? groupInfo.avatar
-                : partner
+                : partner && partner.avatar
                 ? partner.avatar
                 : Images.avatar1
             }
@@ -134,7 +139,69 @@ export function Settings() {
       {/* MEDIA, FILES, LINKS */}
       <div className="p-4">
         <div className="flex justify-between w-full mb-2">
-          <h3 className="capitalize">media, files & links</h3>
+          <h3 className="capitalize">media</h3>
+
+          <button
+            className="text-blue-400 capitalize"
+            onClick={() => openModal(true, "imagesList")}
+          >
+            see all
+          </button>
+        </div>
+
+        <div className="flex justify-between">
+          {friendRequests.slice(0, 3).map((user, key) => {
+            return (
+              <div
+                key={key}
+                className="w-20 h-20 "
+                onClick={() => handleSelectImage(user.avatar!)}
+              >
+                <img
+                  className="w-full h-full object-contain rounded-xl"
+                  src={user.avatar}
+                  alt={user.username}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="p-4">
+        <div className="flex justify-between w-full mb-2">
+          <h3 className="capitalize">links</h3>
+
+          <button
+            className="text-blue-400 capitalize"
+            onClick={() => openModal(true, "imagesList")}
+          >
+            see all
+          </button>
+        </div>
+
+        <div className="flex justify-between">
+          {friendRequests.slice(0, 3).map((user, key) => {
+            return (
+              <div
+                key={key}
+                className="w-20 h-20 "
+                onClick={() => handleSelectImage(user.avatar!)}
+              >
+                <img
+                  className="w-full h-full object-contain rounded-xl"
+                  src={user.avatar}
+                  alt={user.username}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="p-4">
+        <div className="flex justify-between w-full mb-2">
+          <h3 className="capitalize">files</h3>
 
           <button
             className="text-blue-400 capitalize"
@@ -177,7 +244,11 @@ export function Settings() {
         >
           <div className="w-full h-full flex justify-start capitalize">
             <LogoutIcon className="mr-2" />
-            {groupInfo ? "leave chat" : "block this user"}
+            {groupInfo
+              ? "leave chat"
+              : blockStatus === "blocked"
+              ? "unblock this user"
+              : "block this user"}
           </div>
         </LoadingButton>
       </div>

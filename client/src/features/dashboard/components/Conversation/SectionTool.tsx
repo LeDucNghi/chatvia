@@ -33,7 +33,6 @@ export function SectionTool({
   msg,
   files,
 }: ISectionToolProps) {
-  console.log("🚀 ~ file: SectionTool.tsx:36 ~ files:", files);
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
 
@@ -89,9 +88,7 @@ export function SectionTool({
         <IconButton
           className="icon"
           component="label"
-          disabled={
-            fetching.isConversation || !msg || files.length === 0 ? true : false
-          }
+          disabled={fetching.isConversation || !msg ? true : false}
           onClick={() => sendMsg()}
         >
           <SendOutlinedIcon />

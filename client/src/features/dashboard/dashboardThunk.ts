@@ -245,7 +245,6 @@ export const fetchAllUsersConversation =
 export const handleEditContact =
   (contactId: string, type: EditContactType): AppThunk =>
   async (dispatch) => {
-    dispatch(onSubmitting({ type: "isBlocking", status: true }));
     try {
       const res = await conversationService.editContact(contactId, type);
 

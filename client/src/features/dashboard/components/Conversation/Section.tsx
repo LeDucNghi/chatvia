@@ -5,6 +5,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { EditContactType, Emoji } from "../../../../models";
 import { handleEditContact, sendMsg } from "../../dashboardThunk";
 import {
+  onBlockedStatusChange,
   selectBlockedStatus,
   selectConversations,
   selectFetching,
@@ -52,17 +53,20 @@ export function Section({ partnerId }: ISectionProps) {
 
     const partnerBlocked = partner?.blocked?.filter((id) => user?._id === id);
 
-    if (userBlocked?.length !== 0) {
+    if (userBlocked && userBlocked?.length !== 0) {
       setIsUserBlocked(true);
       setIsPartnerBlocked(false);
-    } else if (partnerBlocked?.length !== 0) {
+      dispatch(onBlockedStatusChange("blocked"));
+    } else if (partnerBlocked && partnerBlocked?.length !== 0) {
       setIsUserBlocked(false);
       setIsPartnerBlocked(true);
+      dispatch(onBlockedStatusChange("blocked"));
     } else {
       setIsUserBlocked(false);
       setIsPartnerBlocked(false);
+      dispatch(onBlockedStatusChange("unBlocked"));
     }
-  }, [user, partner]);
+  }, [user, partner, dispatch]);
 
   useEffect(() => {
     if (blockedStatus === "blocked") {
