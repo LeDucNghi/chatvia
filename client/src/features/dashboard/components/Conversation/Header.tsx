@@ -16,13 +16,13 @@ import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
 export interface HeaderProps {
+  open: boolean;
   openDrawer: (value: boolean) => void;
 }
 
-export function Header({ openDrawer }: HeaderProps) {
+export function Header({ openDrawer, open }: HeaderProps) {
   const fetching = useAppSelector(selectFetching);
   const partner = useAppSelector(selectPartner);
-  console.log("🚀 ~ file: Header.tsx:25 ~ Header ~ partner:", partner);
   const mode = useAppSelector(selectMode);
   const conversation = useAppSelector(selectConversations);
 
@@ -87,7 +87,11 @@ export function Header({ openDrawer }: HeaderProps) {
             </div>
           )}
 
-          <HeaderTool openDrawer={openDrawer} call={handleOpenModal} />
+          <HeaderTool
+            open={open}
+            openDrawer={openDrawer}
+            call={handleOpenModal}
+          />
 
           <Calling
             isOpen={isOpen}

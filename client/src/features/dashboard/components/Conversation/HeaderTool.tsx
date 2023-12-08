@@ -10,9 +10,11 @@ import { useAppSelector } from "../../../../app/store";
 export interface IHeaderToolProps {
   call: (value: "isVoice" | "isVideo") => void;
   openDrawer: (value: boolean) => void;
+
+  open: boolean;
 }
 
-export function HeaderTool({ call, openDrawer }: IHeaderToolProps) {
+export function HeaderTool({ call, openDrawer, open }: IHeaderToolProps) {
   const disabledConversation = useAppSelector(selectDisabledConversation);
 
   return (
@@ -48,7 +50,7 @@ export function HeaderTool({ call, openDrawer }: IHeaderToolProps) {
       <IconButton
         disabled={disabledConversation}
         className="px-4 tool-icon"
-        onClick={() => openDrawer(true)}
+        onClick={() => openDrawer(!open)}
       >
         <MoreHorizOutlinedIcon />
       </IconButton>

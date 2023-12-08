@@ -23,6 +23,13 @@ export interface MessageRes {
   message: string;
 }
 
+export interface File {
+  id: string;
+  name: string;
+  length: number;
+  date: string;
+}
+
 export interface Notification {
   id: string;
   user: UserProfile;

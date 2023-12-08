@@ -20,7 +20,7 @@ import Drawer from "@mui/material/Drawer";
 import { Header } from "./Header";
 import IconButton from "@mui/material/IconButton";
 import { Section } from "./Section";
-import { Settings } from "./Settings";
+import { Settings } from "../Setting/Settings";
 import Toolbar from "@mui/material/Toolbar";
 import { useWindowSize } from "../../../../hooks/useWindow";
 
@@ -43,12 +43,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     }),
     marginRight: 0,
   }),
-  /**
-   * This is necessary to enable the selection of content. In the DOM, the stacking order is determined
-   * by the order of appearance. Following this rule, elements appearing later in the markup will overlay
-   * those that appear earlier. Since the Drawer comes after the Main content, this adjustment ensures
-   * proper interaction with the underlying content.
-   */
+
   position: "relative",
 }));
 
@@ -115,7 +110,7 @@ export function ConversationMain() {
               <ChevronLeftIcon />
             </IconButton>
           )}
-          <Header openDrawer={setOpen} />
+          <Header open={open} openDrawer={setOpen} />
         </Toolbar>
       </AppBar>
       <Main open={open}>

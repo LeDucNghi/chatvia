@@ -1,5 +1,7 @@
+import attachments from "../assets/images/icons/attachments.png";
 import avatar1 from "../assets/images/avatar1.jpg";
 import conversation from "../assets/images/icons/conversation.png";
+import document from "../assets/images/icons/document.png";
 import error from "../assets/images/icons/error-404.png";
 import groups from "../assets/images/icons/groups.png";
 import logo from "../assets/images/logo/logo.png";
@@ -27,4 +29,6 @@ export const Images = {
   robot,
   users,
   groups,
+  document,
+  attachments,
 };

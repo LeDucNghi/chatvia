@@ -1,4 +1,4 @@
-import { Message, Notification, UserProfile } from "../models";
+import { File, Message, Notification, UserProfile } from "../models";
 
 import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
@@ -209,4 +209,11 @@ export const notifications: Notification[] = [...Array(15)].map(() => ({
   content: faker.lorem.paragraph(),
   type: "newMsg",
   timeStamp: new Date(),
+}));
+
+export const files: File[] = [...Array(10)].map(() => ({
+  id: `${uuidv4()}`,
+  name: faker.lorem.paragraph(),
+  length: 5.3,
+  date: "3/7/2023",
 }));

@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
   },
 });
 
-exports.upload = multer({ storage: storage }).single("image");
+exports.upload = multer({ storage: storage }).single("imgPath");
 
 exports.uploadImage = async (req, res) => {
   try {

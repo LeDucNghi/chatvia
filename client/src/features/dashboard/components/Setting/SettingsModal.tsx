@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { AddUser } from "./AddUser";
+import { AddUser } from "../Conversation/AddUser";
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
 import { IconButton } from "@mui/material";
-import { ImageList } from "./ImageList";
-import { Member } from "./Member";
+import { ImageList } from "../Conversation/ImageList";
+import { Member } from "../Conversation/Member";
 import { UserProfile } from "../../../../models";
 import { selectGroupInfo } from "../../dashboardSlice";
 import { selectUser } from "../../../auth/authSlice";
