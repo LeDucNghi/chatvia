@@ -1,5 +1,10 @@
 import { Avatar, Button } from "@mui/material";
-import { selectFetching, selectMode } from "../../dashboardSlice";
+import {
+  fetchPartnerProfileSuccess,
+  onBlockedStatusChange,
+  selectFetching,
+  selectMode,
+} from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import { Badge } from "../../../../components/common/Badge/Badge";
@@ -27,6 +32,9 @@ export function GroupList({ groupList }: GroupListProps) {
         participant.groupName
       )
     );
+
+    dispatch(onBlockedStatusChange("unBlocked"));
+    dispatch(fetchPartnerProfileSuccess(null));
   };
 
   return (

@@ -86,7 +86,10 @@ export const dashboard = createSlice({
       state.fetching.isFriendList = false;
     },
 
-    fetchPartnerProfileSuccess(state, action: PayloadAction<UserProfile>) {
+    fetchPartnerProfileSuccess(
+      state,
+      action: PayloadAction<UserProfile | null>
+    ) {
       state.partner = action.payload;
     },
 
@@ -99,7 +102,7 @@ export const dashboard = createSlice({
       state.recentList = action.payload;
     },
 
-    fetchGroupInformationSuccess(state, action: PayloadAction<Group>) {
+    fetchGroupInformationSuccess(state, action: PayloadAction<Group | null>) {
       state.groupInfo = action.payload;
     },
 

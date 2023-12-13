@@ -1,5 +1,6 @@
+import { Group, SettingModal } from "../../../../models";
+
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Group } from "../../../../models";
 import { IconButton } from "@mui/material";
 import { Images } from "../../../../constants";
 import { selectConversations } from "../../dashboardSlice";
@@ -7,10 +8,7 @@ import { useAppSelector } from "../../../../app/store";
 
 export interface IGroupMemberProps {
   groupInfo: Group;
-  openModal: (
-    open: boolean,
-    type: "addUser" | "members" | "imagesList" | "image"
-  ) => void;
+  openModal: (open: boolean, type: SettingModal, modalName?: string) => void;
 }
 
 export function GroupMember({ groupInfo, openModal }: IGroupMemberProps) {
@@ -37,7 +35,7 @@ export function GroupMember({ groupInfo, openModal }: IGroupMemberProps) {
         </div>
       </div>
 
-      <div className="" onClick={() => openModal(true, "members")}>
+      <div className="" onClick={() => openModal(true, "members", "members")}>
         <IconButton>
           <ChevronRightIcon />
         </IconButton>

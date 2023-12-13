@@ -12,6 +12,7 @@ import robot from "../assets/images/robot.gif";
 import usa from "../assets/images/usa.png";
 import users from "../assets/images/icons/users.png";
 import vietnam from "../assets/images/vietnam.png";
+import whatever from "../assets/images/icons/whatever.png";
 
 export const Images = {
   logo,
@@ -31,4 +32,5 @@ export const Images = {
   groups,
   document,
   attachments,
+  whatever
 };

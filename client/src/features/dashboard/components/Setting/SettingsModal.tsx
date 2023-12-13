@@ -1,12 +1,15 @@
 import * as React from "react";
 
-import { AddUser } from "../Conversation/AddUser";
+import { SettingModal, UserProfile } from "../../../../models";
+
+import { AddUser } from "./AddUser";
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
+import { FileList } from "./FileList";
 import { IconButton } from "@mui/material";
 import { ImageList } from "../Conversation/ImageList";
+import { LinksModal } from "./LinksModal";
 import { Member } from "../Conversation/Member";
-import { UserProfile } from "../../../../models";
 import { selectGroupInfo } from "../../dashboardSlice";
 import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
@@ -15,9 +18,10 @@ export interface ISettingsModalProps {
   open: boolean;
   setOpen: (value: boolean) => void;
 
-  type: "addUser" | "members" | "imagesList" | "image";
+  type: SettingModal;
 
   image?: string;
+  modalName: string;
 }
 
 export function SettingsModal({
@@ -25,6 +29,7 @@ export function SettingsModal({
   setOpen,
   type,
   image,
+  modalName,
 }: ISettingsModalProps) {
   const groupInfo = useAppSelector(selectGroupInfo);
   const user = useAppSelector(selectUser);
@@ -43,6 +48,14 @@ export function SettingsModal({
       setMembers(newMember!);
     });
   }, [groupInfo, user]);
+
+  React.useEffect(() => {
+    if (user) {
+      if (user.friends) {
+        setUsers(user.friends);
+      }
+    }
+  }, [user]);
 
   const findFriend = (e: React.ChangeEvent<HTMLInputElement>) => {
     const friend = user?.friends?.filter((friend) =>
@@ -73,14 +86,8 @@ export function SettingsModal({
         isOpen={open}
         onClose={() => setOpen(!open)}
       >
-        <h2 className="w-full text-center p-4 text-white">
-          {type === "imagesList"
-            ? "Media, Files & Links"
-            : type === "members"
-            ? `${groupInfo?.members.length} members`
-            : type === "image"
-            ? "Images"
-            : "Add user"}
+        <h2 className="w-full text-center p-4 text-white capitalize">
+          {modalName}
         </h2>
 
         <IconButton
@@ -98,6 +105,10 @@ export function SettingsModal({
           <div className="w-[500px] h-[500px]">
             <img className="w-full h-full object-cover" src={image} alt="" />
           </div>
+        ) : type === "files" ? (
+          <FileList />
+        ) : type === "links" ? (
+          <LinksModal />
         ) : (
           <AddUser
             findFriend={findFriend}

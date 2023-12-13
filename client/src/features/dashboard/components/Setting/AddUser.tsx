@@ -12,6 +12,7 @@ import {
 
 import ClearIcon from "@mui/icons-material/Clear";
 import { Images } from "../../../../constants";
+import NotFound from "../../../../components/common/NotFound/NotFound";
 import { UserProfile } from "../../../../models";
 
 export interface IAddUserProps {
@@ -28,6 +29,7 @@ export function AddUser({
   findFriend,
   selectFriend,
 }: IAddUserProps) {
+  console.log("🚀 ~ file: AddUser.tsx:32 ~ users:", users);
   return (
     <div className="p-4">
       <TextField
@@ -38,7 +40,12 @@ export function AddUser({
       />
 
       <div className="flex">
-        {users?.length !== 0 &&
+        {users?.length === 0 ? (
+          <NotFound
+            title="You have no friend to add to this group😢"
+            icon={Images.whatever}
+          />
+        ) : (
           users?.map((item, key) => {
             return (
               <div
@@ -73,7 +80,8 @@ export function AddUser({
                 <p className="w-1/2 truncate">{item.username}</p>
               </div>
             );
-          })}
+          })
+        )}
       </div>
 
       <div className="h-[300px] overflow-auto">

@@ -3,6 +3,7 @@ import "./Carousel.scss";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
+  fetchGroupInformationSuccess,
   onOpenConversation,
   selectMode,
 } from "../../../features/dashboard/dashboardSlice";
@@ -31,6 +32,7 @@ export function Carousel({
   const onClick = (id: string) => {
     onUserSelected(id);
     dispatch(onOpenConversation(true));
+    dispatch(fetchGroupInformationSuccess(null));
   };
 
   return (

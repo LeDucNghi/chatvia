@@ -1,10 +1,8 @@
+import { SettingModal } from "../../../../models";
 import { friendRequests } from "../../../../mock";
 
 export interface IMediaProps {
-  openModal: (
-    open: boolean,
-    type: "addUser" | "members" | "imagesList" | "image"
-  ) => void;
+  openModal: (open: boolean, type: SettingModal, modalName?: string) => void;
   handleSelectImage: (image: string) => void;
 }
 
@@ -16,7 +14,7 @@ export function Media({ openModal, handleSelectImage }: IMediaProps) {
 
         <button
           className="text-blue-400 capitalize"
-          onClick={() => openModal(true, "imagesList")}
+          onClick={() => openModal(true, "imagesList", "images")}
         >
           see all
         </button>

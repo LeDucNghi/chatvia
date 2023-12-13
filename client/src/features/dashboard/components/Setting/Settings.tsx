@@ -16,6 +16,7 @@ import { Links } from "./Links";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Media } from "./Media";
+import { SettingModal } from "../../../../models";
 import { SettingsModal } from "./SettingsModal";
 import { useState } from "react";
 
@@ -26,22 +27,22 @@ export function Settings() {
   const submitStatus = useAppSelector(selectSubmit);
   const blockStatus = useAppSelector(selectBlockedStatus);
 
+  const [modalName, setModalName] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState<
-    "addUser" | "members" | "imagesList" | "image"
-  >("addUser");
+  const [modalType, setModalType] = useState<SettingModal>("addUser");
 
-  const openModal = (
-    open: boolean,
-    type: "addUser" | "members" | "imagesList" | "image"
-  ) => {
+  const openModal = (open: boolean, type: SettingModal, modalName?: string) => {
     setIsOpen(open);
+
     setModalType(type);
+
+    setModalName(modalName!);
   };
   const [img, setImg] = useState<string>("");
 
   const handleSelectImage = (image: string) => {
     setImg(image);
+
     openModal(true, "image");
   };
 
@@ -65,12 +66,10 @@ export function Settings() {
 
       <Divider />
 
-      {/* GROUP MEMBERS */}
       {groupInfo && <GroupMember groupInfo={groupInfo} openModal={openModal} />}
 
       <Divider />
 
-      {/* MEDIA, FILES, LINKS */}
       <Media openModal={openModal} handleSelectImage={handleSelectImage} />
 
       <Divider />
@@ -83,7 +82,6 @@ export function Settings() {
 
       <Divider />
 
-      {/* BUTTON */}
       <div className="w-full flex justify-center p-4">
         <LoadingButton
           onClick={() => editContact(groupInfo ? "leave" : "block")}
@@ -109,6 +107,7 @@ export function Settings() {
         open={isOpen}
         type={modalType}
         image={img!}
+        modalName={modalName}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { Group, UserProfile } from "../../../../models";
+import { Group, SettingModal, UserProfile } from "../../../../models";
 
 import { IconButton } from "@mui/material";
 import { Images } from "../../../../constants";
@@ -9,10 +9,7 @@ export interface IInformationProps {
   groupInfo: Group;
   partner: UserProfile;
 
-  openModal: (
-    open: boolean,
-    type: "addUser" | "members" | "imagesList" | "image"
-  ) => void;
+  openModal: (open: boolean, type: SettingModal, modalName?: string) => void;
 }
 
 export function Information({
@@ -44,14 +41,14 @@ export function Information({
       <div className="flex w-full justify-between px-10">
         {groupInfo && (
           <div className="capitalize flex flex-col font-semibold items-center">
-            <IconButton onClick={() => openModal(true, "addUser")}>
+            <IconButton onClick={() => openModal(true, "addUser", "add user")}>
               <PersonAddIcon />
             </IconButton>
             add
           </div>
         )}
 
-        <div className="capitalize flex flex-col font-semibold items-center">
+        <div className="capitalize flex flex-col font-semibold items-center mx-auto">
           <IconButton>
             <NotificationsOffIcon />
           </IconButton>

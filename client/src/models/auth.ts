@@ -22,7 +22,7 @@ export interface AuthState {
   isSignedIn: boolean;
   isValidUser: boolean;
 
-  user: UserProfile | null | undefined;
+  user: UserProfile | null;
   userList: UserProfile[];
 
   contacts: UserProfile[];

@@ -9,6 +9,14 @@ export type Sides =
   | "request"
   | "notifications";
 
+export type SettingModal =
+  | "addUser"
+  | "members"
+  | "image"
+  | "imagesList"
+  | "files"
+  | "links";
+
 export type EditContactType = "block" | "remove";
 
 export type Mode = "dark" | "light";
