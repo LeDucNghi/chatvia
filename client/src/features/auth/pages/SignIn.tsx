@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
-import { selectSignedIn, selectSubmit } from "../authSlice";
+import { selectSignedIn, selectSubmit, selectSuccess } from "../authSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { useEffect, useState } from "react";
 
@@ -22,15 +22,16 @@ export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const signinStatus = useAppSelector(selectSignedIn);
-  const submitStatus = useAppSelector(selectSubmit);
+  const isSubmitting = useAppSelector(selectSubmit);
+  const isSuccess = useAppSelector(selectSuccess);
 
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (signinStatus) {
+    if (signinStatus || isSuccess) {
       navigate("/dashboard");
     }
-  }, [signinStatus, navigate]);
+  }, [signinStatus, navigate, isSuccess]);
 
   const initialValue = {
     username: "",
@@ -148,7 +149,7 @@ export default function SignIn() {
                     type="submit"
                     variant="contained"
                     disabled={!dirty || !isValid}
-                    loading={submitStatus.isLogging}
+                    loading={isSubmitting}
                   >
                     <div
                       className={

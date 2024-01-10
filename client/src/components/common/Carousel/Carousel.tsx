@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import {
   fetchGroupInformationSuccess,
   onOpenConversation,
+  onSelectedPartner,
   selectMode,
 } from "../../../features/dashboard/dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
@@ -16,21 +17,15 @@ import { UserProfile } from "../../../models";
 export interface ICarouselProps {
   option: UserProfile[] | undefined;
 
-  onUserSelected: (id: string) => void;
-
   isFetching?: boolean;
 }
 
-export function Carousel({
-  option,
-  onUserSelected,
-  isFetching,
-}: ICarouselProps) {
+export function Carousel({ option, isFetching }: ICarouselProps) {
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMode);
 
   const onClick = (id: string) => {
-    onUserSelected(id);
+    dispatch(onSelectedPartner(id));
     dispatch(onOpenConversation(true));
     dispatch(fetchGroupInformationSuccess(null));
   };
@@ -55,9 +50,8 @@ export function Carousel({
               >
                 <AvatarBadge status="online" avatar={user.avatar!} />
                 <h5
-                  className={`font-medium text-sm truncate w-full ${
-                    mode === "dark" ? "text-white" : ""
-                  }`}
+                  className={`font-medium text-sm truncate w-full ${mode === "dark" ? "text-white" : ""
+                    }`}
                 >
                   {user.username}{" "}
                 </h5>

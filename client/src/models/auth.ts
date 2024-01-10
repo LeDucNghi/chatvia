@@ -15,8 +15,12 @@ export interface AuthState {
     isContacts: boolean;
   };
 
-  submitting: {
-    isLogging: boolean;
+  isSubmitting: boolean;
+  isSuccess: boolean
+
+  hasFailed: {
+    isFailed: boolean;
+    message: string;
   };
 
   isSignedIn: boolean;

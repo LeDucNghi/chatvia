@@ -43,7 +43,7 @@ export function Links({ openModal }: ILinksProps) {
                   <p> {file.length} </p>
                   <p> {file.date} </p>
                 </div>
-              </div>
+              </div>p
             </div>
           );
         })}

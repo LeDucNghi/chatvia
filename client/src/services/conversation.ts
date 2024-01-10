@@ -23,10 +23,10 @@ export const conversationService = {
     participant: string[],
     groupName?: string
   ): Promise<ObjResponse<Conversation>> {
-    return axiosClient.post(
-      `/conversation/getConversation/${groupName}?isGroup=${isGroup}`,
-      { participant }
-    );
+    return axiosClient.post(`/conversation/getConversation/${groupName}`, {
+      participant,
+      isGroup,
+    });
   },
 
   getAllConversation(): Promise<ArrResponse<Conversation>> {

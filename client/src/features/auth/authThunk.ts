@@ -4,7 +4,6 @@ import {
   fetchUserListSuccess,
   onSubmittingAuth,
   onValidateUser,
-  signinStatus,
 } from "./authSlice";
 
 import { AppThunk } from "../../app/store";
@@ -14,7 +13,7 @@ import { authService } from "../../services";
 export const signin =
   (values: UserProfile): AppThunk =>
   async (dispatch) => {
-    dispatch(onSubmittingAuth(true));
+    dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
 
     try {
       const res = await authService.signin(values);
@@ -27,22 +26,26 @@ export const signin =
 
       cookies.setCookie("user", res);
 
-      dispatch(signinStatus(true));
+      dispatch(onSubmittingAuth({isSubmitting: false, isSuccess : true}));
     } catch (error: any) {
       console.log("🚀 ~ file: auth.ts:14 ~ signin ~ error:", error);
-      alert({
-        content: error.response.data.message,
-        position: "top-center",
-        type: "error",
-      });
+      if (error) {
+        alert({
+          content: error.response ? error.response.data.message : error.message,
+          position: "top-center",
+          type: "error",
+        });
 
-      dispatch(onSubmittingAuth(false));
+        dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+      }
     }
   };
 
 export const signup =
   (values: UserProfile): AppThunk =>
-  async () => {
+  async (dispatch) => {
+    dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+
     try {
       const res = await authService.signup(values);
 
@@ -51,13 +54,18 @@ export const signup =
         position: "top-center",
         type: "success",
       });
+      dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: true }));
     } catch (error: any) {
       console.log("🚀 ~ file: auth.ts:14 ~ signin ~ error:", error);
-      alert({
-        content: "Something went wrong",
-        position: "top-center",
-        type: "error",
-      });
+      if (error) {
+        alert({
+          content: error.response ? error.response.data.message : error.message,
+          position: "top-center",
+          type: "error",
+        });
+
+        dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+      }
     }
   };
 
@@ -66,8 +74,15 @@ export const handleGetUser = (): AppThunk => async (dispatch) => {
     const res = await authService.getUser();
 
     dispatch(fetchUser(res.data));
-  } catch (error) {
+  } catch (error: any) {
     console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+    if (error) {
+      alert({
+        content: error.response ? error.response.data.message : error.message,
+        position: "top-center",
+        type: "error",
+      });
+    }
   }
 };
 
@@ -78,30 +93,65 @@ export const validateUser =
       await authService.validateUser({ email });
 
       dispatch(onValidateUser(true));
-    } catch (error) {
+    } catch (error: any) {
       console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
-      dispatch(onValidateUser(false));
+
+      if (error) {
+        alert({
+          content: error.response ? error.response.data.message : error.message,
+          position: "top-center",
+          type: "error",
+        });
+
+        dispatch(onValidateUser(false));
+      }
     }
   };
 
 export const handleResetPwd =
   (values: UserProfile): AppThunk =>
   async (dispatch) => {
+    dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+
     try {
       const res = await authService.resetPassword(values);
 
       dispatch(fetchUser(res));
-    } catch (error) {
+
+     dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: true }));
+    } catch (error: any) {
       console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+      if (error) {
+        alert({
+          content: error.response ? error.response.data.message : error.message,
+          position: "top-center",
+          type: "error",
+        });
+
+        dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+      }
     }
   };
 
 export const handleGetAllUser = (): AppThunk => async (dispatch) => {
+  dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+
   try {
     const res = await authService.getAllUsers();
 
     dispatch(fetchUserListSuccess(res.data));
-  } catch (error) {
+
+    dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: true }));
+  } catch (error: any) {
     console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
+    if (error) {
+      alert({
+        content: error.response ? error.response.data.message : error.message,
+        position: "top-center",
+        type: "error",
+      });
+
+      dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+    }
   }
 };

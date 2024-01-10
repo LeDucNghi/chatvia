@@ -8,8 +8,12 @@ const initialState: AuthState = {
     isContacts: false,
   },
 
-  submitting: {
-    isLogging: false,
+  isSubmitting: false,
+  isSuccess: false,
+
+  hasFailed: {
+    isFailed: false,
+    message: "",
   },
 
   isSignedIn: false,
@@ -30,10 +34,6 @@ export const auth = createSlice({
       state.isFetching.isContacts = true;
     },
 
-    signinStatus(state, action: PayloadAction<boolean>) {
-      state.isSignedIn = action.payload;
-    },
-
     fetchUser(state, action: PayloadAction<UserProfile>) {
       state.user = action.payload;
     },
@@ -50,14 +50,25 @@ export const auth = createSlice({
       state.userList = action.payload;
     },
 
-    onSubmittingAuth(state, action: PayloadAction<boolean>) {
-      state.submitting.isLogging = action.payload;
+    onSubmittingAuth(
+      state,
+      action: PayloadAction<{ isSubmitting: boolean; isSuccess: boolean }>
+    ) {
+      state.isSubmitting = action.payload.isSubmitting;
+      state.isSuccess = action.payload.isSuccess;
+    },
+
+    onFailed(
+      state,
+      action: PayloadAction<{ isFailed: boolean; message: string }>
+    ) {
+      state.hasFailed.isFailed = action.payload.isFailed;
+      state.hasFailed.message = action.payload.message;
     },
   },
 });
 
 export const {
-  signinStatus,
   fetchUser,
   onValidateUser,
   fetchContactsSuccess,
@@ -72,6 +83,8 @@ export const selectValidUser = (state: RootState) => state.auth.isValidUser;
 export const selectAuthFetching = (state: RootState) => state.auth.isFetching;
 export const selectContacts = (state: RootState) => state.auth.contacts;
 export const selectUserList = (state: RootState) => state.auth.userList;
-export const selectSubmit = (state: RootState) => state.auth.submitting;
+export const selectSubmit = (state: RootState) => state.auth.isSubmitting;
+export const selectFailed = (state: RootState) => state.auth.hasFailed;
+export const selectSuccess = (state: RootState) => state.auth.isSuccess;
 
 export const authReducer = auth.reducer;

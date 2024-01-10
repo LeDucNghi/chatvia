@@ -11,6 +11,7 @@ import {
   selectFetching,
   selectMode,
   selectPartner,
+  selectPartnerId,
 } from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
@@ -21,22 +22,19 @@ import { SectionTool } from "./SectionTool";
 import { selectUser } from "../../../auth/authSlice";
 import { useTranslation } from "react-i18next";
 
-export interface ISectionProps {
-  partnerId: string;
-}
-
-export function Section({ partnerId }: ISectionProps) {
+export function Section() {
   const dispatch = useAppDispatch();
   const conversation = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
   const user = useAppSelector(selectUser);
   const partner = useAppSelector(selectPartner);
+  const partnerId = useAppSelector(selectPartnerId);
   const blockedStatus = useAppSelector(selectBlockedStatus);
   const { t } = useTranslation();
 
   const [msg, setMsg] = useState<string>("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
 
   const [isOpen, setIsOpen] = useState(false);

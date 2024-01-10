@@ -1,10 +1,12 @@
 import "./Chat.scss";
 
 import {
+  onSelectedPartner,
   selectFetching,
   selectMode,
   selectRecentList,
 } from "../../dashboardSlice";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoader";
 import { Carousel } from "../../../../components/common/Carousel/Carousel";
@@ -17,20 +19,14 @@ import { RecentChatItem } from "./RecentChatItem";
 import SearchIcon from "@mui/icons-material/Search";
 import { SideWrapper } from "../SideWrapper";
 import { selectUser } from "../../../auth/authSlice";
-import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export interface IChatSideProps {
-  curChatRoom: (value: string) => void;
-}
-
-export function ChatSide({ curChatRoom }: IChatSideProps) {
+export function ChatSide() {
+  const dispatch = useAppDispatch();
   const fetching = useAppSelector(selectFetching);
-
   const mode = useAppSelector(selectMode);
   const recentList = useAppSelector(selectRecentList);
-
   const user = useAppSelector(selectUser);
   const { t } = useTranslation();
 
@@ -43,14 +39,10 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
     );
   };
 
-  const onSelectedFriend = (id: string) => {
-    curChatRoom(id);
-  };
-
   const onItemChange = (id: string, partnerId: string) => {
     setIsSelected(id);
 
-    curChatRoom(String(partnerId));
+    dispatch(onSelectedPartner(String(partnerId)));
   };
 
   return (
@@ -71,11 +63,7 @@ export function ChatSide({ curChatRoom }: IChatSideProps) {
     >
       {Messages.length !== 0 && (
         <div className="chat-user-onine mb-3">
-          <Carousel
-            isFetching={fetching.isFriendList}
-            option={user?.friends}
-            onUserSelected={onSelectedFriend}
-          />
+          <Carousel isFetching={fetching.isFriendList} option={user?.friends} />
         </div>
       )}
 

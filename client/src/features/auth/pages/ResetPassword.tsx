@@ -2,6 +2,7 @@ import * as Yup from "yup";
 
 import { Form, Formik } from "formik";
 import { handleResetPwd, validateUser } from "../authThunk";
+import { selectSubmit, selectValidUser } from "../authSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { useEffect, useState } from "react";
 
@@ -14,13 +15,13 @@ import NotFound from "../../../components/common/NotFound/NotFound";
 import { UserProfile } from "../../../models";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { selectValidUser } from "../authSlice";
 import { useParams } from "react-router-dom";
 
 export default function ResetPassword() {
   const { email } = useParams();
 
   const dispatch = useAppDispatch();
+  const isSubmitting = useAppSelector(selectSubmit);
 
   const isValidUser = useAppSelector(selectValidUser);
 
@@ -78,7 +79,6 @@ export default function ResetPassword() {
             const {
               dirty,
               isValid,
-              isSubmitting,
               handleBlur,
               handleChange,
               touched,

@@ -1,4 +1,4 @@
-import { File, Message, Notification, UserProfile } from "../models";
+import { File, Link, Message, Notification, UserProfile } from "../models";
 
 import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
@@ -215,5 +215,12 @@ export const files: File[] = [...Array(10)].map(() => ({
   id: `${uuidv4()}`,
   name: faker.lorem.paragraph(),
   length: 5.3,
+  date: "3/7/2023",
+}));
+
+export const links: Link[] = [...Array(10)].map(() => ({
+  id: `${uuidv4()}`,
+  name: faker.lorem.paragraph(),
+  href: "https://www.facebook.com/nghile.genji/",
   date: "3/7/2023",
 }));

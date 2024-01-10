@@ -2,6 +2,7 @@ import "../../pages/Dashboard.scss";
 
 import * as React from "react";
 
+import { BREAK_POINTS_NUMBER, socket } from "../../../../constants";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import {
   onOpenConversation,
@@ -11,7 +12,6 @@ import {
 import { styled, useTheme } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
-import { BREAK_POINTS_NUMBER } from "../../../../constants";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Conversation } from "./Conversation";
@@ -86,6 +86,13 @@ export function ConversationMain() {
 
   const [open, setOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    socket.connect();
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   //   const handleDrawerOpen = () => {
   //     setOpen(true);
   //   };
@@ -116,7 +123,7 @@ export function ConversationMain() {
       <Main open={open}>
         <DrawerHeader />
         <Conversation />
-        <Section partnerId="" />
+        <Section />
       </Main>
       <Drawer
         sx={{

@@ -19,6 +19,7 @@ const initialState: DashboardState = {
     isFriendList: false,
     isFriendRequest: false,
     isRecentList: false,
+    isContact: false,
   },
 
   submitting: {
@@ -45,6 +46,7 @@ const initialState: DashboardState = {
   mode: "light",
   languages: "en",
   conversationId: "",
+  partnerId: "",
 };
 
 export const dashboard = createSlice({
@@ -156,6 +158,10 @@ export const dashboard = createSlice({
     disabledConversation(state, action: PayloadAction<boolean>) {
       state.isDisabledConversation = action.payload;
     },
+
+    onSelectedPartner(state, action: PayloadAction<string>) {
+      state.partnerId = action.payload;
+    },
   },
 });
 
@@ -177,6 +183,7 @@ export const {
   onOpenConversation,
   onLanguagesChange,
   onBlockedStatusChange,
+  onSelectedPartner,
   addNewMessage,
   addNewRequest,
   disabledConversation,
@@ -203,5 +210,6 @@ export const selectFriendRequest = (state: RootState) =>
   state.dashboard.friendRequests;
 export const selectRecentList = (state: RootState) =>
   state.dashboard.recentList;
+export const selectPartnerId = (state: RootState) => state.dashboard.partnerId;
 
 export const dashboardReducer = dashboard.reducer;

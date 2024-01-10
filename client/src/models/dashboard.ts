@@ -38,6 +38,13 @@ export interface File {
   date: string;
 }
 
+export interface Link {
+  id: string;
+  name: string;
+  href: string;
+  date: string;
+}
+
 export interface Notification {
   id: string;
   user: UserProfile;
@@ -88,6 +95,7 @@ export interface DashboardState {
     isFriendList: boolean;
     isFriendRequest: boolean;
     isRecentList: boolean;
+    isContact: boolean;
   };
 
   submitting: {
@@ -111,6 +119,7 @@ export interface DashboardState {
   groupInfo: Group | null;
 
   conversationId: string;
+  partnerId: string;
 
   openConversation: boolean;
   isDisabledConversation: boolean;

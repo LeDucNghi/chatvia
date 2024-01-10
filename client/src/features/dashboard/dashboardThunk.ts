@@ -19,14 +19,20 @@ import {
 import { AppThunk } from "../../app/store";
 import { alert } from "../../utils";
 import { conversationService } from "../../services/conversation";
+import { socket } from "../../constants";
 
 export const sendMsg =
   (values: Message): AppThunk =>
   async () => {
     try {
-      await conversationService.sendMsg(values);
+      // await conversationService.sendMsg(values);
 
       alert({ content: "Sent 🥳", position: "top-center", type: "success" });
+
+      socket.emit("send-message", {
+        room: values.consId,
+        message: values.message,
+      });
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:9 ~ sendMsg ~ error:", error);
       alert({
@@ -41,19 +47,22 @@ export const fetchConversation =
   (isGroup: boolean, participant: string[], groupName?: string): AppThunk =>
   async (dispatch, getState) => {
     dispatch(fetchingConversation());
+    console.log("🚀 ~ participant:", participant, typeof isGroup);
 
     if (participant.length < 0) {
       dispatch(fetchConversationFailed());
     } else {
       const user = getState().auth.user;
+
       try {
         const res = await conversationService.getConversation(
           isGroup,
           participant,
           groupName
         );
+        console.log("🚀 ~ res:", res.data);
 
-        if (res.data !== null) {
+        if (res && res.data) {
           res.data.messages.forEach((cons) => {
             const { sender } = cons;
 
@@ -67,13 +76,13 @@ export const fetchConversation =
           if (res.data.isGroup === true) {
             dispatch(fetchGroupInformationSuccess(res.data.group!));
           }
-        } else {
-          const friends = user?.friends?.filter((user) =>
-            participant.includes(user._id!)
+
+          const friend = res.data.participant.find(
+            (part) => user!._id !== part._id
           );
 
-          dispatch(fetchPartnerProfileSuccess(friends![0]));
-          dispatch(fetchConversationSuccess(null));
+          dispatch(fetchPartnerProfileSuccess(friend!));
+          dispatch(fetchConversationSuccess(res.data));
         }
 
         dispatch(disabledConversation(false));
@@ -198,54 +207,32 @@ export const handleGetSettings = (): AppThunk => async (dispatch) => {
   }
 };
 
-export const fetchAllUsersConversation =
-  (): AppThunk => async (dispatch, getState) => {
-    dispatch(fetchingRecentList());
+export const fetchAllUsersConversation = (): AppThunk => async (dispatch) => {
+  dispatch(fetchingRecentList());
 
-    try {
-      const res = await conversationService.getAllConversation();
+  try {
+    const res = await conversationService.getAllConversation();
 
-      const user = getState().auth.user;
+    if (res) {
+      dispatch(fetchRecentList(res.data));
 
-      if (res) {
-        // res.data.map((cons) => {
-        //   cons.messages.map((msg) => {
-        //     if (msg.sender?._id === user?._id) {
-        //       dispatch(fetchRecentList([]));
-        //     } else {
-        //       dispatch(fetchRecentList(res.data));
-        //     }
-        //   });
-        // });
+      const newGroupList = res.data.filter((data) => data.isGroup === true);
 
-        const recentList = res.data.filter((data) => {
-          data.messages.map((msg) => {
-            if (msg.sender?._id === user?._id) {
-              return [];
-            } else {
-              return msg;
-            }
-          });
-        });
-
-        dispatch(fetchRecentList(recentList));
-
-        const newGroupList = res.data.filter((data) => data.isGroup === true);
-
-        dispatch(fetchGroupListSuccessfully(newGroupList));
-      }
-    } catch (error) {
-      console.log(
-        "🚀 ~ file: dashboardThunk.ts:163 ~ fetchAllUsersConversation ~ error:",
-        error
-      );
+      dispatch(fetchGroupListSuccessfully(newGroupList));
     }
-  };
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: dashboardThunk.ts:163 ~ fetchAllUsersConversation ~ error:",
+      error
+    );
+  }
+};
 
 export const handleEditContact =
   (contactId: string, type: EditContactType): AppThunk =>
   async (dispatch) => {
     try {
+      console.log("🚀 ~ file: dashboardThunk.ts:247 ~ type:", type);
       const res = await conversationService.editContact(contactId, type);
 
       if (res) {

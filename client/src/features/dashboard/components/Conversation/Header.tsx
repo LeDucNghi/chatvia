@@ -69,14 +69,18 @@ export function Header({ openDrawer, open }: HeaderProps) {
                 src={
                   conversation?.isGroup && conversation?.group?.avatar
                     ? conversation?.group?.avatar
-                    : !conversation?.isGroup && partner!.avatar
-                    ? partner!.avatar
+                    : !conversation?.isGroup && partner?.avatar
+                    ? partner?.avatar
                     : Images.avatar1
                 }
                 alt="logo"
               />
 
-              <h5 className="flex font-semibold items-center w-4/5 capitalize">
+              <h5
+                className={`flex font-semibold items-center w-4/5 capitalize ${
+                  mode === "dark" ? "text-white" : "text-black"
+                }`}
+              >
                 {conversation?.isGroup
                   ? conversation?.group?.name
                   : partner?.username}

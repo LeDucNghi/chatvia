@@ -7,14 +7,19 @@ import { AuthLayout } from "../../../components/layouts/Auth/AuthLayout";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import { UserProfile } from "../../../models";
+import { selectSubmit } from "../authSlice";
+import { useAppSelector } from "../../../app/store";
 
 export default function Forgot() {
+  const isSubmitting = useAppSelector(selectSubmit);
+
   const initialValue = {
     email: "",
   };
 
   const handleForgot = async (values: UserProfile) => {
-    console.log(values);
+    console.log("🚀 ~ file: Forgot.tsx:22 ~ handleForgot ~ values:", values);
+    // dispatch();
   };
 
   const validationSchema = Yup.object().shape({
@@ -24,7 +29,7 @@ export default function Forgot() {
   return (
     <AuthLayout
       layoutDescription="Reset Password with Chatvia."
-      title="ForGot Password"
+      title="Forgot Password"
     >
       <div className="p-4">
         <Formik
@@ -36,7 +41,6 @@ export default function Forgot() {
             const {
               dirty,
               isValid,
-              isSubmitting,
               handleBlur,
               handleChange,
               touched,
@@ -52,23 +56,23 @@ export default function Forgot() {
                     label="Email"
                     className="mb-4"
                     name="email"
-                    placeholder="Ex: example..."
+                    placeholder="Ex: example@gmail.com"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={touched.email && errors.email}
                     error={touched.email && Boolean(errors.email)}
                   />
 
-                  <Card elevation={2}>
-                    You can enter your mail name before @gmail.com
+                  <Card
+                    sx={{ margin: "1rem 0", p: "0.5rem", fontWeight: "600" }}
+                    elevation={2}
+                  >
+                    You should enter your mail name before @gmail.com
                   </Card>
 
                   <p className="container my-3 flex-center font-semibold text-gray-600">
                     Remember It? &nbsp;
-                    <Link
-                      href="/signin"
-                      className="text-indigo-700 font-semibold"
-                    >
+                    <Link href="/" className="text-indigo-700 font-semibold">
                       <p className="font-semibold main-color">Sign In</p>
                     </Link>
                   </p>
@@ -83,11 +87,11 @@ export default function Forgot() {
                     <div
                       className={
                         !dirty || !isValid
-                          ? "bg-transparent w-full h-full py-2 px-4"
-                          : "bg-purple w-full h-full py-2 px-4"
+                          ? "bg-transparent w-full capitalize h-full py-2 px-4"
+                          : "bg-purple w-full capitalize h-full py-2 px-4"
                       }
                     >
-                      Sign in
+                      send
                     </div>
                   </LoadingButton>
                 </div>

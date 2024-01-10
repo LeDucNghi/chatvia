@@ -1,13 +1,13 @@
 import { Avatar, Button } from "@mui/material";
-import { EditContactType, UserProfile } from "../../../../models";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { UserProfile } from "../../../../models";
 import { contactOptions } from "../../../../constants";
-import { handleEditContact } from "../../dashboardThunk";
+import { fetchConversation } from "../../dashboardThunk";
 import { selectMode } from "../../dashboardSlice";
-import { useState } from "react";
+import { selectUser } from "../../../auth/authSlice";
 
 export interface IAlphabetItemProps {
   itemsByLetter: UserProfile;
@@ -17,13 +17,19 @@ export interface IAlphabetItemProps {
 export function AlphabetItem({ itemsByLetter, userList }: IAlphabetItemProps) {
   const mode = useAppSelector(selectMode);
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
-  const [id, setId] = useState<string>("");
+  // const [id, setId] = useState<string>("");
 
   const alphabet = Object.keys(itemsByLetter).sort();
 
+  const fetchConversations = (id: string) => {
+    dispatch(fetchConversation(false, [id, String(user?._id)]));
+  };
+
   const editContact = (value: string) => {
-    dispatch(handleEditContact(id, value as EditContactType));
+    console.log("🚀 ~ file: AlphabetItem.tsx:32 ~ editContact ~ value:", value);
+    // dispatch(handleEditContact(id, value as EditContactType));
   };
 
   return (
@@ -54,7 +60,7 @@ export function AlphabetItem({ itemsByLetter, userList }: IAlphabetItemProps) {
                     color: "#7a7f9a",
                   }}
                   onChange={(value: string) => {
-                    setId(user._id!);
+                    // setId(user._id!);
                     editContact(value);
                   }}
                 />
@@ -80,7 +86,10 @@ export function AlphabetItem({ itemsByLetter, userList }: IAlphabetItemProps) {
                         key={index}
                         className=" p-3 w-full flex justify-between"
                       >
-                        <Button className="w-full">
+                        <Button
+                          className="w-full"
+                          onClick={() => fetchConversations(user._id)}
+                        >
                           <div className="flex items-center justify-start w-full">
                             <Avatar src={user.avatar} />
 
@@ -102,7 +111,7 @@ export function AlphabetItem({ itemsByLetter, userList }: IAlphabetItemProps) {
                             color: "#7a7f9a",
                           }}
                           onChange={(value: string) => {
-                            setId(user._id);
+                            // setId(user._id);
                             editContact(value);
                           }}
                         />

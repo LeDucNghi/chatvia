@@ -2,18 +2,20 @@ import * as Yup from "yup";
 
 import { Button, Link, TextField } from "@mui/material";
 import { Form, Formik } from "formik";
+import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import { AuthLayout } from "../../../components/layouts/Auth/AuthLayout";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { UserProfile } from "../../../models";
+import { selectSubmit } from "../authSlice";
 import { signup } from "../authThunk";
 import { specialAndSpace } from "../../../constants";
-import { useAppDispatch } from "../../../app/store";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isSubmitting = useAppSelector(selectSubmit);
 
   const initialValue = {
     username: "",
@@ -53,7 +55,6 @@ export default function SignUp() {
             const {
               dirty,
               isValid,
-              isSubmitting,
               handleBlur,
               handleChange,
               touched,

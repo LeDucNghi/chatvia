@@ -1,20 +1,19 @@
 import "../components/Side.scss";
 import "./Dashboard.scss";
 
-import { FriendRequest, Message, Sides } from "../../../models";
 import React, { useEffect } from "react";
-import {
-  addNewMessage,
-  addNewRequest,
-  selectLanguage,
-  selectMode,
-  selectOpenConversation,
-} from "../dashboardSlice";
 import {
   fetchAllUsersConversation,
   fetchConversation,
   handleGetFriendRequest,
 } from "../dashboardThunk";
+import {
+  selectLanguage,
+  selectMode,
+  selectOpenConversation,
+  selectPartnerId,
+  selectRecentList
+} from "../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import { AuthenticatedLayout } from "../../../components/layouts/Auth/Authenticate";
@@ -27,8 +26,9 @@ import { ProfileSide } from "../components/Profile/ProfileSide";
 import { RequestSide } from "../components/Request/RequestSide";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
+import { Sides } from "../../../models";
 import { selectUser } from "../../auth/authSlice";
-import { subscribeChannel } from "../../../utils";
+import { socket } from "../../../constants";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -38,41 +38,29 @@ export default function Dashboard() {
   const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
   const openConversation = useAppSelector(selectOpenConversation);
+  const partnerId = useAppSelector(selectPartnerId);
+  const recentConversation = useAppSelector(selectRecentList);
 
   const [side, setSide] = React.useState<Sides>("chat");
-  const [curChatRoom, setCurChatRoom] = React.useState<string>("");
 
   useEffect(() => {
-    if (curChatRoom && user) {
-      dispatch(fetchConversation(false, [curChatRoom, String(user?._id)]));
+    if (partnerId && user) {
+      dispatch(fetchConversation(false, [partnerId, String(user?._id)]));
     }
-  }, [curChatRoom, user]);
+  }, [partnerId, user]);
 
   useEffect(() => {
-    const messageChannel = subscribeChannel("message");
+    socket.emit("join-room", recentConversation);
+  }, [recentConversation]);
 
-    messageChannel.bind("my-event", (data: Message) => {
-      console.log("messages: ", data);
-
-      dispatch(addNewMessage(data));
+  useEffect(() => {
+    socket.on("receive-message", (data) => {
+      console.log("🚀 ~ file: Conversation.tsx:26 ~ socket.on ~ data:", data);
     });
   }, []);
 
   useEffect(() => {
-    const friendRequestChannel = subscribeChannel("friend-request");
-
-    friendRequestChannel.bind(`${user?._id}`, (data: FriendRequest) => {
-      console.log("messages: ", data);
-
-      dispatch(addNewRequest(data));
-    });
-  }, [user?._id]);
-
-  useEffect(() => {
     dispatch(handleGetFriendRequest());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(fetchAllUsersConversation());
   }, [dispatch]);
 
@@ -97,7 +85,7 @@ export default function Dashboard() {
           {side === "profile" ? (
             <ProfileSide />
           ) : side === "chat" ? (
-            <ChatSide curChatRoom={setCurChatRoom} />
+            <ChatSide />
           ) : side === "group" ? (
             <GroupSide />
           ) : side === "request" ? (
@@ -110,9 +98,8 @@ export default function Dashboard() {
         </div>
 
         <div
-          className={`dashboard-chat h-auto relative ${
-            mode === "dark" && "dark"
-          } ${openConversation ? "active" : ""} `}
+          className={`dashboard-chat h-auto relative ${mode === "dark" && "dark"
+            } ${openConversation ? "active" : ""} `}
         >
           <ConversationMain />
         </div>

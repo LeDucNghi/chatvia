@@ -33,7 +33,7 @@ export function ContactList({ userList }: ContactListProps) {
         </div>
       ) : (
         <div className="contact-item">
-          {fetching.isConversation ? (
+          {fetching.isContact ? (
             <BaseItemLoader listToRender={5} />
           ) : (
             <AlphabetItem userList={userList} itemsByLetter={itemsByLetter} />
