@@ -3,6 +3,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const tokenConfig = require("../config/token");
 const transporter = require("../config/mail");
+// const { Resend } = require("resend");
+
+// const resend = new Resend("re_hWk1ZC2n_5ysnyxAjqP89vRp7Md3PiQUp");
 
 // SIGN UP
 exports.signup = async (req, res) => {
@@ -96,17 +99,23 @@ exports.updateProfile = async (req, res) => {
 // RESET PASSWORD
 exports.sendEmail = async (req, res) => {
   const { email } = await req.body;
+  console.log("🚀 ~ file: auth.js:102 ~ exports.sendEmail= ~ email:", email);
 
   const user = await User.findOne({ email });
 
   if (user) {
     // send mail with defined transport object
     const info = await transporter.sendMail({
-      from: '"Chatvia Team 👻" chatvia.team@gmail.com', // sender address
-      to: `${email}@gmail.com`, // list of receivers
+      from: "onboarding@resend.dev", // sender address
+      to: email, // list of receivers
       subject: "Hello ✔", // Subject line
       text: "Hello world?", // plain text body
       html: `<h1>Hi ${user.username}, </h1> <br /> <h3>Click the button below to redirect to reset your password</h3> <br /> <button><a href="https://chatviaa.vercel.app/reset/${email}" > Click here</a> </button>`, // html body
+
+      // from: "onboarding@resend.dev",
+      // to: email,
+      // subject: "Hello World",
+      // html: "<strong>It works!</strong>",
     });
 
     console.log("Message sent: %s", info.messageId);
@@ -116,6 +125,18 @@ exports.sendEmail = async (req, res) => {
       messageId: info.messageId,
       message: "We have sent to your email !!",
     });
+
+    // try {
+    //   resend.emails.send({
+    //     from: "onboarding@resend.dev",
+    //     to: "leducnghi28122000@gmail.com",
+    //     subject: "Hello World",
+    //     html: "<p>Congrats on sending your <strong>first email</strong>!</p>",
+    //   });
+    //   res.status(200).json({ data });
+    // } catch (error) {
+    //   res.status(500).json({ error });
+    // }
   } else {
     res.status(404).send({ message: "User not found!!" });
   }

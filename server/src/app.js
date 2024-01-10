@@ -7,14 +7,15 @@ const http = require("http");
 const api = require("./api");
 const multer = require("multer");
 const upload = multer();
+const { Server } = require("socket.io");
 
 require("dotenv").config();
 
 const app = express();
 const server = http.createServer(app);
-// const io = socket(server, {
-//   cors: "*",
-// });
+const io = new Server(server, {
+  cors: "*",
+});
 
 app.use(helmet());
 app.use(upload.array());
@@ -28,34 +29,32 @@ app.use("/api", api);
 app.use(errorHandler.notFound);
 app.use(errorHandler.errorHandler);
 
-// global.onlineUsers = new Map();
+global.onlineUsers = new Map();
 
-// io.on("connection", (socket) => {
-//   global.chatSocket = socket;
+io.on("connection", async (socket) => {
+  socket.on("join-room", (data) => {
+    data.map((room) => socket.join(room._id));
+  });
 
-//   socket.on("add-user", (userId) => {
-//     onlineUsers.set(userId, socket.id);
-//   });
+  socket.on("self-room", (data) => {
+    socket.join(data.room);
+  });
 
-//   socket.on("chat-via", (data) => {
-//     socket.join(data);
-//   });
+  socket.on("send-message", (data) => {
+    socket.broadcast.to(data.room).emit("receive-message", data);
+  });
 
-//   socket.on("send-msg", (data) => {
-//     console.log("🚀 ~ file: app.js:46 ~ socket.on ~ data:", data);
-//     // const sendUserSocket = onlineUsers.get(data.to);
-
-//     // if (sendUserSocket) {
-//     //   socket.to(sendUserSocket).emit("msg-receive", data.msg);
-//     // }
-//     socket.to(data.room).emit("msg-receive", data.msg);
-//   });
-//   console.log("A user connected", socket.id);
-
-//   socket.on("disconnect", () => {
-//     console.log("A user disconnected");
-//   });
-// });
+  socket.on("notifications", (data) => {
+    socket.broadcast.to(data.room).emit("receive-notify", {
+      id: new mongoose.Types.ObjectId(),
+      user: data.user,
+      readStatus: false,
+      content: data.content,
+      type: data.type,
+      timeStamp: Date.now,
+    });
+  });
+});
 
 mongoose.connect(
   `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.zuv1ih0.mongodb.net/Cluster0?retryWrites=true&w=majority`,
@@ -74,9 +73,6 @@ server.listen(port, () => {
 process.on("uncaughtException", (error) => {
   console.error("Uncaught Exception:", error);
 
-  // Optionally, perform any cleanup tasks before restarting
-
-  // Restart the Node.js process
   process.exit();
 });
 

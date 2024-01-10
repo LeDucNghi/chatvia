@@ -11,6 +11,8 @@ const ConversationSchema = new mongoose.Schema({
 
   group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" },
 
+  medias: [{type: String}],
+
   groupName: String,
 });
 

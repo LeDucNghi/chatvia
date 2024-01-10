@@ -19,11 +19,11 @@ const UserSchema = new mongoose.Schema({
 
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
-  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
-
   blocked: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
   groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
+
+  room: [{ type: mongoose.Schema.Types.ObjectId, ref: "Conversation" }],
 });
 
 const User = mongoose.model("User", UserSchema);

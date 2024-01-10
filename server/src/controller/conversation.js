@@ -7,77 +7,87 @@ const { User } = require("../models/Users");
 const { Settings } = require("../models/Settings");
 const { Blocked } = require("../models/Block");
 const { Group } = require("../models/Group");
+const jwt = require("jsonwebtoken");
+const tokenConfig = require("../config/token");
 
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
   const { message, consId, partnerId } = await req.body;
+  console.log(
+    "🚀 ~ file: conversation.js:14 ~ exports.sendMessage= ~ consId:",
+    consId
+  );
   const token = await req.decoded;
 
-  try {
-    await pusher.trigger("message", "my-event", {
-      message: message,
-      sender: { ...token.user },
-    });
+  if (!token.user._id || !partnerId) {
+    res.status(404).send({ message: "Something went wrong!!" });
+  } else {
+    try {
+      // await pusher.trigger("message", "my-event", {
+      //   message: message,
+      //   sender: { ...token.user },
+      // });
 
-    const conversation = await Conversation.findById(consId);
-    const newMsgId = new mongoose.Types.ObjectId();
-    const newConsId = new mongoose.Types.ObjectId();
+      const conversation = await Conversation.findOne({ _id: consId });
+      const newMsgId = new mongoose.Types.ObjectId();
+      const newConsId = new mongoose.Types.ObjectId();
 
-    if (!conversation) {
-      const newConversation = await Conversation.create({
-        _id: newConsId,
-        isGroup: false,
-        groupName: "",
-        participant: [token.user._id, partnerId],
-        messages: [newMsgId],
-      });
+      if (!conversation) {
+        const newConversation = await Conversation.create({
+          _id: newConsId,
+          isGroup: false,
+          groupName: "",
+          participant: [token.user._id, partnerId],
+          messages: [newMsgId],
+        });
 
-      await newConversation.save();
+        await newConversation.save();
 
-      const newMessage = await new Message({
-        _id: newMsgId,
-        message: message,
-        sender: token.user,
-        conversation: newConsId,
-      });
+        const newMessage = await new Message({
+          _id: newMsgId,
+          message: message,
+          sender: token.user,
+          conversation: newConsId,
+        });
 
-      await newMessage.save();
+        await newMessage.save();
 
-      return res.status(200).send({ message: newMessage });
-    } else {
-      const newMessage = await Message.create({
-        _id: newMsgId,
-        message: message,
-        sender: token.user,
-        conversation: newConsId,
-      });
+        return res.status(200).send({ message: newMessage });
+      } else {
+        const newMessage = await Message.create({
+          _id: newMsgId,
+          message: message,
+          sender: token.user,
+          conversation: newConsId,
+        });
 
-      await newMessage.save();
+        await newMessage.save();
 
-      await Conversation.findOneAndUpdate(
-        {
-          _id: conversation._id,
-        },
-        { $push: { messages: message } }
-      );
+        await Conversation.findOneAndUpdate(
+          {
+            _id: conversation._id,
+          },
+          { $push: { messages: message } }
+        );
 
-      return res.status(200).send({ message: newMessage });
+        return res.status(200).send({ message: newMessage });
+      }
+    } catch (error) {
+      return res.status(500).send(`Infernal server error ${error}`);
     }
-  } catch (error) {
-    return res.status(500).send(`Infernal server error ${error}`);
   }
 };
 
 // GET CONVERSATION LIST
 exports.getConversation = async (req, res) => {
-  const isGroup = await req.query.isGroup;
   const groupName = await req.params.groupName;
-  const { participant } = await req.body;
+  const { participant, isGroup } = await req.body;
+  console.log("🚀 ~ exports.getConversation= ~ participant:", participant);
 
   try {
     var conversation;
 
-    if (isGroup && groupName) {
+    if (isGroup === true) {
       conversation = await Conversation.findOne({
         isGroup,
         groupName: groupName,
@@ -86,13 +96,23 @@ exports.getConversation = async (req, res) => {
         "group participant",
         "-password -friends -__v -groups -blocked -messages"
       );
-    } else {
+    } else if (isGroup === false) {
       conversation = await Conversation.findOne({
         isGroup,
         participant: { $in: participant },
-      }).populate(
-        "participant",
-        "-password -friends -__v -groups -blocked -messages"
+      })
+        .populate(
+          "participant",
+          "-password -friends -__v -groups -blocked -messages"
+        )
+        .exec();
+
+      const newConversation = await Conversation.aggregate([
+        { $match: { participant: participant } },
+      ]);
+      console.log(
+        "🚀 ~ exports.getConversation= ~ conversation:",
+        newConversation
       );
     }
 
@@ -215,6 +235,16 @@ exports.friendRequestStt = async (req, res) => {
           new: true,
         }
       );
+
+      if (status === "accepted") {
+        await Conversation.create({
+          _id: new mongoose.Types.ObjectId(),
+          isGroup: false,
+          groupName: "",
+          participant: [token.user._id, request.sender._id],
+          messages: [],
+        });
+      }
     } else if (request.sender._id.equals(token.user._id)) {
       await User.findOneAndUpdate(
         { username: token.user.username },
@@ -231,6 +261,16 @@ exports.friendRequestStt = async (req, res) => {
           new: true,
         }
       );
+
+      if (status === "accepted") {
+        await Conversation.create({
+          _id: new mongoose.Types.ObjectId(),
+          isGroup: false,
+          groupName: "",
+          participant: [token.user._id, request.friend._id],
+          messages: [],
+        });
+      }
     }
     const newStatus = status[0].toUpperCase() + status.slice(1);
 
@@ -458,6 +498,42 @@ exports.createGroupConversation = async (req, res) => {
 
       return res.status(200).send({ message: "Create successfully!!" });
     }
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: `${error}`, message: `Internal Server Error` });
+  }
+};
+
+exports.fetchAllConversation = async (token) => {
+  jwt.verify(newToken, tokenConfig.SECRET, (err, decoded) => {
+    if (err) {
+      console.error(err.toString());
+
+      return res
+        .status(401)
+        .send({ error: true, "message:": "Unauthorized User." });
+    }
+    req.decoded = decoded;
+
+    next();
+  });
+
+  try {
+    const conversations = await Conversation.find({
+      participant: { $in: token.user._id },
+    })
+      .populate({
+        path: "messages",
+        populate: {
+          path: "sender",
+          select: "-password -friends -__v -messages",
+        },
+      })
+      .populate("participant", "-password -__v -friends")
+      .exec();
+
+    return conversations;
   } catch (error) {
     return res
       .status(500)
