@@ -8,7 +8,7 @@ import {
   RequestRes,
   Settings,
 } from "./../models";
-import { Language, Mode } from "./../models/dashboard";
+import { Language, Mode } from "../models/conversation";
 
 import { ObjResponse } from "./../models/common";
 import { axiosClient } from ".";

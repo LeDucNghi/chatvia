@@ -1,16 +1,17 @@
 import * as React from "react";
 
 import { Button, CircularProgress, IconButton } from "@mui/material";
+import { Images, socket } from "../../../../constants";
+import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
-import { Images } from "../../../../constants";
 import { InputField } from "../../../../components/common/InputField/InputField";
 import NotFound from "../../../../components/common/NotFound/NotFound";
 import { RequestItem } from "../Request/RequestItem";
 import { UserProfile } from "../../../../models";
 import { handleSendInvitation } from "../../../dashboard/dashboardThunk";
-import { useAppDispatch } from "../../../../app/store";
+import { selectUser } from "../../../auth/authSlice";
 
 export interface IAddContactProps {
   setIsOpen: (value: boolean) => void;
@@ -22,6 +23,7 @@ export interface IAddContactProps {
 
 export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser)
 
   const [email, setEmail] = React.useState<string | undefined>("");
   const [message, setMessage] = React.useState("");
@@ -37,6 +39,11 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
       setEmail("");
     }
   }, [email, isOpen]);
+
+  React.useEffect(() => {
+    socket.emit("self-room", { room: isSelected?._id })
+  }, [isSelected]);
+
 
   const handleSelectUser = (user: UserProfile) => {
     const index = userList.find((item) => item._id === user._id);
@@ -67,6 +74,18 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
       }
     }, 1000);
   };
+
+  const sendInvitation = (id: string) => {
+    dispatch(handleSendInvitation(id))
+
+    socket.emit("notifications", {
+      room: isSelected?._id,
+      id: id,
+      user: user,
+      content: `${user?.username} has sent to you a friend request🥳`,
+      type: "friendRequest",
+    })
+  }
 
   return (
     <CustomModal
@@ -139,7 +158,7 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
               textTransform: "capitalize",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => dispatch(handleSendInvitation(isSelected!._id!))}
+            onClick={() => sendInvitation(isSelected!._id!)}
             type="button"
             variant="contained"
             disabled={!email}

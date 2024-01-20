@@ -1,19 +1,22 @@
 import "../components/Side.scss";
 import "./Dashboard.scss";
 
+import { Message, Notification, Sides } from "../../../models";
 import React, { useEffect } from "react";
 import {
-  fetchAllUsersConversation,
-  fetchConversation,
-  handleGetFriendRequest,
-} from "../dashboardThunk";
-import {
+  addNewMessage,
+  addNewNotify,
   selectLanguage,
   selectMode,
   selectOpenConversation,
   selectPartnerId,
   selectRecentList
 } from "../dashboardSlice";
+import {
+  fetchAllUsersConversation,
+  fetchConversation,
+  handleGetFriendRequest,
+} from "../dashboardThunk";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
 import { AuthenticatedLayout } from "../../../components/layouts/Auth/Authenticate";
@@ -26,7 +29,6 @@ import { ProfileSide } from "../components/Profile/ProfileSide";
 import { RequestSide } from "../components/Request/RequestSide";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
-import { Sides } from "../../../models";
 import { selectUser } from "../../auth/authSlice";
 import { socket } from "../../../constants";
 import { useTranslation } from "react-i18next";
@@ -50,13 +52,26 @@ export default function Dashboard() {
   }, [partnerId, user]);
 
   useEffect(() => {
-    socket.emit("join-room", recentConversation);
-  }, [recentConversation]);
+    if (user) {
+      socket.emit("join-room", {
+        recentRooms: recentConversation,
+        selfRoom: user._id
+      });
+    }
+  }, [recentConversation, user]);
 
   useEffect(() => {
-    socket.on("receive-message", (data) => {
+    socket.on("receive-message", (data: Message) => {
       console.log("🚀 ~ file: Conversation.tsx:26 ~ socket.on ~ data:", data);
+
+      dispatch(addNewMessage(data))
     });
+
+    socket.on("receive-notify", (data: Notification) => {
+      console.log("🚀 ~ socket.on ~ data:", data)
+
+      dispatch(addNewNotify(data))
+    })
   }, []);
 
   useEffect(() => {

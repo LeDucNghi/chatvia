@@ -13,21 +13,12 @@ const tokenConfig = require("../config/token");
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
   const { message, consId, partnerId } = await req.body;
-  console.log(
-    "🚀 ~ file: conversation.js:14 ~ exports.sendMessage= ~ consId:",
-    consId
-  );
   const token = await req.decoded;
 
   if (!token.user._id || !partnerId) {
     res.status(404).send({ message: "Something went wrong!!" });
   } else {
     try {
-      // await pusher.trigger("message", "my-event", {
-      //   message: message,
-      //   sender: { ...token.user },
-      // });
-
       const conversation = await Conversation.findOne({ _id: consId });
       const newMsgId = new mongoose.Types.ObjectId();
       const newConsId = new mongoose.Types.ObjectId();
@@ -48,6 +39,8 @@ exports.sendMessage = async (req, res) => {
           message: message,
           sender: token.user,
           conversation: newConsId,
+          isRead: false,
+          isSent: true,
         });
 
         await newMessage.save();
@@ -59,6 +52,8 @@ exports.sendMessage = async (req, res) => {
           message: message,
           sender: token.user,
           conversation: newConsId,
+          isRead: false,
+          isSent: true,
         });
 
         await newMessage.save();
@@ -100,19 +95,13 @@ exports.getConversation = async (req, res) => {
       conversation = await Conversation.findOne({
         isGroup,
         participant: { $in: participant },
-      })
-        .populate(
-          "participant",
-          "-password -friends -__v -groups -blocked -messages"
-        )
-        .exec();
-
-      const newConversation = await Conversation.aggregate([
-        { $match: { participant: participant } },
-      ]);
+      }).populate(
+        "participant",
+        "-password -friends -__v -groups -blocked -messages"
+      );
       console.log(
         "🚀 ~ exports.getConversation= ~ conversation:",
-        newConversation
+        conversation
       );
     }
 

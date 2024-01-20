@@ -15,10 +15,20 @@ const MessageSchema = new Schema({
     default: Date.now,
   },
 
-  status: {
-    type: String,
-    enum: ["sent", "delivered", "read", "unread"],
-    default: "sent",
+  // status: {
+  //   type: String,
+  //   enum: ["sent", "delivered", "read", "unread"],
+  //   default: "sent",
+  // },
+
+  isSent: {
+    type: Boolean,
+    default: false,
+  },
+
+  isRead: {
+    type: Boolean,
+    default: false,
   },
 });
 

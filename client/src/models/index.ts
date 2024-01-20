@@ -1,5 +1,5 @@
 export * from "./pusher";
 export * from "./auth";
-export * from "./dashboard";
+export * from "./conversation";
 export * from "./seo";
 export * from "./common";

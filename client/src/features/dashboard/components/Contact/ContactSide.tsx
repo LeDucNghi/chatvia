@@ -13,6 +13,7 @@ import { UserProfile } from "../../../../models";
 import { handleGetAllUser } from "../../../auth/authThunk";
 import { selectMode } from "../../dashboardSlice";
 import { selectUserList } from "../../../auth/authSlice";
+import { socket } from "../../../../constants";
 
 export interface IContactSideProps {
   friendId: string;
@@ -30,6 +31,13 @@ export function ContactSide() {
     dispatch(handleGetAllUser());
   }, [dispatch]);
 
+  React.useEffect(() => {
+    socket.on("receive-notify", (data) => {
+      console.log("🚀 ~ socket.on ~ data:", data)
+    })
+  }, []);
+
+
   const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const contact = userList.filter((user) =>
       user.username?.includes(e.target.value)
@@ -41,6 +49,7 @@ export function ContactSide() {
       setUsers(contact);
     }
   };
+
 
   return (
     <SideWrapper

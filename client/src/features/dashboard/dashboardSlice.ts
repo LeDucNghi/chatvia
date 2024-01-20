@@ -6,6 +6,7 @@ import {
   Language,
   Message,
   Mode,
+  Notification,
   Settings,
   UserProfile,
 } from "../../models";
@@ -35,6 +36,7 @@ const initialState: DashboardState = {
   friendRequests: [],
   recentList: [],
   group: [],
+  notifications: [],
 
   conversations: null,
   partner: null,
@@ -155,6 +157,10 @@ export const dashboard = createSlice({
       state.friendRequests.push(action.payload);
     },
 
+    addNewNotify(state, action: PayloadAction<Notification>) {
+      state.notifications.push(action.payload);
+    },
+
     disabledConversation(state, action: PayloadAction<boolean>) {
       state.isDisabledConversation = action.payload;
     },
@@ -186,6 +192,7 @@ export const {
   onSelectedPartner,
   addNewMessage,
   addNewRequest,
+  addNewNotify,
   disabledConversation,
 } = dashboard.actions;
 
@@ -198,6 +205,7 @@ export const selectLanguage = (state: RootState) => state.dashboard.languages;
 export const selectPartner = (state: RootState) => state.dashboard.partner;
 export const selectGroupList = (state: RootState) => state.dashboard.group;
 export const selectSubmit = (state: RootState) => state.dashboard.submitting;
+export const selectNotify = (state: RootState) => state.dashboard.notifications;
 export const selectDisabledConversation = (state: RootState) =>
   state.dashboard.isDisabledConversation;
 export const selectOpenConversation = (state: RootState) =>

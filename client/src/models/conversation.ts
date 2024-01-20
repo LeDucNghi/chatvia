@@ -117,6 +117,7 @@ export interface DashboardState {
   recentList: Conversation[];
   group: Conversation[];
   groupInfo: Group | null;
+  notifications: Notification[];
 
   conversationId: string;
   partnerId: string;

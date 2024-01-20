@@ -16,6 +16,7 @@ import {
   selectFriendRequest,
   selectLanguage,
   selectMode,
+  selectNotify,
 } from "../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
@@ -29,6 +30,8 @@ import { useWindowSize } from "../../../hooks/useWindow";
 
 export interface ISideMenuProps {
   setSide: (side: Sides) => void;
+
+
 }
 
 export function SideMenu({ setSide }: ISideMenuProps) {
@@ -36,6 +39,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const mode = useAppSelector(selectMode);
   const languages = useAppSelector(selectLanguage);
   const friendRequest = useAppSelector(selectFriendRequest);
+  const notifications = useAppSelector(selectNotify)
   const { i18n, t } = useTranslation();
   const { windowInnerWidth } = useWindowSize();
 
@@ -105,15 +109,15 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                   isSelected === menu.value
                     ? "#7269ef"
                     : mode === "dark"
-                    ? "#a6b0cf"
-                    : "#000",
+                      ? "#a6b0cf"
+                      : "#000",
               }}
             >
               <Button variant="text">
                 {menu.id !== 2 && menu.id !== 4 && menu.id !== 5 ? (
                   <Icon>{menu.icon}</Icon>
                 ) : (
-                  <Badge color="error" badgeContent={friendRequest.length}>
+                  <Badge color="error" badgeContent={menu.id === 5 ? notifications.length : menu.id === 4 ? friendRequest.length : menu.id === 2 ? 0 : 0}>
                     <Icon>{menu.icon}</Icon>
                   </Badge>
                 )}

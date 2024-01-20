@@ -33,7 +33,13 @@ global.onlineUsers = new Map();
 
 io.on("connection", async (socket) => {
   socket.on("join-room", (data) => {
-    data.map((room) => socket.join(room._id));
+    const recentRoom = data.recentRooms.map((room) => {
+      return room._id;
+    });
+
+    const newRoom = [...recentRoom, data.selfRoom];
+
+    newRoom.map((room) => socket.join(room));
   });
 
   socket.on("self-room", (data) => {
@@ -51,7 +57,7 @@ io.on("connection", async (socket) => {
       readStatus: false,
       content: data.content,
       type: data.type,
-      timeStamp: Date.now,
+      timeStamp: new Date(),
     });
   });
 });

@@ -23,15 +23,24 @@ import { socket } from "../../constants";
 
 export const sendMsg =
   (values: Message): AppThunk =>
-  async () => {
+  async (dispatch, getState) => {
     try {
       // await conversationService.sendMsg(values);
 
       alert({ content: "Sent 🥳", position: "top-center", type: "success" });
 
+      const user = getState().auth.user;
+
       socket.emit("send-message", {
         room: values.consId,
         message: values.message,
+      });
+
+      socket.emit("notifications", {
+        room: user?._id,
+        user: user,
+        content: `${user?.username} has sent to you a message`,
+        type: "newMsg",
       });
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:9 ~ sendMsg ~ error:", error);

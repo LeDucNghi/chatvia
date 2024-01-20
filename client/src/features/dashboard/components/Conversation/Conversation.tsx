@@ -21,8 +21,6 @@ export function Conversation() {
     bottom?.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-
-
   return (
     <div className="chat-content-wrapper w-full p-6 relative flex flex-col overflow-auto">
       {fetching.isConversation ? (
