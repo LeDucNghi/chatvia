@@ -16,7 +16,7 @@ import {
   selectFriendRequest,
   selectLanguage,
   selectMode,
-  selectNotify,
+  selectNotify
 } from "../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store";
 
@@ -30,8 +30,6 @@ import { useWindowSize } from "../../../hooks/useWindow";
 
 export interface ISideMenuProps {
   setSide: (side: Sides) => void;
-
-
 }
 
 export function SideMenu({ setSide }: ISideMenuProps) {
@@ -45,6 +43,8 @@ export function SideMenu({ setSide }: ISideMenuProps) {
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
+
+
 
   const handleChangeSide = (side: Sides) => {
     setSide(side);
@@ -117,7 +117,9 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                 {menu.id !== 2 && menu.id !== 4 && menu.id !== 5 ? (
                   <Icon>{menu.icon}</Icon>
                 ) : (
-                  <Badge color="error" badgeContent={menu.id === 5 ? notifications.length : menu.id === 4 ? friendRequest.length : menu.id === 2 ? 0 : 0}>
+                  <Badge color="error" badgeContent={
+                    menu.id === 5 ? notifications.length : menu.id === 4 ? friendRequest.length : menu.id === 2 ? notifications?.length : 0
+                  }>
                     <Icon>{menu.icon}</Icon>
                   </Badge>
                 )}

@@ -69,9 +69,8 @@ export function ChatSide() {
 
       <div className="chat-recent w-full">
         <h5
-          className={`mb-4 font-semibold ${
-            mode === "dark" ? "text-white" : ""
-          }`}
+          className={`mb-4 font-semibold ${mode === "dark" ? "text-white" : ""
+            }`}
         >
           {t("Recent")}
         </h5>

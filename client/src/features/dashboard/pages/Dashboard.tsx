@@ -62,13 +62,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     socket.on("receive-message", (data: Message) => {
-      console.log("🚀 ~ file: Conversation.tsx:26 ~ socket.on ~ data:", data);
 
       dispatch(addNewMessage(data))
     });
 
     socket.on("receive-notify", (data: Notification) => {
-      console.log("🚀 ~ socket.on ~ data:", data)
 
       dispatch(addNewNotify(data))
     })

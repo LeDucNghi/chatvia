@@ -7,7 +7,6 @@ export interface INotificationSideProps { }
 
 export function NotificationSide() {
   const notifies = useAppSelector(selectNotify)
-  console.log("🚀 ~ NotificationSide ~ notifies:", notifies)
 
   return (
     <SideWrapper title="Notifications">

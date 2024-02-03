@@ -77,7 +77,6 @@ exports.sendMessage = async (req, res) => {
 exports.getConversation = async (req, res) => {
   const groupName = await req.params.groupName;
   const { participant, isGroup } = await req.body;
-  console.log("🚀 ~ exports.getConversation= ~ participant:", participant);
 
   try {
     var conversation;

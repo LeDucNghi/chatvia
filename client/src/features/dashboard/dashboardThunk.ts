@@ -37,7 +37,7 @@ export const sendMsg =
       });
 
       socket.emit("notifications", {
-        room: user?._id,
+        room: values.consId,
         user: user,
         content: `${user?.username} has sent to you a message`,
         type: "newMsg",
