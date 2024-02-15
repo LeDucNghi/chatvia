@@ -9,7 +9,7 @@ import {
   userMenu,
 } from "../../../constants/";
 import { Badge, Button, Divider, Icon, Tooltip } from "@mui/material";
-import { Language, Sides } from "../../../models";
+import { Language, Notify, Sides } from "../../../models";
 import {
   onLanguagesChange,
   onModeChange,
@@ -36,14 +36,28 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMode);
   const languages = useAppSelector(selectLanguage);
-  const friendRequest = useAppSelector(selectFriendRequest);
   const notifications = useAppSelector(selectNotify)
+  const friendRequest = useAppSelector(selectFriendRequest)
   const { i18n, t } = useTranslation();
   const { windowInnerWidth } = useWindowSize();
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
+  const [notifyType, setNotifyType] = React.useState<Notify | null>(null);
 
+  React.useEffect(() => {
+    notifications.map((noti) => {
+      if (noti.type === "friendRequest") {
+        setNotifyType("friendRequest")
+      }
+      else if (noti.type === "missedCall") {
+        setNotifyType("missedCall")
+      }
+      else {
+        setNotifyType("newMsg")
+      }
+    })
+  }, [notifications]);
 
 
   const handleChangeSide = (side: Sides) => {
@@ -118,7 +132,11 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                   <Icon>{menu.icon}</Icon>
                 ) : (
                   <Badge color="error" badgeContent={
-                    menu.id === 5 ? notifications.length : menu.id === 4 ? friendRequest.length : menu.id === 2 ? notifications?.length : 0
+                    menu.id === 5 ? notifications.length
+                      : menu.id === 4 && notifyType === "friendRequest"
+                        ? friendRequest.length
+                        : menu.id === 2 && notifications.map((noti) => noti.type === "newMsg")
+                          ? notifications.map((noti) => noti.type === "newMsg").length : 0
                   }>
                     <Icon>{menu.icon}</Icon>
                   </Badge>

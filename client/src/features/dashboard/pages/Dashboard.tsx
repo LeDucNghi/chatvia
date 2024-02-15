@@ -67,6 +67,7 @@ export default function Dashboard() {
     });
 
     socket.on("receive-notify", (data: Notification) => {
+      console.log("🚀 ~ socket.on ~ data:", data)
 
       dispatch(addNewNotify(data))
     })

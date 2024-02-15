@@ -56,7 +56,6 @@ export const fetchConversation =
   (isGroup: boolean, participant: string[], groupName?: string): AppThunk =>
   async (dispatch, getState) => {
     dispatch(fetchingConversation());
-    console.log("🚀 ~ participant:", participant, typeof isGroup);
 
     if (participant.length < 0) {
       dispatch(fetchConversationFailed());
@@ -69,7 +68,6 @@ export const fetchConversation =
           participant,
           groupName
         );
-        console.log("🚀 ~ res:", res.data);
 
         if (res && res.data) {
           res.data.messages.forEach((cons) => {

@@ -23,6 +23,8 @@ export type Mode = "dark" | "light";
 
 export type Language = "vi" | "en";
 
+export type Notify = "newMsg" | "friendRequest" | "missedCall";
+
 export interface RequestRes<T> {
   data: T[];
 }
@@ -50,7 +52,7 @@ export interface Notification {
   user: UserProfile;
   readStatus: boolean;
   content: string;
-  type: "newMsg" | "friendRequest" | "missedCall";
+  type: Notify;
   timeStamp: Date;
 }
 

@@ -44,7 +44,6 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
     socket.emit("self-room", { room: isSelected?._id })
   }, [isSelected]);
 
-
   const handleSelectUser = (user: UserProfile) => {
     const index = userList.find((item) => item._id === user._id);
 
@@ -76,11 +75,10 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
   };
 
   const sendInvitation = (id: string) => {
-    dispatch(handleSendInvitation(id))
+    // dispatch(handleSendInvitation(id))
 
     socket.emit("notifications", {
       room: isSelected?._id,
-      id: id,
       user: user,
       content: `${user?.username} has sent to you a friend request🥳`,
       type: "friendRequest",

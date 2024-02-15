@@ -90,7 +90,7 @@ export function ChatSide() {
                   onClick={onItemChange}
                   isSelected={msg._id === isSelected}
                   key={key}
-                  message={msg.messages}
+                  conversation={msg}
                 />
               );
             })

@@ -7,7 +7,6 @@ import { ChatItem } from "./Item";
 import { ChatItemLoader } from "../../../../components/common/Loader/ChatItemLoader";
 import { Images } from "../../../../constants";
 import NotFound from "../../../../components/common/NotFound/NotFound";
-import { selectUser } from "../../../auth/authSlice";
 import { useAppSelector } from "../../../../app/store";
 
 export function Conversation() {
@@ -15,7 +14,6 @@ export function Conversation() {
 
   const conversations = useAppSelector(selectConversations);
   const fetching = useAppSelector(selectFetching);
-  const user = useAppSelector(selectUser);
 
   useEffect(() => {
     bottom?.current?.scrollIntoView({ behavior: "smooth" });
@@ -38,7 +36,7 @@ export function Conversation() {
             <ChatItem
               key={key}
               hasImages={cons.hasImages}
-              userType={cons.sender?._id === user?._id ? "me" : "friend"}
+              sender={cons.sender!}
               message={cons}
             />
           );

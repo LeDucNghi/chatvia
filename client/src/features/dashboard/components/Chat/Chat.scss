@@ -11,6 +11,8 @@
         .chat-recent-item {
             background: transparent;
 
+            width: 100%;
+
             padding: 0.9rem 1rem;
 
             &.isActive {
@@ -22,7 +24,7 @@
             }
 
             .recent-msg {
-                padding: 0 1rem;
+                // padding: 0 1rem;
 
                 text-transform: none;
 

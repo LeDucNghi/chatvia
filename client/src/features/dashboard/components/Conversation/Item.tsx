@@ -1,13 +1,16 @@
 import "./Conversation.scss";
 
+import { Message, UserProfile } from "../../../../models";
+
 import CustomModal from "../../../../components/common/Modal/Modal";
 import { Left } from "./ItemLeft";
-import { Message } from "../../../../models";
 import { Right } from "./ItemRight";
+import { selectUser } from "../../../auth/authSlice";
+import { useAppSelector } from "../../../../app/store";
 import { useState } from "react";
 
 export interface IChatItemProps {
-  userType: "friend" | "me";
+  sender: UserProfile;
 
   message: Message;
 
@@ -17,7 +20,7 @@ export interface IChatItemProps {
 }
 
 export function ChatItem({
-  userType,
+  sender,
   message,
   isDisabled,
   isTyping,
@@ -27,6 +30,7 @@ export function ChatItem({
   // thì thằng tin nhắn trc sẽ bị ẩn tên và avatar
 
   // const filter = messagesList.filter(cons => cons.id === message.id)
+  const user = useAppSelector(selectUser);
 
   const [isOpen, setIsOpen] = useState(false);
   const [img, setImg] = useState("");
@@ -38,7 +42,7 @@ export function ChatItem({
 
   return (
     <>
-      {userType === "friend" ? (
+      {sender._id !== user?._id ? (
         <Left
           image={handleOpenImage}
           isTyping={isTyping}

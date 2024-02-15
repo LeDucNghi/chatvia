@@ -20,53 +20,28 @@ exports.sendMessage = async (req, res) => {
   } else {
     try {
       const conversation = await Conversation.findOne({ _id: consId });
-      const newMsgId = new mongoose.Types.ObjectId();
-      const newConsId = new mongoose.Types.ObjectId();
 
-      if (!conversation) {
-        const newConversation = await Conversation.create({
-          _id: newConsId,
-          isGroup: false,
-          groupName: "",
-          participant: [token.user._id, partnerId],
-          messages: [newMsgId],
-        });
+      const newMessage = await Message.create({
+        _id: new mongoose.Types.ObjectId(),
+        message: message,
+        sender: token.user,
+        conversation: new mongoose.Types.ObjectId(),
+        isRead: false,
+        isSent: true,
+      });
 
-        await newConversation.save();
+      await newMessage.save();
 
-        const newMessage = await new Message({
-          _id: newMsgId,
-          message: message,
-          sender: token.user,
-          conversation: newConsId,
-          isRead: false,
-          isSent: true,
-        });
+      const updatedConversation = await Conversation.findOneAndUpdate(
+        {
+          _id: conversation._id,
+        },
+        { $push: { messages: newMessage._id } }
+      );
 
-        await newMessage.save();
+      await updatedConversation.save();
 
-        return res.status(200).send({ message: newMessage });
-      } else {
-        const newMessage = await Message.create({
-          _id: newMsgId,
-          message: message,
-          sender: token.user,
-          conversation: newConsId,
-          isRead: false,
-          isSent: true,
-        });
-
-        await newMessage.save();
-
-        await Conversation.findOneAndUpdate(
-          {
-            _id: conversation._id,
-          },
-          { $push: { messages: message } }
-        );
-
-        return res.status(200).send({ message: newMessage });
-      }
+      return res.status(200).send({ message: newMessage });
     } catch (error) {
       return res.status(500).send(`Infernal server error ${error}`);
     }
@@ -86,41 +61,39 @@ exports.getConversation = async (req, res) => {
         isGroup,
         groupName: groupName,
         participant: { $in: participant },
-      }).populate(
-        "group participant",
-        "-password -friends -__v -groups -blocked -messages"
-      );
+      })
+        .populate({
+          path: "messages",
+          populate: {
+            path: "sender",
+            select: "-password -friends -__v -messages",
+          },
+        })
+        .populate(
+          "group participant",
+          "-password -friends -__v -groups -blocked -messages"
+        );
     } else if (isGroup === false) {
       conversation = await Conversation.findOne({
         isGroup,
         participant: { $in: participant },
-      }).populate(
-        "participant",
-        "-password -friends -__v -groups -blocked -messages"
-      );
-      console.log(
-        "🚀 ~ exports.getConversation= ~ conversation:",
-        conversation
-      );
-    }
-
-    if (conversation) {
-      const message = await Message.find({
-        conversation: conversation._id,
       })
-        .populate("sender", "-password -__v -messages")
-        .exec();
-
-      conversation.messages = [...message];
-
-      return res.status(200).send({
-        data: conversation,
-      });
-    } else {
-      return res.status(200).send({
-        data: conversation,
-      });
+        .populate({
+          path: "messages",
+          populate: {
+            path: "sender",
+            select: "-password -friends -__v -messages",
+          },
+        })
+        .populate(
+          "group participant",
+          "-password -friends -__v -groups -blocked -messages"
+        );
     }
+
+    return res.status(200).send({
+      data: conversation,
+    });
   } catch (error) {
     console.log(
       "🚀 ~ file: conversation.js:83 ~ exports.getConversation= ~ error:",
