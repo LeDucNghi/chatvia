@@ -13,7 +13,6 @@ import { Language, Notify, Sides } from "../../../models";
 import {
   onLanguagesChange,
   onModeChange,
-  selectFriendRequest,
   selectLanguage,
   selectMode,
   selectNotify
@@ -37,24 +36,31 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const mode = useAppSelector(selectMode);
   const languages = useAppSelector(selectLanguage);
   const notifications = useAppSelector(selectNotify)
-  const friendRequest = useAppSelector(selectFriendRequest)
   const { i18n, t } = useTranslation();
   const { windowInnerWidth } = useWindowSize();
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
   const [notifyType, setNotifyType] = React.useState<Notify | null>(null);
+  const [friendRequest, setFriendRequest] = React.useState<number[]>([]);
+  const [newMsg, setNewMsg] = React.useState<number[]>([]);
 
   React.useEffect(() => {
     notifications.map((noti) => {
       if (noti.type === "friendRequest") {
+        const req = [...friendRequest, 1]
+
         setNotifyType("friendRequest")
+        setFriendRequest(req)
       }
       else if (noti.type === "missedCall") {
         setNotifyType("missedCall")
       }
       else {
+        const req = [...newMsg, 1]
+
         setNotifyType("newMsg")
+        setNewMsg(req)
       }
     })
   }, [notifications]);
@@ -135,8 +141,8 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                     menu.id === 5 ? notifications.length
                       : menu.id === 4 && notifyType === "friendRequest"
                         ? friendRequest.length
-                        : menu.id === 2 && notifications.map((noti) => noti.type === "newMsg")
-                          ? notifications.map((noti) => noti.type === "newMsg").length : 0
+                        : menu.id === 2 && notifyType === "newMsg"
+                          ? newMsg.length : 0
                   }>
                     <Icon>{menu.icon}</Icon>
                   </Badge>

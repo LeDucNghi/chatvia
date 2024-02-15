@@ -13,7 +13,7 @@ import { authService } from "../../services";
 export const signin =
   (values: UserProfile): AppThunk =>
   async (dispatch) => {
-    dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+    dispatch(onSubmittingAuth({ isSubmitting: true, isSuccess: false }));
 
     try {
       const res = await authService.signin(values);
@@ -26,7 +26,7 @@ export const signin =
 
       cookies.setCookie("user", res);
 
-      dispatch(onSubmittingAuth({isSubmitting: false, isSuccess : true}));
+      dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: true }));
     } catch (error: any) {
       console.log("🚀 ~ file: auth.ts:14 ~ signin ~ error:", error);
       if (error) {
@@ -44,7 +44,7 @@ export const signin =
 export const signup =
   (values: UserProfile): AppThunk =>
   async (dispatch) => {
-    dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+    dispatch(onSubmittingAuth({ isSubmitting: true, isSuccess: false }));
 
     try {
       const res = await authService.signup(values);
@@ -111,14 +111,14 @@ export const validateUser =
 export const handleResetPwd =
   (values: UserProfile): AppThunk =>
   async (dispatch) => {
-    dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: false }));
+    dispatch(onSubmittingAuth({ isSubmitting: true, isSuccess: false }));
 
     try {
       const res = await authService.resetPassword(values);
 
       dispatch(fetchUser(res));
 
-     dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: true }));
+      dispatch(onSubmittingAuth({ isSubmitting: false, isSuccess: true }));
     } catch (error: any) {
       console.log("🚀 ~ file: authThunk.ts:59 ~ error:", error);
       if (error) {

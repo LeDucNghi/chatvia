@@ -75,7 +75,7 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
   };
 
   const sendInvitation = (id: string) => {
-    // dispatch(handleSendInvitation(id))
+    dispatch(handleSendInvitation(id))
 
     socket.emit("notifications", {
       room: isSelected?._id,
