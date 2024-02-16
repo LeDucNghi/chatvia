@@ -1,5 +1,6 @@
 import { EditContactType, Language, Message, Mode } from "../../models";
 import {
+  addNewMessage,
   disabledConversation,
   fetchConversationFailed,
   fetchConversationSuccess,
@@ -25,7 +26,7 @@ export const sendMsg =
   (values: Message): AppThunk =>
   async (dispatch, getState) => {
     try {
-      // await conversationService.sendMsg(values);
+      await conversationService.sendMsg(values);
 
       alert({ content: "Sent 🥳", position: "top-center", type: "success" });
 
@@ -34,6 +35,7 @@ export const sendMsg =
       socket.emit("send-message", {
         room: values.consId,
         message: values.message,
+        sender: user,
       });
 
       socket.emit("notifications", {
@@ -42,6 +44,8 @@ export const sendMsg =
         content: `${user?.username} has sent to you a message`,
         type: "newMsg",
       });
+
+      dispatch(addNewMessage({ message: values.message, sender: user! }));
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:9 ~ sendMsg ~ error:", error);
       alert({
