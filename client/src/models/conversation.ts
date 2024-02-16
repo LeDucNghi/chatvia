@@ -136,14 +136,8 @@ export interface Message {
   sender?: UserProfile;
   hasImages?: boolean;
   images?: [{ id: string; img: string }];
-  status?:
-    | "sent"
-    | "delivered"
-    | "read"
-    | "unread"
-    | "online"
-    | "leave"
-    | "off";
+  isSent?: boolean;
+  isRead?: boolean;
   timeStamp?: string;
 }
 

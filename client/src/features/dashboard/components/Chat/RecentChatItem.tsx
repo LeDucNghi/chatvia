@@ -29,14 +29,17 @@ export function RecentChatItem({
 
   const [receiver, setReceiver] = useState<UserProfile | null>(null);
   const [lastMsg, setLastMsg] = useState<Message | null>(null);
+  const [isRead, setIsRead] = useState<Message[]>([]);
 
   useEffect(() => {
     if (conversation) {
       const findReceiver = conversation.participant.find((user) => user._id !== me?._id)
       const lastMessage = conversation.messages.slice(-1)
+      const unreadMsg = conversation.messages.filter((msg) => msg.isRead === false)
 
       setReceiver(findReceiver!)
       setLastMsg(lastMessage![0])
+      setIsRead(unreadMsg)
     }
   }, [conversation]);
 
@@ -79,7 +82,7 @@ export function RecentChatItem({
             <div className="text-gray-300 flex items-end flex-col ">
               {moment(lastMsg?.timeStamp).format("LT")}
 
-              <Badge content={10} />
+              <Badge content={isRead.length} />
             </div>
           </div>
         </Button>
