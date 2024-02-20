@@ -17,7 +17,7 @@ const MessageSchema = new Schema({
 
   isSent: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 
   isRead: {

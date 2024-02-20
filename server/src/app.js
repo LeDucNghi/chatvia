@@ -9,6 +9,9 @@ const multer = require("multer");
 const upload = multer();
 const { Server } = require("socket.io");
 
+const registerFriendRequest = require("./socket/friendRequestHandler");
+const registerCreateGroup = require("./socket/createGroupHandler");
+
 require("dotenv").config();
 
 const app = express();
@@ -60,6 +63,9 @@ io.on("connection", async (socket) => {
       timeStamp: new Date(),
     });
   });
+
+  registerFriendRequest(io, socket);
+  registerCreateGroup(io, socket);
 });
 
 mongoose.connect(
