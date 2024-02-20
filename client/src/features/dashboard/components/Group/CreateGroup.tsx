@@ -9,16 +9,16 @@ import {
   ListItem,
   Paper,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
 import { InputField } from "../../../../components/common/InputField/InputField";
 import { RequestItem } from "../Request/RequestItem";
 import { UserProfile } from "../../../../models";
-import { handleCreateGroup } from "../../dashboardThunk";
 import { selectMode } from "../../dashboardSlice";
 import { selectUser } from "../../../auth/authSlice";
+import { socket } from "../../../../constants";
+import { useAppSelector } from "../../../../app/store";
 
 export interface ICreateGroupProps {
   isOpen: boolean;
@@ -28,7 +28,6 @@ export interface ICreateGroupProps {
 export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
   const user = useAppSelector(selectUser);
   const mode = useAppSelector(selectMode);
-  const dispatch = useAppDispatch();
 
   const [fetchingUsersList, setFetchingUsersList] = React.useState(false);
   const [groupName, setGroupName] = React.useState("");
@@ -78,12 +77,18 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
   };
 
   const createGroup = () => {
-    dispatch(
-      handleCreateGroup(
-        participant.map((user) => user._id!),
-        groupName
-      )
-    );
+    // dispatch(
+    //   handleCreateGroup(
+    //     participant.map((user) => user._id!),
+    //     groupName
+    //   )
+    // );
+
+    socket.emit("createGroupConversation", {
+      participant,
+      groupName,
+      user
+    })
   };
 
   return (
@@ -96,9 +101,8 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
       onClose={() => setIsOpen(!isOpen)}
     >
       <div
-        className={`${
-          mode === "dark" ? "text-white" : ""
-        } modal-header flex justify-between items-center py-4`}
+        className={`${mode === "dark" ? "text-white" : ""
+          } modal-header flex justify-between items-center py-4`}
       >
         <h5 className="font-semibold capitalize"> create group </h5>
         <IconButton onClick={() => setIsOpen(false)}>
@@ -119,20 +123,20 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
         {participant.length === 0
           ? null
           : participant.map((user, key) => {
-              return (
-                <ListItem
-                  sx={{ width: "auto", p: "0 0.3rem 0 0.3rem" }}
-                  key={key}
-                >
-                  <Chip
-                    avatar={<Avatar alt={user.username} src={user.avatar} />}
-                    label={user.username}
-                    variant="outlined"
-                    onDelete={handleDelete(user)}
-                  />
-                </ListItem>
-              );
-            })}
+            return (
+              <ListItem
+                sx={{ width: "auto", p: "0 0.3rem 0 0.3rem" }}
+                key={key}
+              >
+                <Chip
+                  avatar={<Avatar alt={user.username} src={user.avatar} />}
+                  label={user.username}
+                  variant="outlined"
+                  onDelete={handleDelete(user)}
+                />
+              </ListItem>
+            );
+          })}
       </Paper>
 
       <InputField

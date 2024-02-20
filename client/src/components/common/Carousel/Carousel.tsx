@@ -21,6 +21,7 @@ export interface ICarouselProps {
 }
 
 export function Carousel({ option, isFetching }: ICarouselProps) {
+  console.log("🚀 ~ Carousel ~ option:", option)
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMode);
 

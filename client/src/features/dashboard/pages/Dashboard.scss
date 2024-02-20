@@ -50,6 +50,10 @@
         &.dark {
             background: #262e35;
         }
+
+        .appbar {
+            background: transparent;
+        }
     }
 }
 
@@ -94,6 +98,8 @@
 
             transition: right 0.5s;
 
+            background: #fff;
+
             &.active {
                 right: 0;
 
@@ -113,6 +119,8 @@
                 &.active {
                     visibility: visible;
                     opacity: 1;
+
+                    width: 100%;
                 }
             }
         }

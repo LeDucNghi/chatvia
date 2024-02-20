@@ -4,7 +4,7 @@ import {
   selectBlockedStatus,
   selectGroupInfo,
   selectPartner,
-  selectSubmit,
+  selectSubmit
 } from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
@@ -18,11 +18,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Media } from "./Media";
 import { SettingModal } from "../../../../models";
 import { SettingsModal } from "./SettingsModal";
+import { sweetalert } from "../../../../utils";
 import { useState } from "react";
 
 export function Settings() {
   const dispatch = useAppDispatch();
   const groupInfo = useAppSelector(selectGroupInfo);
+  console.log("🚀 ~ Settings ~ groupInfo:", groupInfo)
   const partner = useAppSelector(selectPartner);
   const submitStatus = useAppSelector(selectSubmit);
   const blockStatus = useAppSelector(selectBlockedStatus);
@@ -50,9 +52,17 @@ export function Settings() {
     dispatch(onSubmitting({ type: "isBlocking", status: true }));
 
     if (type === "block") {
-      dispatch(handleEditContact(partner!._id!, "block"));
+      sweetalert({
+        title: "Are you sure you want to block this person?", isConfirmedFunc() {
+          dispatch(handleEditContact(partner!._id!, "block"));
+        }, confirmButtonText: "Block", showCancelButton: true
+      })
     } else {
-      dispatch(leaveGroup(groupInfo!._id!));
+      sweetalert({
+        title: "Are you sure you want to leave the group?", isConfirmedFunc() {
+          dispatch(leaveGroup(groupInfo!._id!));
+        }, confirmButtonText: "Leave", showCancelButton: true
+      })
     }
   };
 
@@ -96,8 +106,8 @@ export function Settings() {
             {groupInfo
               ? "leave chat"
               : blockStatus === "blocked"
-              ? "unblock this user"
-              : "block this user"}
+                ? "unblock this user"
+                : "block this user"}
           </div>
         </LoadingButton>
       </div>

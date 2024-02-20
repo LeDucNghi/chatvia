@@ -37,7 +37,6 @@ export function ContactSide() {
     })
   }, []);
 
-
   const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const contact = userList.filter((user) =>
       user.username?.includes(e.target.value)
@@ -49,7 +48,6 @@ export function ContactSide() {
       setUsers(contact);
     }
   };
-
 
   return (
     <SideWrapper

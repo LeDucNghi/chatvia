@@ -93,10 +93,6 @@ export function ConversationMain() {
     };
   }, []);
 
-  //   const handleDrawerOpen = () => {
-  //     setOpen(true);
-  //   };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -104,7 +100,6 @@ export function ConversationMain() {
   return (
     <div style={{ display: "flex" }}>
       <AppBar
-        sx={{ background: "transparent" }}
         className={`${openConversation ? "active" : ""} appbar`}
         open={open}
       >

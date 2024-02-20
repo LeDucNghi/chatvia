@@ -13,6 +13,7 @@ export function Conversation() {
   const bottom = useRef<null | HTMLDivElement>(null);
 
   const conversations = useAppSelector(selectConversations);
+  console.log("🚀 ~ Conversation ~ conversations:", conversations)
   const fetching = useAppSelector(selectFetching);
 
   useEffect(() => {

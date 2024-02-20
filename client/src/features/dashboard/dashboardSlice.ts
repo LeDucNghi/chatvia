@@ -68,7 +68,7 @@ export const dashboard = createSlice({
       state.fetching.isFriendRequest = true;
     },
 
-    fetchGroupListSuccessfully(state, action: PayloadAction<Conversation[]>) {
+    fetchGroupListSuccess(state, action: PayloadAction<Conversation[]>) {
       state.group = action.payload;
     },
 
@@ -151,6 +151,13 @@ export const dashboard = createSlice({
 
     addNewMessage(state, action: PayloadAction<Message>) {
       state.conversations?.messages.push(action.payload);
+
+      state.recentList.map((recent) => {
+        if (action.payload.consId === recent._id) {
+          recent.messages.unshift(action.payload);
+          // recent.messages = [action.payload, ...recent.messages];
+        }
+      });
     },
 
     addNewRequest(state, action: PayloadAction<FriendRequest>) {
@@ -178,7 +185,7 @@ export const {
   fetchConversationSuccess,
   fetchUserListSuccess,
   fetchPartnerProfileSuccess,
-  fetchGroupListSuccessfully,
+  fetchGroupListSuccess,
   fetchSettings,
   fetchRecentList,
   fetchingRecentList,

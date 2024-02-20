@@ -26,7 +26,6 @@ export function ChatItem({
   isTyping,
   hasImages,
 }: IChatItemProps) {
-  console.log("🚀 ~ sender:", sender)
   // check id nếu thằng sau trùng thằng trước
   // thì thằng tin nhắn trc sẽ bị ẩn tên và avatar
 

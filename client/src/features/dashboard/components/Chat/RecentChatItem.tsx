@@ -22,6 +22,7 @@ export function RecentChatItem({
   isSelected,
   onClick,
 }: IRecentChatItemProps) {
+  console.log("🚀 ~ conversation:", conversation)
   const dispatch = useAppDispatch();
 
   const mode = useAppSelector(selectMode);
@@ -34,18 +35,24 @@ export function RecentChatItem({
   useEffect(() => {
     if (conversation) {
       const findReceiver = conversation.participant.find((user) => user._id !== me?._id)
-      const lastMessage = conversation.messages.slice(-1)
       const unreadMsg = conversation.messages.filter((msg) => msg.isRead === false)
 
       setReceiver(findReceiver!)
-      setLastMsg(lastMessage![0])
       setIsRead(unreadMsg)
+
+      if (conversation.messages.length === 0) {
+        return
+      } else {
+        const lastMessage = conversation.messages.slice(-1)
+        setLastMsg(lastMessage![0])
+      }
+
     }
-  }, [conversation]);
+  }, [conversation, me]);
 
   const handleOpenConversation = () => {
     dispatch(onOpenConversation(true));
-    onClick(conversation._id, lastMsg!.sender!._id!);
+    // onClick(conversation._id, conversation.participant.find((item) => item._id !== me?._id));
   };
 
   return (
@@ -75,7 +82,8 @@ export function RecentChatItem({
               </h5>
 
               <p className=" text-gray-400">
-                {lastMsg?.sender?._id === me?._id ? "You:" : `${receiver?.username}:`} {lastMsg?.message}
+                {lastMsg?.sender?._id === me?._id ? "You:" : `${receiver?.username}:`}
+                {lastMsg?.message}
               </p>
             </div>
 

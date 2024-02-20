@@ -83,6 +83,13 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
       content: `${user?.username} has sent to you a friend request🥳`,
       type: "friendRequest",
     })
+
+    socket.emit("friendRequest", {
+      room: isSelected?._id,
+      user: user,
+      id: id,
+      type: "friendRequest",
+    })
   }
 
   return (

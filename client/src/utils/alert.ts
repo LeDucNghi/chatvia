@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
 export interface Alert {
@@ -14,6 +15,20 @@ export interface Alert {
   autoClose?: number;
 }
 
+export interface SweetAlert {
+  title: string;
+  showDenyButton?: boolean;
+  showCancelButton?: boolean;
+  confirmButtonText?: string;
+  denyButtonText?: string;
+
+  isConfirmedText?: string;
+  isDeniedText?: string;
+
+  isConfirmedFunc?: () => any;
+  isDeniedFunc?: () => any;
+}
+
 export const alert = (params: Alert) => {
   return toast(params.content, {
     position: params.position,
@@ -25,5 +40,24 @@ export const alert = (params: Alert) => {
     progress: undefined,
     theme: params.theme ? params.theme : "dark",
     type: params.type,
+  });
+};
+
+export const sweetalert = (params: SweetAlert) => {
+  return Swal.fire({
+    title: params.title,
+    showDenyButton: params.showDenyButton ? params.showDenyButton : false,
+    showCancelButton: params.showCancelButton ? params.showCancelButton : false,
+    confirmButtonText: params.confirmButtonText,
+    denyButtonText: params.denyButtonText,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      Swal.fire(params.isConfirmedText, "", "success");
+      params.isConfirmedFunc!();
+    } else if (result.isDenied) {
+      Swal.fire(params.isDeniedText, "", "error");
+      params.isDeniedFunc!();
+    }
   });
 };

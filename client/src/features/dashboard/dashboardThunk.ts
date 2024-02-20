@@ -6,7 +6,7 @@ import {
   fetchConversationSuccess,
   fetchFriendRequestsSuccess,
   fetchGroupInformationSuccess,
-  fetchGroupListSuccessfully,
+  fetchGroupListSuccess,
   fetchPartnerProfileSuccess,
   fetchRecentList,
   fetchingConversation,
@@ -26,7 +26,7 @@ export const sendMsg =
   (values: Message): AppThunk =>
   async (dispatch, getState) => {
     try {
-      await conversationService.sendMsg(values);
+      // await conversationService.sendMsg(values);
 
       alert({ content: "Sent 🥳", position: "top-center", type: "success" });
 
@@ -45,7 +45,13 @@ export const sendMsg =
         type: "newMsg",
       });
 
-      dispatch(addNewMessage({ message: values.message, sender: user! }));
+      dispatch(
+        addNewMessage({
+          consId: values.consId,
+          message: values.message,
+          sender: user!,
+        })
+      );
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:9 ~ sendMsg ~ error:", error);
       alert({
@@ -225,11 +231,15 @@ export const fetchAllUsersConversation = (): AppThunk => async (dispatch) => {
     const res = await conversationService.getAllConversation();
 
     if (res) {
+      // const filterMessage = res.data.filter(
+      //   (item) => item.messages.length !== 0
+      // );
+
       dispatch(fetchRecentList(res.data));
 
       const newGroupList = res.data.filter((data) => data.isGroup === true);
 
-      dispatch(fetchGroupListSuccessfully(newGroupList));
+      dispatch(fetchGroupListSuccess(newGroupList));
     }
   } catch (error) {
     console.log(
@@ -297,15 +307,25 @@ export const handleCreateGroup =
 
 export const leaveGroup =
   (groupId: string): AppThunk =>
-  async () => {
-    try {
-      const res = await conversationService.leaveGroup(groupId);
+  async (dispatch, getState) => {
+    const groupList = getState().dashboard.group;
+    console.log("🚀 ~ groupList:", groupList);
 
-      alert({
-        content: res.message,
-        position: "top-center",
-        type: "success",
-      });
+    // console.log("🚀 ~ groupId:", groupId);
+    try {
+      // const res = await conversationService.leaveGroup(groupId);
+
+      // alert({
+      //   content: res.message,
+      //   position: "top-center",
+      //   type: "success",
+      // });
+
+      const findGroup = groupList.filter((gr) => gr.group?._id !== groupId);
+      console.log("🚀 ~ findGroup:", findGroup);
+
+      // dispatch(fetchGroupListSuccess(findGroup));
+      // dispatch(fetchGroupInformationSuccess(null));
     } catch (error) {
       console.log(
         "🚀 ~ file: dashboardThunk.ts:292 ~ leaveGroup ~ error:",

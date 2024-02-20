@@ -1,11 +1,12 @@
 import "../components/Side.scss";
 import "./Dashboard.scss";
 
-import { Message, Notification, Sides } from "../../../models";
+import { FriendRequest, Message, Notification, Sides } from "../../../models";
 import React, { useEffect } from "react";
 import {
   addNewMessage,
   addNewNotify,
+  addNewRequest,
   selectLanguage,
   selectMode,
   selectOpenConversation,
@@ -67,9 +68,13 @@ export default function Dashboard() {
     });
 
     socket.on("receive-notify", (data: Notification) => {
-      console.log("🚀 ~ socket.on ~ data:", data)
-
       dispatch(addNewNotify(data))
+    })
+  }, []);
+
+  useEffect(() => {
+    socket.on("receive-request", (data: FriendRequest) => {
+      dispatch(addNewRequest(data))
     })
   }, []);
 

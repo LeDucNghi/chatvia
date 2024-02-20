@@ -13,7 +13,6 @@ import { Carousel } from "../../../../components/common/Carousel/Carousel";
 import ChatIcon from "@mui/icons-material/Chat";
 import { Images } from "../../../../constants";
 import { InputField } from "../../../../components/common/InputField/InputField";
-import { Messages } from "../../../../mock";
 import NotFound from "../../../../components/common/NotFound/NotFound";
 import { RecentChatItem } from "./RecentChatItem";
 import SearchIcon from "@mui/icons-material/Search";
@@ -62,11 +61,9 @@ export function ChatSide() {
         />
       }
     >
-      {Messages.length !== 0 && (
-        <div className="chat-user-onine mb-3">
-          <Carousel isFetching={fetching.isFriendList} option={user?.friends} />
-        </div>
-      )}
+      {user && <div className="chat-user-onine mb-3">
+        <Carousel isFetching={fetching.isFriendList} option={user?.friends} />
+      </div>}
 
       <div className="chat-recent w-full">
         <h5
