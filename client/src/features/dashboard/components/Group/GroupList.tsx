@@ -2,6 +2,7 @@ import { Avatar, Button } from "@mui/material";
 import {
   fetchPartnerProfileSuccess,
   onBlockedStatusChange,
+  onOpenConversation,
   selectFetching,
   selectMode,
 } from "../../dashboardSlice";
@@ -35,6 +36,8 @@ export function GroupList({ groupList }: GroupListProps) {
 
     dispatch(onBlockedStatusChange("unBlocked"));
     dispatch(fetchPartnerProfileSuccess(null));
+    dispatch(onOpenConversation(true));
+
   };
 
   return (
@@ -59,9 +62,8 @@ export function GroupList({ groupList }: GroupListProps) {
                 <Avatar src={Images.avatar1} alt={group.groupName} />
 
                 <h5
-                  className={`text-left text-sm ${
-                    mode === "dark" ? "text-white" : "text-black"
-                  } w-9/12 font-semibold ml-2`}
+                  className={`text-left text-sm ${mode === "dark" ? "text-white" : "text-black"
+                    } w-9/12 font-semibold ml-2`}
                 >
                   #{group.groupName}
                 </h5>

@@ -26,7 +26,6 @@ export function ChatSide() {
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
   const recentList = useAppSelector(selectRecentList);
-  console.log("🚀 ~ ChatSide ~ recentList:", recentList)
   const user = useAppSelector(selectUser);
   const { t } = useTranslation();
 

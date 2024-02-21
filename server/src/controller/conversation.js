@@ -52,11 +52,6 @@ exports.sendMessage = async (req, res) => {
 exports.getConversation = async (req, res) => {
   const groupName = await req.params.groupName;
   const { participant, isGroup } = await req.body;
-  console.log("🚀 ~ exports.getConversation= ~ { participant, isGroup }:", {
-    participant,
-    isGroup,
-    groupName,
-  });
 
   try {
     var conversation;
@@ -91,7 +86,7 @@ exports.getConversation = async (req, res) => {
           },
         })
         .populate(
-          "group participant",
+          "participant",
           "-password -friends -__v -groups -blocked -messages"
         );
     }
@@ -336,7 +331,7 @@ exports.conversations = async (req, res) => {
           select: "-password -friends -__v -messages",
         },
       })
-      .populate("participant", "-password -__v -friends")
+      .populate("participant group", "-password -__v -friends")
       .exec();
 
     return res.status(200).send({ data: conversations });
@@ -508,10 +503,10 @@ exports.fetchAllConversation = async (token) => {
 };
 
 exports.leaveGroup = async (req, res) => {
-  try {
-    const token = await req.decoded;
-    const groupId = await req.params.id;
+  const token = await req.decoded;
+  const groupId = await req.params.id;
 
+  try {
     const group = await Group.findOne({ _id: groupId });
     const conversation = await Conversation.findOne({ group: groupId });
 

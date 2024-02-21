@@ -9,8 +9,8 @@ const multer = require("multer");
 const upload = multer();
 const { Server } = require("socket.io");
 
-const registerFriendRequest = require("./socket/friendRequestHandler");
-const registerCreateGroup = require("./socket/createGroupHandler");
+const registerFriendRequest = require("./socket/friendHandler");
+const registerGroupConversation = require("./socket/groupHandler");
 
 require("dotenv").config();
 
@@ -65,7 +65,7 @@ io.on("connection", async (socket) => {
   });
 
   registerFriendRequest(io, socket);
-  registerCreateGroup(io, socket);
+  registerGroupConversation(io, socket);
 });
 
 mongoose.connect(

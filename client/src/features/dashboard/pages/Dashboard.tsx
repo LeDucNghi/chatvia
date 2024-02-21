@@ -1,7 +1,7 @@
 import "../components/Side.scss";
 import "./Dashboard.scss";
 
-import { FriendRequest, Message, Notification, Sides } from "../../../models";
+import { Alert, FriendRequest, Message, Notification, Sides } from "../../../models";
 import React, { useEffect } from "react";
 import {
   addNewMessage,
@@ -30,6 +30,7 @@ import { ProfileSide } from "../components/Profile/ProfileSide";
 import { RequestSide } from "../components/Request/RequestSide";
 import { Seo } from "../../../components/common/Seo/Seo";
 import { SideMenu } from "../components/MenuSide";
+import { alert } from "../../../utils";
 import { selectUser } from "../../auth/authSlice";
 import { socket } from "../../../constants";
 import { useTranslation } from "react-i18next";
@@ -70,11 +71,17 @@ export default function Dashboard() {
     socket.on("receive-notify", (data: Notification) => {
       dispatch(addNewNotify(data))
     })
-  }, []);
 
-  useEffect(() => {
     socket.on("receive-request", (data: FriendRequest) => {
       dispatch(addNewRequest(data))
+    })
+
+    socket.on("alert", (data: Alert) => {
+      alert({
+        content: data.message,
+        position: "top-center",
+        type: data.status !== 200 ? "error" : "success"
+      })
     })
   }, []);
 

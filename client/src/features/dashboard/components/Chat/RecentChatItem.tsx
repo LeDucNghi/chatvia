@@ -22,7 +22,6 @@ export function RecentChatItem({
   isSelected,
   onClick,
 }: IRecentChatItemProps) {
-  console.log("🚀 ~ conversation:", conversation)
   const dispatch = useAppDispatch();
 
   const mode = useAppSelector(selectMode);

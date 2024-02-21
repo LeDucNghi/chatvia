@@ -11,13 +11,23 @@ module.exports = (io, socket) => {
     if (request) {
       await Friend.deleteOne({ _id: request._id });
 
-      socket.broadcast.to(data.room).emit("receive-request", {
-        error: "sai",
+      // socket.broadcast.to(data.room).emit("receive-request", {
+      //   error: "sai",
+      // });
+
+      socket.emit("alert", {
+        status: 400,
+        message: "You have just cancelled your request!!",
       });
     } else {
       if (data.id === data.user._id) {
-        socket.broadcast.to(data.room).emit("receive-request", {
-          error: "sai",
+        // socket.broadcast.to(data.room).emit("receive-request", {
+        //   error: "sai",
+        // });
+
+        socket.emit("alert", {
+          status: 404,
+          message: "You cannot send request to yourself🤔",
         });
       } else {
         const user = await User.findOne({ _id: data.id }).select(

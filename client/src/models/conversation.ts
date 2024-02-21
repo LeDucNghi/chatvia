@@ -33,6 +33,11 @@ export interface MessageRes {
   message: string;
 }
 
+export interface Alert {
+  message: string;
+  status: number;
+}
+
 export interface File {
   id: string;
   name: string;

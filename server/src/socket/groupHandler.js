@@ -11,7 +11,10 @@ module.exports = (io, socket) => {
 
     try {
       if (index.length !== 0) {
-        // return res.status(404).send({ message: "Duplicate Id" });
+        socket.emit("alert", {
+          stattus: 404,
+          message: "Duplicate Id",
+        });
         return;
       } else {
         const newParticipant = [...participant, user._id];
@@ -55,10 +58,16 @@ module.exports = (io, socket) => {
           { $push: { groups: newGroup._id } }
         );
 
-        // return res.status(200).send({ message: "Create successfully!!" });
+        socket.emit("alert", {
+          status: 200,
+          message: "Create successfully!!",
+        });
       }
     } catch (error) {
-      return console.log(error);
+      return socket.emit("alert", {
+        status: 500,
+        message: "Create successfully!!",
+      });
     }
   };
 

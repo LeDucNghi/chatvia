@@ -2,17 +2,17 @@ import * as React from "react";
 
 import {
   Avatar,
-  Button,
   Chip,
   CircularProgress,
   IconButton,
   ListItem,
-  Paper,
+  Paper
 } from "@mui/material";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
 import { InputField } from "../../../../components/common/InputField/InputField";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { RequestItem } from "../Request/RequestItem";
 import { UserProfile } from "../../../../models";
 import { selectMode } from "../../dashboardSlice";
@@ -30,6 +30,7 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
   const mode = useAppSelector(selectMode);
 
   const [fetchingUsersList, setFetchingUsersList] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [groupName, setGroupName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [usersList, setUsersList] = React.useState<UserProfile[]>([]);
@@ -77,18 +78,21 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
   };
 
   const createGroup = () => {
-    // dispatch(
-    //   handleCreateGroup(
-    //     participant.map((user) => user._id!),
-    //     groupName
-    //   )
-    // );
-
     socket.emit("createGroupConversation", {
       participant,
       groupName,
       user
     })
+
+    let timer
+
+    setIsLoading(true)
+
+    timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000);
+
+    clearTimeout(timer)
   };
 
   return (
@@ -184,7 +188,7 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
       )}
 
       <div className="moda-footer p-3 w-full flex justify-end">
-        <Button
+        <LoadingButton
           sx={{
             background: "#7269ef",
             textTransform: "capitalize",
@@ -194,9 +198,10 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
           type="button"
           variant="contained"
           disabled={participant.length === 0}
+          loading={isLoading}
         >
           create this group
-        </Button>
+        </LoadingButton>
       </div>
     </CustomModal>
   );

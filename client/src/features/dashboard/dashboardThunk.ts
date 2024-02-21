@@ -26,7 +26,7 @@ export const sendMsg =
   (values: Message): AppThunk =>
   async (dispatch, getState) => {
     try {
-      // await conversationService.sendMsg(values);
+      await conversationService.sendMsg(values);
 
       alert({ content: "Sent 🥳", position: "top-center", type: "success" });
 
@@ -308,24 +308,23 @@ export const handleCreateGroup =
 export const leaveGroup =
   (groupId: string): AppThunk =>
   async (dispatch, getState) => {
-    const groupList = getState().dashboard.group;
-    console.log("🚀 ~ groupList:", groupList);
+    const group = getState().dashboard.group;
 
-    // console.log("🚀 ~ groupId:", groupId);
+    console.log("🚀 ~ groupId:", groupId);
     try {
-      // const res = await conversationService.leaveGroup(groupId);
+      const res = await conversationService.leaveGroup(groupId);
 
-      // alert({
-      //   content: res.message,
-      //   position: "top-center",
-      //   type: "success",
-      // });
+      alert({
+        content: res.message,
+        position: "top-center",
+        type: "success",
+      });
 
-      const findGroup = groupList.filter((gr) => gr.group?._id !== groupId);
-      console.log("🚀 ~ findGroup:", findGroup);
+      const findGroup = group.filter((gr) => gr.group?._id !== groupId);
 
-      // dispatch(fetchGroupListSuccess(findGroup));
-      // dispatch(fetchGroupInformationSuccess(null));
+      dispatch(fetchGroupListSuccess(findGroup!));
+      dispatch(fetchGroupInformationSuccess(null));
+      dispatch(fetchConversationSuccess(null));
     } catch (error) {
       console.log(
         "🚀 ~ file: dashboardThunk.ts:292 ~ leaveGroup ~ error:",

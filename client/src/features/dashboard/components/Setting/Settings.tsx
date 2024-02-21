@@ -24,7 +24,6 @@ import { useState } from "react";
 export function Settings() {
   const dispatch = useAppDispatch();
   const groupInfo = useAppSelector(selectGroupInfo);
-  console.log("🚀 ~ Settings ~ groupInfo:", groupInfo)
   const partner = useAppSelector(selectPartner);
   const submitStatus = useAppSelector(selectSubmit);
   const blockStatus = useAppSelector(selectBlockedStatus);
@@ -32,6 +31,7 @@ export function Settings() {
   const [modalName, setModalName] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState<SettingModal>("addUser");
+  const [img, setImg] = useState<string>("");
 
   const openModal = (open: boolean, type: SettingModal, modalName?: string) => {
     setIsOpen(open);
@@ -40,7 +40,6 @@ export function Settings() {
 
     setModalName(modalName!);
   };
-  const [img, setImg] = useState<string>("");
 
   const handleSelectImage = (image: string) => {
     setImg(image);
