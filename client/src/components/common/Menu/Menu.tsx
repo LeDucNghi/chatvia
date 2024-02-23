@@ -1,8 +1,8 @@
 import * as React from "react";
 
+import { Button, Icon } from "@mui/material";
+
 import Avatar from "@mui/material/Avatar";
-import { Icon } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Options } from "../../../models";
@@ -57,7 +57,7 @@ export function CustomMenu({
       <div
         style={{ display: "flex", alignItems: "center", textAlign: "center" }}
       >
-        <IconButton
+        <Button
           onClick={handleClick}
           size="small"
           sx={{
@@ -73,7 +73,7 @@ export function CustomMenu({
           ) : img ? (
             <Avatar sx={{ width: 32, height: 32 }} src={img} />
           ) : null}
-        </IconButton>
+        </Button>
       </div>
       <Menu
         anchorEl={anchorEl}
@@ -98,17 +98,17 @@ export function CustomMenu({
             "&:before":
               direction === "rtl"
                 ? {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: mode === "dark" ? "#313a43" : "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  }
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: mode === "dark" ? "#313a43" : "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                }
                 : {},
           },
         }}

@@ -71,25 +71,24 @@ export function SideMenu({ setSide }: ISideMenuProps) {
     setIsSelected(side);
   };
 
-  const handleChangeMode = (id: number) => {
-    if (id === 8) {
-      if (mode === "dark") {
-        dispatch(onModeChange("light"));
-        dispatch(handleUpdateSettings("light", language));
-      } else {
-        dispatch(onModeChange("dark"));
-        dispatch(handleUpdateSettings("dark", language));
-      }
+  const handleChangeMode = () => {
+    if (mode === "dark") {
+      dispatch(onModeChange("light"));
+      dispatch(handleUpdateSettings("light", language));
+    } else {
+      dispatch(onModeChange("dark"));
+      dispatch(handleUpdateSettings("dark", language));
     }
   };
 
   const handleChangeLanguage = (language: Language) => {
-    dispatch(onLanguagesChange(language));
-    dispatch(handleUpdateSettings(mode, language));
+    if (language) {
+      i18n.changeLanguage(language);
+      dispatch(onLanguagesChange(language));
+      dispatch(handleUpdateSettings(mode, language));
 
-    setLanguage(language);
-
-    i18n.changeLanguage(language);
+      setLanguage(language);
+    }
   };
 
   const handleMenuChange = (values: "profile" | "setting" | "logout") => {
@@ -174,7 +173,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
           {sideMenu.slice(6, 8).map((menu, key) => {
             return (
               <Tooltip
-                className="pills-item w-8 h-12"
+                className="pills-item w-8 h-12 mx-auto my-4"
                 arrow
                 key={key}
                 title={t(menu.title)}
@@ -182,7 +181,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                   windowInnerWidth < BREAK_POINTS_NUMBER.md ? "top" : "left"
                 }
                 sx={{ color: mode === "dark" ? "#a6b0cf" : "#000" }}
-                onClick={() => handleChangeMode(menu.id)}
+
               >
                 <>
                   {menu.id === 7 ? (
@@ -196,11 +195,14 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                       icon={menu.icon}
                       menu={languageList}
                     />
-                  ) : mode === "dark" ? (
-                    <Icon>{menu.icon}</Icon>
-                  ) : (
-                    <WbSunnyIcon fontSize="small" />
-                  )}
+                  ) :
+                    <Button
+                      onClick={handleChangeMode}
+                      sx={{ color: "black" }}>
+                      {mode === "dark"
+                        ? <Icon>{menu.icon}</Icon>
+                        : <WbSunnyIcon fontSize="small" />}
+                    </Button>}
                 </>
               </Tooltip>
             );

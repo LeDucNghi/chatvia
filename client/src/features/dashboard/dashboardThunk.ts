@@ -204,10 +204,14 @@ export const handleUpdateSettings =
   (mode: Mode, language: Language): AppThunk =>
   async () => {
     try {
-      const res = await conversationService.updateSettings(mode, language);
-      console.log("🚀 ~ file: dashboardThunk.ts:132 ~ res:", res);
+      await conversationService.updateSettings(mode, language);
     } catch (error) {
       console.log("🚀 ~ file: dashboardThunk.ts:133 ~ error:", error);
+      alert({
+        content: `Something went wrong!!`,
+        position: "top-center",
+        type: "error",
+      });
     }
   };
 
@@ -221,6 +225,11 @@ export const handleGetSettings = (): AppThunk => async (dispatch) => {
     }
   } catch (error) {
     console.log("🚀 ~ file: dashboardThunk.ts:133 ~ error:", error);
+    alert({
+      content: `Something went wrong!!`,
+      position: "top-center",
+      type: "error",
+    });
   }
 };
 
