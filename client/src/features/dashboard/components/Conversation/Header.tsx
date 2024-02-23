@@ -44,9 +44,8 @@ export function Header({ openDrawer, open }: HeaderProps) {
 
   return (
     <div
-      className={`chat-header w-full px-2 py-4 flex ${
-        mode === "dark" && "dark"
-      }`}
+      className={`chat-header w-full px-2 py-4 flex ${mode === "dark" && "dark"
+        }`}
     >
       {fetching.isConversation ? (
         <div className="flex items-center justify-between">
@@ -70,16 +69,15 @@ export function Header({ openDrawer, open }: HeaderProps) {
                   conversation?.isGroup && conversation?.group?.avatar
                     ? conversation?.group?.avatar
                     : !conversation?.isGroup && partner?.avatar
-                    ? partner?.avatar
-                    : Images.avatar1
+                      ? partner?.avatar
+                      : Images.avatar1
                 }
                 alt="logo"
               />
 
               <h5
-                className={`flex font-semibold items-center w-4/5 capitalize ${
-                  mode === "dark" ? "text-white" : "text-black"
-                }`}
+                className={`flex font-semibold items-center w-4/5 capitalize ${mode === "dark" ? "text-white" : "text-black"
+                  }`}
               >
                 {conversation?.isGroup
                   ? conversation?.group?.name

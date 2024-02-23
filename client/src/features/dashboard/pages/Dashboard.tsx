@@ -1,7 +1,7 @@
 import "../components/Side.scss";
 import "./Dashboard.scss";
 
-import { Alert, FriendRequest, Message, Notification, Sides } from "../../../models";
+import { Alert, FriendRequest, Group, Message, Notification, Sides } from "../../../models";
 import React, { useEffect } from "react";
 import {
   addNewMessage,
@@ -77,11 +77,16 @@ export default function Dashboard() {
     })
 
     socket.on("alert", (data: Alert) => {
+      console.log("🚀 ~ socket.on ~ data:", data)
       alert({
         content: data.message,
         position: "top-center",
         type: data.status !== 200 ? "error" : "success"
       })
+    })
+
+    socket.on("new-room", (data: Group) => {
+      console.log("🚀 ~ socket.on ~ data:", data)
     })
   }, []);
 

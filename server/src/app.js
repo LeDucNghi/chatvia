@@ -10,7 +10,8 @@ const upload = multer();
 const { Server } = require("socket.io");
 
 const registerFriendRequest = require("./socket/friendHandler");
-const registerGroupConversation = require("./socket/groupHandler");
+const registerRoom = require("./socket/roomHandler");
+const registerMessage = require("./socket/messageHandler");
 
 require("dotenv").config();
 
@@ -35,24 +36,6 @@ app.use(errorHandler.errorHandler);
 global.onlineUsers = new Map();
 
 io.on("connection", async (socket) => {
-  socket.on("join-room", (data) => {
-    const recentRoom = data.recentRooms.map((room) => {
-      return room._id;
-    });
-
-    const newRoom = [...recentRoom, data.selfRoom];
-
-    newRoom.map((room) => socket.join(room));
-  });
-
-  socket.on("self-room", (data) => {
-    socket.join(data.room);
-  });
-
-  socket.on("send-message", (data) => {
-    socket.broadcast.to(data.room).emit("receive-message", data);
-  });
-
   socket.on("notifications", (data) => {
     socket.broadcast.to(data.room).emit("receive-notify", {
       id: new mongoose.Types.ObjectId(),
@@ -65,7 +48,8 @@ io.on("connection", async (socket) => {
   });
 
   registerFriendRequest(io, socket);
-  registerGroupConversation(io, socket);
+  registerRoom(io, socket);
+  registerMessage(io, socket);
 });
 
 mongoose.connect(

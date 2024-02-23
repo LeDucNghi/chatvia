@@ -1,21 +1,28 @@
-const { Conversation } = require("../models/Conversation");
+const { default: mongoose } = require("mongoose");
 const { Group } = require("../models/Group");
 const { User } = require("../models/Users");
-const { default: mongoose } = require("mongoose");
+const { Conversation } = require("../models/Conversation");
 
 module.exports = (io, socket) => {
   const createGroupConversation = async (data) => {
     const { participant, groupName, user } = data;
 
     const index = participant.filter((item) => item === user._id);
+    const participantId = participant.map((user) => {
+      return user._id;
+    });
+    const newParticipantId = [...participantId, user._id];
+    console.log(
+      "🚀 ~ createGroupConversation ~ newParticipantId:",
+      newParticipantId
+    );
 
     try {
       if (index.length !== 0) {
-        socket.emit("alert", {
-          stattus: 404,
+        return socket.emit("alert", {
+          status: 404,
           message: "Duplicate Id",
         });
-        return;
       } else {
         const newParticipant = [...participant, user._id];
 
@@ -62,14 +69,35 @@ module.exports = (io, socket) => {
           status: 200,
           message: "Create successfully!!",
         });
+
+        // data.participant.map((user) => {
+        socket.broadcast.to([participantId]).emit("new-room", {
+          room: newGroup,
+        });
+        // });
       }
     } catch (error) {
       return socket.emit("alert", {
         status: 500,
-        message: "Create successfully!!",
+        message: "Infernal server error",
+        response: error,
       });
     }
   };
+
+  socket.on("join-room", (data) => {
+    const recentRoom = data.recentRooms.map((room) => {
+      return room._id;
+    });
+
+    const newRoom = [...recentRoom, data.selfRoom];
+
+    newRoom.map((room) => socket.join(room));
+  });
+
+  socket.on("self-room", (data) => {
+    socket.join(data.room);
+  });
 
   socket.on("createGroupConversation", createGroupConversation);
 };

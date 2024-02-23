@@ -184,7 +184,8 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                 sx={{ color: mode === "dark" ? "#a6b0cf" : "#000" }}
                 onClick={() => handleChangeMode(menu.id)}
               >
-                <Button variant="text">
+                {/* <Button variant="text"> */}
+                <>
                   {menu.id === 7 ? (
                     <CustomMenu
                       onChange={handleChangeLanguage}
@@ -201,7 +202,9 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                   ) : (
                     <WbSunnyIcon fontSize="small" />
                   )}
-                </Button>
+                </>
+
+                {/* </Button> */}
               </Tooltip>
             );
           })}
