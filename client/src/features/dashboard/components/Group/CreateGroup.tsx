@@ -87,13 +87,16 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
 
     let timer
 
+    clearTimeout(timer)
+
     setIsLoading(true)
 
     timer = setTimeout(() => {
       setIsLoading(false)
+      setIsOpen(!isOpen)
+      setParticipant([])
     }, 3000);
 
-    clearTimeout(timer)
   };
 
   return (

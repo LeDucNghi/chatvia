@@ -8,14 +8,12 @@ module.exports = (io, socket) => {
     const { participant, groupName, user } = data;
 
     const index = participant.filter((item) => item === user._id);
+
     const participantId = participant.map((user) => {
       return user._id;
     });
+
     const newParticipantId = [...participantId, user._id];
-    console.log(
-      "🚀 ~ createGroupConversation ~ newParticipantId:",
-      newParticipantId
-    );
 
     try {
       if (index.length !== 0) {
@@ -65,16 +63,16 @@ module.exports = (io, socket) => {
           { $push: { groups: newGroup._id } }
         );
 
+        newParticipantId.map((id) => {
+          io.to(id).emit("new-room", {
+            ...newGroupConversation._doc,
+          });
+        });
+
         socket.emit("alert", {
           status: 200,
           message: "Create successfully!!",
         });
-
-        // data.participant.map((user) => {
-        socket.broadcast.to([participantId]).emit("new-room", {
-          room: newGroup,
-        });
-        // });
       }
     } catch (error) {
       return socket.emit("alert", {
@@ -85,7 +83,7 @@ module.exports = (io, socket) => {
     }
   };
 
-  socket.on("join-room", (data) => {
+  const joinRoom = (data) => {
     const recentRoom = data.recentRooms.map((room) => {
       return room._id;
     });
@@ -93,11 +91,13 @@ module.exports = (io, socket) => {
     const newRoom = [...recentRoom, data.selfRoom];
 
     newRoom.map((room) => socket.join(room));
-  });
+  };
 
-  socket.on("self-room", (data) => {
+  const joinSelfRoom = (data) => {
     socket.join(data.room);
-  });
+  };
 
+  socket.on("join-room", joinRoom);
+  socket.on("self-room", joinSelfRoom);
   socket.on("createGroupConversation", createGroupConversation);
 };

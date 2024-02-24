@@ -1,12 +1,14 @@
 import "../components/Side.scss";
 import "./Dashboard.scss";
 
-import { Alert, FriendRequest, Group, Message, Notification, Sides } from "../../../models";
+import { Alert, Conversation, FriendRequest, Message, Notification, Sides } from "../../../models";
 import React, { useEffect } from "react";
 import {
   addNewMessage,
   addNewNotify,
   addNewRequest,
+  fetchGroupListSuccess,
+  selectGroupList,
   selectLanguage,
   selectMode,
   selectOpenConversation,
@@ -44,6 +46,7 @@ export default function Dashboard() {
   const openConversation = useAppSelector(selectOpenConversation);
   const partnerId = useAppSelector(selectPartnerId);
   const recentConversation = useAppSelector(selectRecentList);
+  const groupList = useAppSelector(selectGroupList)
 
   const [side, setSide] = React.useState<Sides>("chat");
 
@@ -77,7 +80,6 @@ export default function Dashboard() {
     })
 
     socket.on("alert", (data: Alert) => {
-      console.log("🚀 ~ socket.on ~ data:", data)
       alert({
         content: data.message,
         position: "top-center",
@@ -85,8 +87,10 @@ export default function Dashboard() {
       })
     })
 
-    socket.on("new-room", (data: Group) => {
-      console.log("🚀 ~ socket.on ~ data:", data)
+    socket.on("new-room", (data: Conversation) => {
+      const newGroupList = [...groupList, data]
+
+      dispatch(fetchGroupListSuccess(newGroupList))
     })
   }, []);
 

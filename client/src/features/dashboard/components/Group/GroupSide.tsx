@@ -18,6 +18,7 @@ import { handleGetAllUser } from "../../../auth/authThunk";
 export function GroupSide() {
   const mode = useAppSelector(selectMode);
   const groupList = useAppSelector(selectGroupList);
+  console.log("🚀 ~ GroupSide ~ groupList:", groupList)
 
   const dispatch = useAppDispatch();
 

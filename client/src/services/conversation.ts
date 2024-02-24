@@ -23,8 +23,6 @@ export const conversationService = {
     participant: string[],
     groupName?: string
   ): Promise<ObjResponse<Conversation>> {
-    const url = `/conversation/getConversation/${groupName}`;
-    console.log("🚀 ~ url:", url);
     return axiosClient.post(`/conversation/getConversation/${groupName}`, {
       participant,
       isGroup,
