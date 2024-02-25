@@ -30,14 +30,17 @@ export function RecentChatItem({
   const [receiver, setReceiver] = useState<UserProfile | null>(null);
   const [lastMsg, setLastMsg] = useState<Message | null>(null);
   const [isRead, setIsRead] = useState<Message[]>([]);
+  const [partner, setPartner] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     if (conversation) {
       const findReceiver = conversation.participant.find((user) => user._id !== me?._id)
       const unreadMsg = conversation.messages.filter((msg) => msg.isRead === false)
+      const findPartner = conversation.participant.find((user) => user._id !== me?._id)
 
       setReceiver(findReceiver!)
       setIsRead(unreadMsg)
+      setPartner(findPartner!)
 
       if (conversation.messages.length === 0) {
         return
@@ -51,7 +54,7 @@ export function RecentChatItem({
 
   const handleOpenConversation = () => {
     dispatch(onOpenConversation(true));
-    // onClick(conversation._id, conversation.participant.find((item) => item._id !== me?._id));
+    onClick(conversation._id, partner!._id!);
   };
 
   return (
