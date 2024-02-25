@@ -95,6 +95,7 @@ export function CreateGroup({ isOpen, setIsOpen }: ICreateGroupProps) {
       setIsLoading(false)
       setIsOpen(!isOpen)
       setParticipant([])
+      setGroupName("")
     }, 3000);
 
   };
