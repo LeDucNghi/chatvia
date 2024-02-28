@@ -18,15 +18,8 @@ export const conversationService = {
     return axiosClient.post("/conversation/sendMessage", params);
   },
 
-  getConversation(
-    isGroup: boolean,
-    participant: string[],
-    groupName?: string
-  ): Promise<ObjResponse<Conversation>> {
-    return axiosClient.post(`/conversation/getConversation/${groupName}`, {
-      participant,
-      isGroup,
-    });
+  getConversation(id: string): Promise<ObjResponse<Conversation>> {
+    return axiosClient.post(`/conversation/getConversation/${id}`);
   },
 
   getAllConversation(): Promise<ArrResponse<Conversation>> {

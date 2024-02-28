@@ -20,17 +20,16 @@ export interface GroupListProps {
 }
 
 export function GroupList({ groupList }: GroupListProps) {
+  console.log("🚀 ~ GroupList ~ groupList:", groupList)
   const fetching = useAppSelector(selectFetching);
   const mode = useAppSelector(selectMode);
 
   const dispatch = useAppDispatch();
 
-  const getGroupConversation = (participant: Conversation) => {
+  const getGroupConversation = (id: string) => {
     dispatch(
       fetchConversation(
-        true,
-        participant.participant.map((user) => user._id!),
-        participant.groupName
+        id
       )
     );
 
@@ -56,7 +55,7 @@ export function GroupList({ groupList }: GroupListProps) {
               sx={{ padding: "1rem" }}
               className="w-full group-items"
               key={key}
-              onClick={() => getGroupConversation(group)}
+              onClick={() => getGroupConversation(group._id)}
             >
               <div className="w-full flex justify-between items-center">
                 <Avatar src={Images.avatar1} alt={group.groupName} />

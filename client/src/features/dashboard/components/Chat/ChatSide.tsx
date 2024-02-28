@@ -1,7 +1,7 @@
 import "./Chat.scss";
 
 import {
-  onSelectedPartner,
+  onSelectedConversation,
   selectFetching,
   selectMode,
   selectRecentList,
@@ -38,10 +38,10 @@ export function ChatSide() {
     );
   };
 
-  const onItemChange = (id: string, partnerId: string) => {
+  const onItemChange = (id: string) => {
     setIsSelected(id);
 
-    dispatch(onSelectedPartner(String(partnerId)));
+    dispatch(onSelectedConversation(id));
   };
 
   return (
@@ -61,16 +61,16 @@ export function ChatSide() {
       }
     >
       {user && <div className="chat-user-onine mb-3">
-        <Carousel isFetching={fetching.isFriendList} option={user?.friends} />
+        <Carousel isFetching={fetching.isFriendList} option={user?.room} />
       </div>}
 
       <div className="chat-recent w-full">
-        <h5
+        {recentList.length !== 0 && <h5
           className={`mb-4 font-semibold ${mode === "dark" ? "text-white" : ""
             }`}
         >
           {t("Recent")}
-        </h5>
+        </h5>}
 
         <div className="chat-recent-list overflow-auto py-2 w-full">
           {fetching.isRecentList ? (

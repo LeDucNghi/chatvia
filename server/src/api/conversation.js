@@ -32,7 +32,7 @@ router.get("/friendList/:id", verifyToken, getFriendList);
 router.post("/sendMessage", verifyToken, sendMessage);
 
 // GET SPECIFIC CONVERSATION
-router.post("/getConversation/:groupName", getConversation);
+router.post("/getConversation/:id", getConversation);
 
 // SEND FRIEND INVITATION
 router.post("/sendInvitation/:id", verifyToken, sendInvitation);

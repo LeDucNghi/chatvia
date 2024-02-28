@@ -14,7 +14,7 @@ export interface IRecentChatItemProps {
 
   isSelected: boolean;
 
-  onClick: (id: string, partnerId: string) => void;
+  onClick: (id: string) => void;
 }
 
 export function RecentChatItem({
@@ -30,23 +30,21 @@ export function RecentChatItem({
   const [receiver, setReceiver] = useState<UserProfile | null>(null);
   const [lastMsg, setLastMsg] = useState<Message | null>(null);
   const [isRead, setIsRead] = useState<Message[]>([]);
-  const [partner, setPartner] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     if (conversation) {
       const findReceiver = conversation.participant.find((user) => user._id !== me?._id)
       const unreadMsg = conversation.messages.filter((msg) => msg.isRead === false)
-      const findPartner = conversation.participant.find((user) => user._id !== me?._id)
+      // const findPartner = conversation.participant.find((user) => user._id !== me?._id)
 
       setReceiver(findReceiver!)
       setIsRead(unreadMsg)
-      setPartner(findPartner!)
 
       if (conversation.messages.length === 0) {
         return
       } else {
-        const lastMessage = conversation.messages.slice(-1)
-        setLastMsg(lastMessage![0])
+        const lastMessage = conversation.messages[conversation.messages.length - 1]
+        setLastMsg(lastMessage)
       }
 
     }
@@ -54,7 +52,7 @@ export function RecentChatItem({
 
   const handleOpenConversation = () => {
     dispatch(onOpenConversation(true));
-    onClick(conversation._id, partner!._id!);
+    onClick(conversation._id);
   };
 
   return (
@@ -85,7 +83,7 @@ export function RecentChatItem({
 
               <p className=" text-gray-400">
                 {lastMsg?.sender?._id === me?._id ? "You:" : `${receiver?.username}:`}
-                {lastMsg?.message}
+                {" "}{lastMsg?.message}
               </p>
             </div>
 

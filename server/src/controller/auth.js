@@ -147,7 +147,7 @@ exports.getUser = async (req, res) => {
   try {
     const { user } = await req.decoded;
 
-    const findUser = await User.findOne({ username: user.username })
+    const findUser = await User.findOne({ _id: user._id })
       .populate({
         path: "blocked",
         populate: {
@@ -158,16 +158,23 @@ exports.getUser = async (req, res) => {
       .populate({
         path: "friends",
         populate: {
-          path: "blocked",
+          path: "blocked room",
           select: "-password -friends -__v -messages -groups",
         },
       })
-      .populate("groups", "-password -__v -friends")
+      .populate({
+        path: "room",
+        populate: {
+          path: "participant",
+          select: "-password -friends -__v -messages -groups",
+        },
+      })
       .select("-password -__v");
 
     return res.status(200).send({ data: findUser });
   } catch (error) {
-    res.status(500).send({ error });
+    console.log("🚀 ~ exports.getUser= ~ error:", error);
+    return res.status(500).send({ error });
   }
 };
 

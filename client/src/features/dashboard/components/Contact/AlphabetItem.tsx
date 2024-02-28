@@ -23,8 +23,11 @@ export function AlphabetItem({ itemsByLetter, userList }: IAlphabetItemProps) {
 
   const alphabet = Object.keys(itemsByLetter).sort();
 
-  const fetchConversations = (id: string) => {
-    dispatch(fetchConversation(false, [id, String(user?._id)]));
+  const fetchConversations = (friend: UserProfile) => {
+    const conversation = user?.room?.find((cons) => friend.room?.some((item) => item._id === cons._id))
+    if (conversation) {
+      dispatch(fetchConversation(conversation!._id!));
+    }
   };
 
   const editContact = (value: string) => {
@@ -36,92 +39,89 @@ export function AlphabetItem({ itemsByLetter, userList }: IAlphabetItemProps) {
     <>
       {userList.length !== 0
         ? userList.map((user, key) => {
-            return (
-              <div key={key} className=" p-3 w-full flex justify-between">
-                <Button className="w-full">
-                  <div className="flex items-center justify-start w-full">
-                    <Avatar src={user.avatar} />
+          return (
+            <div key={key} className=" p-3 w-full flex justify-between">
+              <Button className="w-full">
+                <div className="flex items-center justify-start w-full">
+                  <Avatar src={user.avatar} />
 
-                    <h5
-                      className={`ml-2 ${
-                        mode === "dark" ? "text-white" : "text-black"
+                  <h5
+                    className={`ml-2 ${mode === "dark" ? "text-white" : "text-black"
                       } font-semibold capitalize`}
-                    >
-                      {user.username}
-                    </h5>
-                  </div>
-                </Button>
-
-                <CustomMenu
-                  icon={<MoreVertIcon />}
-                  direction="rtl"
-                  menu={contactOptions}
-                  menuItemStyle={{
-                    color: "#7a7f9a",
-                  }}
-                  onChange={(value: string) => {
-                    // setId(user._id!);
-                    editContact(value);
-                  }}
-                />
-              </div>
-            );
-          })
-        : alphabet.map((letter) => {
-            return (
-              <div key={letter}>
-                {" "}
-                <div
-                  className={`p-3 uppercase font-semibold ${
-                    mode === "dark" ? "text-blue-600" : ""
-                  }`}
-                >
-                  {" "}
-                  {letter}{" "}
+                  >
+                    {user.username}
+                  </h5>
                 </div>
-                <ul className="capitalize">
-                  {itemsByLetter[letter].map((user, index) => {
-                    return (
-                      <li
-                        key={index}
-                        className=" p-3 w-full flex justify-between"
-                      >
-                        <Button
-                          className="w-full"
-                          onClick={() => fetchConversations(user._id)}
-                        >
-                          <div className="flex items-center justify-start w-full">
-                            <Avatar src={user.avatar} />
+              </Button>
 
-                            <h5
-                              className={`ml-2 ${
-                                mode === "dark" ? "text-white" : "text-black"
-                              } font-semibold capitalize`}
-                            >
-                              {user.username}
-                            </h5>
-                          </div>
-                        </Button>
-
-                        <CustomMenu
-                          icon={<MoreVertIcon />}
-                          direction="rtl"
-                          menu={contactOptions}
-                          menuItemStyle={{
-                            color: "#7a7f9a",
-                          }}
-                          onChange={(value: string) => {
-                            // setId(user._id);
-                            editContact(value);
-                          }}
-                        />
-                      </li>
-                    );
-                  })}
-                </ul>
+              <CustomMenu
+                icon={<MoreVertIcon />}
+                direction="rtl"
+                menu={contactOptions}
+                menuItemStyle={{
+                  color: "#7a7f9a",
+                }}
+                onChange={(value: string) => {
+                  // setId(user._id!);
+                  editContact(value);
+                }}
+              />
+            </div>
+          );
+        })
+        : alphabet.map((letter) => {
+          return (
+            <div key={letter}>
+              {" "}
+              <div
+                className={`p-3 uppercase font-semibold ${mode === "dark" ? "text-blue-600" : ""
+                  }`}
+              >
+                {" "}
+                {letter}{" "}
               </div>
-            );
-          })}
+              <ul className="capitalize">
+                {itemsByLetter[letter].map((user, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className=" p-3 w-full flex justify-between"
+                    >
+                      <Button
+                        className="w-full"
+                        onClick={() => fetchConversations(user)}
+                      >
+                        <div className="flex items-center justify-start w-full">
+                          <Avatar src={user.avatar} />
+
+                          <h5
+                            className={`ml-2 ${mode === "dark" ? "text-white" : "text-black"
+                              } font-semibold capitalize`}
+                          >
+                            {user.username}
+                          </h5>
+                        </div>
+                      </Button>
+
+                      <CustomMenu
+                        icon={<MoreVertIcon />}
+                        direction="rtl"
+                        menu={contactOptions}
+                        menuItemStyle={{
+                          color: "#7a7f9a",
+                        }}
+                        onChange={(value: string) => {
+                          // setId(user._id);
+                          editContact(value);
+                        }}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
     </>
   );
 }

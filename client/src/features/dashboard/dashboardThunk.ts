@@ -26,16 +26,11 @@ export const sendMsg =
   (values: Message): AppThunk =>
   async (dispatch, getState) => {
     try {
-      await conversationService.sendMsg(values);
-
-      alert({ content: "Sent 🥳", position: "top-center", type: "success" });
-
       const user = getState().auth.user;
 
       socket.emit("send-message", {
-        room: values.consId,
-        message: values.message,
-        sender: user,
+        user,
+        ...values,
       });
 
       socket.emit("notifications", {
@@ -63,57 +58,49 @@ export const sendMsg =
   };
 
 export const fetchConversation =
-  (isGroup: boolean, participant: string[], groupName?: string): AppThunk =>
+  (id: string): AppThunk =>
   async (dispatch, getState) => {
     dispatch(fetchingConversation());
 
-    if (participant.length < 0) {
-      dispatch(fetchConversationFailed());
-    } else {
-      const user = getState().auth.user;
+    const user = getState().auth.user;
 
-      try {
-        const res = await conversationService.getConversation(
-          isGroup,
-          participant,
-          groupName
-        );
+    try {
+      const res = await conversationService.getConversation(id);
 
-        if (res && res.data) {
-          res.data.messages.forEach((cons) => {
-            const { sender } = cons;
+      if (res && res.data) {
+        res.data.messages.forEach((cons) => {
+          const { sender } = cons;
 
-            if (sender?._id !== user?._id) {
-              dispatch(fetchPartnerProfileSuccess(sender!));
-            }
-          });
-
-          dispatch(fetchConversationSuccess(res.data));
-
-          if (res.data.isGroup === true) {
-            dispatch(fetchGroupInformationSuccess(res.data.group!));
+          if (sender?._id !== user?._id) {
+            dispatch(fetchPartnerProfileSuccess(sender!));
           }
+        });
 
-          const friend = res.data.participant.find(
-            (part) => user!._id !== part._id
-          );
+        dispatch(fetchConversationSuccess(res.data));
 
-          dispatch(fetchPartnerProfileSuccess(friend!));
-          dispatch(fetchConversationSuccess(res.data));
+        if (res.data.isGroup === true) {
+          dispatch(fetchGroupInformationSuccess(res.data.group!));
         }
 
-        dispatch(disabledConversation(false));
-      } catch (error: any) {
-        console.log("🚀 ~ file: dashboardThunk.ts:36 ~ error:", error);
+        const friend = res.data.participant.find(
+          (part) => user!._id !== part._id
+        );
 
-        dispatch(fetchConversationFailed());
-
-        alert({
-          content: `Something went wrong!!`,
-          position: "top-center",
-          type: "error",
-        });
+        dispatch(fetchPartnerProfileSuccess(friend!));
+        dispatch(fetchConversationSuccess(res.data));
       }
+
+      dispatch(disabledConversation(false));
+    } catch (error: any) {
+      console.log("🚀 ~ file: dashboardThunk.ts:36 ~ error:", error);
+
+      dispatch(fetchConversationFailed());
+
+      alert({
+        content: `Something went wrong!!`,
+        position: "top-center",
+        type: "error",
+      });
     }
   };
 

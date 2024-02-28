@@ -21,8 +21,6 @@ const UserSchema = new mongoose.Schema({
 
   blocked: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
-  groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
-
   room: [{ type: mongoose.Schema.Types.ObjectId, ref: "Conversation" }],
 });
 

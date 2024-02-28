@@ -18,7 +18,7 @@ export function ContactList({ userList }: ContactListProps) {
   const itemsByLetter: UserProfile = {};
 
   user?.friends?.forEach((item) => {
-    const firstLetter = item.username?.charAt(0).toUpperCase();
+    const firstLetter = item.username?.charAt(0).toUpperCase()
     if (!itemsByLetter[firstLetter!]) {
       itemsByLetter[firstLetter!] = [];
     }

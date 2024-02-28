@@ -7,7 +7,10 @@ const NotificationSchema = new mongoose.Schema({
 
   content: String,
 
-  readStatus: Boolean,
+  readStatus: {
+    type: Boolean,
+    default: false,
+  },
 
   types: {
     type: String,

@@ -36,17 +36,6 @@ app.use(errorHandler.errorHandler);
 global.onlineUsers = new Map();
 
 io.on("connection", async (socket) => {
-  socket.on("notifications", (data) => {
-    socket.broadcast.to(data.room).emit("receive-notify", {
-      id: new mongoose.Types.ObjectId(),
-      user: data.user,
-      readStatus: false,
-      content: data.content,
-      type: data.type,
-      timeStamp: new Date(),
-    });
-  });
-
   registerFriendRequest(io, socket);
   registerRoom(io, socket);
   registerMessage(io, socket);

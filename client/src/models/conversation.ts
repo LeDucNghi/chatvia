@@ -127,7 +127,6 @@ export interface DashboardState {
   notifications: Notification[];
 
   conversationId: string;
-  partnerId: string;
 
   openConversation: boolean;
   isDisabledConversation: boolean;

@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { Button, CircularProgress, IconButton } from "@mui/material";
 import { Images, socket } from "../../../../constants";
-import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import CustomModal from "../../../../components/common/Modal/Modal";
@@ -10,8 +9,8 @@ import { InputField } from "../../../../components/common/InputField/InputField"
 import NotFound from "../../../../components/common/NotFound/NotFound";
 import { RequestItem } from "../Request/RequestItem";
 import { UserProfile } from "../../../../models";
-import { handleSendInvitation } from "../../../dashboard/dashboardThunk";
 import { selectUser } from "../../../auth/authSlice";
+import { useAppSelector } from "../../../../app/store";
 
 export interface IAddContactProps {
   setIsOpen: (value: boolean) => void;
@@ -22,7 +21,6 @@ export interface IAddContactProps {
 }
 
 export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
-  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser)
 
   const [email, setEmail] = React.useState<string | undefined>("");
@@ -75,7 +73,7 @@ export function AddContact({ userList, setIsOpen, isOpen }: IAddContactProps) {
   };
 
   const sendInvitation = (id: string) => {
-    dispatch(handleSendInvitation(id))
+    // dispatch(handleSendInvitation(id))
 
     socket.emit("notifications", {
       room: isSelected?._id,

@@ -50,55 +50,28 @@ exports.sendMessage = async (req, res) => {
 
 // GET CONVERSATION LIST
 exports.getConversation = async (req, res) => {
-  const groupName = await req.params.groupName;
-  const { participant, isGroup } = await req.body;
+  const _id = await req.params.id;
 
   try {
-    var conversation;
-
-    if (isGroup === true) {
-      conversation = await Conversation.findOne({
-        isGroup,
-        groupName: groupName,
-        participant: { $in: participant },
+    const conversation = await Conversation.findOne({
+      _id,
+    })
+      .populate({
+        path: "messages",
+        populate: {
+          path: "sender",
+          select: "-password -friends -__v -messages",
+        },
       })
-        .populate({
-          path: "messages",
-          populate: {
-            path: "sender",
-            select: "-password -friends -__v -messages",
-          },
-        })
-        .populate(
-          "group participant",
-          "-password -friends -__v -groups -blocked -messages"
-        );
-    } else if (isGroup === false) {
-      conversation = await Conversation.findOne({
-        isGroup,
-        participant: { $in: participant },
-      })
-        .populate({
-          path: "messages",
-          populate: {
-            path: "sender",
-            select: "-password -friends -__v -messages",
-          },
-        })
-        .populate(
-          "participant",
-          "-password -friends -__v -groups -blocked -messages"
-        );
-    }
+      .populate(
+        "participant group",
+        "-password -friends -__v -groups -blocked -messages"
+      );
 
     return res.status(200).send({
       data: conversation,
     });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: conversation.js:83 ~ exports.getConversation= ~ error:",
-      error
-    );
     return res.status(500).send(`Infernal server error ${error}`);
   }
 };
@@ -173,6 +146,7 @@ exports.friendRequestStt = async (req, res) => {
   const id = await req.params.id;
   const token = await req.decoded;
   const { status } = await req.body;
+  var conversation;
 
   const request = await Friend.findOne({
     _id: id,
@@ -181,24 +155,8 @@ exports.friendRequestStt = async (req, res) => {
 
   if (request) {
     if (request.friend._id.equals(token.user._id)) {
-      await User.findOneAndUpdate(
-        { username: token.user.username },
-        { $push: { friends: [request.sender._id] } },
-        {
-          new: true,
-        }
-      );
-
-      await User.findOneAndUpdate(
-        { _id: request.sender._id },
-        { $push: { friends: [token.user._id] } },
-        {
-          new: true,
-        }
-      );
-
       if (status === "accepted") {
-        await Conversation.create({
+        conversation = await Conversation.create({
           _id: new mongoose.Types.ObjectId(),
           isGroup: false,
           groupName: "",
@@ -206,25 +164,25 @@ exports.friendRequestStt = async (req, res) => {
           messages: [],
         });
       }
-    } else if (request.sender._id.equals(token.user._id)) {
+
       await User.findOneAndUpdate(
         { username: token.user.username },
-        { $push: { friends: [request.friend._id] } },
+        { $push: { friends: [request.sender._id], room: [conversation] } },
         {
           new: true,
         }
       );
 
       await User.findOneAndUpdate(
-        { _id: request.friend._id },
-        { $push: { friends: [token.user._id] } },
+        { _id: request.sender._id },
+        { $push: { friends: [token.user._id], room: [conversation] } },
         {
           new: true,
         }
       );
-
+    } else if (request.sender._id.equals(token.user._id)) {
       if (status === "accepted") {
-        await Conversation.create({
+        conversation = await Conversation.create({
           _id: new mongoose.Types.ObjectId(),
           isGroup: false,
           groupName: "",
@@ -232,6 +190,22 @@ exports.friendRequestStt = async (req, res) => {
           messages: [],
         });
       }
+
+      await User.findOneAndUpdate(
+        { username: token.user.username },
+        { $push: { friends: [request.friend._id], room: [conversation] } },
+        {
+          new: true,
+        }
+      );
+
+      await User.findOneAndUpdate(
+        { _id: request.friend._id },
+        { $push: { friends: [token.user._id], room: [conversation] } },
+        {
+          new: true,
+        }
+      );
     }
     const newStatus = status[0].toUpperCase() + status.slice(1);
 

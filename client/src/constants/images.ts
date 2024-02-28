@@ -10,6 +10,7 @@ import mailbox from "../assets/images/icons/mailbox.png";
 import noresult from "../assets/images/icons/no-results.png";
 import robot from "../assets/images/robot.gif";
 import usa from "../assets/images/usa.png";
+import user from "../assets/images/icons/user.png";
 import users from "../assets/images/icons/users.png";
 import vietnam from "../assets/images/vietnam.png";
 import whatever from "../assets/images/icons/whatever.png";
@@ -32,5 +33,6 @@ export const Images = {
   groups,
   document,
   attachments,
-  whatever
+  whatever,
+  user,
 };

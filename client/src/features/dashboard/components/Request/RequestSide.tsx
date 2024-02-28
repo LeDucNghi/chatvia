@@ -11,9 +11,6 @@ import { useAppSelector } from "../../../../app/store";
 export function RequestSide() {
   const friendRequest = useAppSelector(selectFriendRequest);
 
-
-
-
   return (
     <SideWrapper title="friend request" icon={<GroupAddIcon />}>
       <div className="h-[550px] overflow-auto">

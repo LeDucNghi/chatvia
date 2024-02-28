@@ -1,3 +1,5 @@
+import { Conversation } from "./conversation";
+
 export interface UserProfile {
   _id?: string;
   username?: string;
@@ -8,6 +10,7 @@ export interface UserProfile {
   avatar?: string;
   friends?: UserProfile[];
   blocked?: UserProfile[];
+  room?: Conversation[];
 }
 
 export interface AuthState {
@@ -16,7 +19,7 @@ export interface AuthState {
   };
 
   isSubmitting: boolean;
-  isSuccess: boolean
+  isSuccess: boolean;
 
   hasFailed: {
     isFailed: boolean;

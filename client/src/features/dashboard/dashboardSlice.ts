@@ -48,7 +48,6 @@ const initialState: DashboardState = {
   mode: "light",
   languages: "en",
   conversationId: "",
-  partnerId: "",
 };
 
 export const dashboard = createSlice({
@@ -154,8 +153,7 @@ export const dashboard = createSlice({
 
       state.recentList.map((recent) => {
         if (action.payload.consId === recent._id) {
-          recent.messages.unshift(action.payload);
-          // recent.messages = [action.payload, ...recent.messages];
+          recent.messages.push(action.payload);
         }
       });
     },
@@ -172,8 +170,8 @@ export const dashboard = createSlice({
       state.isDisabledConversation = action.payload;
     },
 
-    onSelectedPartner(state, action: PayloadAction<string>) {
-      state.partnerId = action.payload;
+    onSelectedConversation(state, action: PayloadAction<string>) {
+      state.conversationId = action.payload;
     },
   },
 });
@@ -196,7 +194,7 @@ export const {
   onOpenConversation,
   onLanguagesChange,
   onBlockedStatusChange,
-  onSelectedPartner,
+  onSelectedConversation,
   addNewMessage,
   addNewRequest,
   addNewNotify,
@@ -225,6 +223,7 @@ export const selectFriendRequest = (state: RootState) =>
   state.dashboard.friendRequests;
 export const selectRecentList = (state: RootState) =>
   state.dashboard.recentList;
-export const selectPartnerId = (state: RootState) => state.dashboard.partnerId;
+export const selectConversationId = (state: RootState) =>
+  state.dashboard.conversationId;
 
 export const dashboardReducer = dashboard.reducer;

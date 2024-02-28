@@ -10,8 +10,7 @@ import {
   selectConversations,
   selectFetching,
   selectMode,
-  selectPartner,
-  selectPartnerId,
+  selectPartner
 } from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
@@ -29,7 +28,6 @@ export function Section() {
   const mode = useAppSelector(selectMode);
   const user = useAppSelector(selectUser);
   const partner = useAppSelector(selectPartner);
-  const partnerId = useAppSelector(selectPartnerId);
   const blockedStatus = useAppSelector(selectBlockedStatus);
   const { t } = useTranslation();
 
@@ -84,7 +82,6 @@ export function Section() {
       dispatch(
         sendMsg({
           consId: conversation?._id,
-          partnerId: partnerId,
           message: msg,
         })
       );
@@ -136,9 +133,8 @@ export function Section() {
 
   return (
     <div
-      className={`chat-input-section w-full flex items-center justify-between ${
-        mode === "dark" ? "dark" : ""
-      } ${files.length !== 0 ? "files" : ""}`}
+      className={`chat-input-section w-full flex items-center justify-between ${mode === "dark" ? "dark" : ""
+        } ${files.length !== 0 ? "files" : ""}`}
     >
       {isUserBlocked || isPartnerBlocked ? (
         <div className="w-full h-full bg-blue-400">

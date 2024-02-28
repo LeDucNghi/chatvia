@@ -8,11 +8,11 @@ import {
   addNewNotify,
   addNewRequest,
   fetchGroupListSuccess,
+  selectConversationId,
   selectGroupList,
   selectLanguage,
   selectMode,
   selectOpenConversation,
-  selectPartnerId,
   selectRecentList
 } from "../dashboardSlice";
 import {
@@ -44,17 +44,17 @@ export default function Dashboard() {
   const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
   const openConversation = useAppSelector(selectOpenConversation);
-  const partnerId = useAppSelector(selectPartnerId);
+  const conversationId = useAppSelector(selectConversationId);
   const recentConversation = useAppSelector(selectRecentList);
   const groupList = useAppSelector(selectGroupList)
 
   const [side, setSide] = React.useState<Sides>("chat");
 
   useEffect(() => {
-    if (partnerId && user) {
-      dispatch(fetchConversation(false, [partnerId, String(user?._id)]));
+    if (conversationId) {
+      dispatch(fetchConversation(conversationId));
     }
-  }, [partnerId, user]);
+  }, [conversationId, dispatch]);
 
   useEffect(() => {
     if (user) {
@@ -67,7 +67,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     socket.on("receive-message", (data: Message) => {
-
       dispatch(addNewMessage(data))
     });
 
