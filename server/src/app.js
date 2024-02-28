@@ -12,6 +12,7 @@ const { Server } = require("socket.io");
 const registerFriendRequest = require("./socket/friendHandler");
 const registerRoom = require("./socket/roomHandler");
 const registerMessage = require("./socket/messageHandler");
+const registerNotifications = require("./socket/notificationHandler");
 
 require("dotenv").config();
 
@@ -39,6 +40,7 @@ io.on("connection", async (socket) => {
   registerFriendRequest(io, socket);
   registerRoom(io, socket);
   registerMessage(io, socket);
+  registerNotifications(io, socket);
 });
 
 mongoose.connect(

@@ -173,7 +173,6 @@ exports.getUser = async (req, res) => {
 
     return res.status(200).send({ data: findUser });
   } catch (error) {
-    console.log("🚀 ~ exports.getUser= ~ error:", error);
     return res.status(500).send({ error });
   }
 };
