@@ -3,6 +3,7 @@ import {
   fetchPartnerProfileSuccess,
   onBlockedStatusChange,
   onOpenConversation,
+  onSelectedConversation,
   selectFetching,
   selectMode,
 } from "../../dashboardSlice";
@@ -13,7 +14,6 @@ import { BaseItemLoader } from "../../../../components/common/Loader/BaseItemLoa
 import { Conversation } from "../../../../models";
 import { Images } from "../../../../constants";
 import NotFound from "../../../../components/common/NotFound/NotFound";
-import { fetchConversation } from "../../dashboardThunk";
 
 export interface GroupListProps {
   groupList: Conversation[];
@@ -28,9 +28,7 @@ export function GroupList({ groupList }: GroupListProps) {
 
   const getGroupConversation = (id: string) => {
     dispatch(
-      fetchConversation(
-        id
-      )
+      onSelectedConversation(id)
     );
 
     dispatch(onBlockedStatusChange("unBlocked"));

@@ -8,6 +8,7 @@ import {
   addNewNotify,
   addNewRequest,
   fetchGroupListSuccess,
+  fetchingConversation,
   selectConversationId,
   selectGroupList,
   selectLanguage,
@@ -52,7 +53,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (conversationId) {
-      dispatch(fetchConversation(conversationId));
+      dispatch(fetchingConversation());
+
+      socket.emit("fetchConversation", {
+        id: conversationId,
+      });
     }
   }, [conversationId, dispatch]);
 
@@ -90,6 +95,10 @@ export default function Dashboard() {
       const newGroupList = [...groupList, data]
 
       dispatch(fetchGroupListSuccess(newGroupList))
+    })
+
+    socket.on("conversation", (data: Conversation) => {
+      dispatch(fetchConversation(data))
     })
   }, []);
 

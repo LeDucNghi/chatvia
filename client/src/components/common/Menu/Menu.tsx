@@ -1,8 +1,7 @@
 import * as React from "react";
 
-import { Button, Icon } from "@mui/material";
-
 import Avatar from "@mui/material/Avatar";
+import { Icon } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Options } from "../../../models";
@@ -14,6 +13,7 @@ export interface IMenuProps {
   menu: Options[];
 
   img?: string;
+  className?: string
 
   isActive?: boolean;
 
@@ -28,6 +28,7 @@ export interface IMenuProps {
 export function CustomMenu({
   menu,
   img,
+  className,
   icon,
   direction,
   menuItemStyle,
@@ -46,8 +47,9 @@ export function CustomMenu({
   };
 
   const handleClose = (value: string) => {
+    console.log("🚀 ~ handleClose ~ value:", value)
     setAnchorEl(null);
-    if (onChange) {
+    if (onChange && value) {
       onChange(value);
     }
   };
@@ -57,12 +59,16 @@ export function CustomMenu({
       <div
         style={{ display: "flex", alignItems: "center", textAlign: "center" }}
       >
-        <Button
+        <div
           onClick={handleClick}
-          size="small"
-          sx={{
+          // size="small"
+          className={className}
+          style={{
             margin: "0 auto",
             color: mode === "dark" ? "#93a7cc" : "",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
           }}
           aria-controls={open ? "account-menu" : undefined}
           aria-haspopup="true"
@@ -73,7 +79,7 @@ export function CustomMenu({
           ) : img ? (
             <Avatar sx={{ width: 32, height: 32 }} src={img} />
           ) : null}
-        </Button>
+        </div>
       </div>
       <Menu
         anchorEl={anchorEl}

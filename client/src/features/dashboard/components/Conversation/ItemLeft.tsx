@@ -1,11 +1,12 @@
 import "./Conversation.scss";
 
+import { Images, messageOptions } from "../../../../constants";
+
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import { Loader } from "../../../../components/common/Loader/BaseLoader";
 import { Message } from "../../../../models";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import { messageOptions } from "../../../../constants";
 import moment from "moment";
 import { selectMode } from "../../dashboardSlice";
 import { useAppSelector } from "../../../../app/store";
@@ -36,7 +37,7 @@ export function Left({
   return (
     <div className="chat-item-wrapper relative w-full flex items-end py-4">
       <div className="chat-avatar mr-3">
-        {!isDisabled && <img src={`${message.sender?.avatar}`} alt="avatar" />}
+        {!isDisabled && <img src={`${message!.sender!.avatar ? message.sender?.avatar : Images.user}`} alt="avatar" />}
       </div>
 
       <div className="chat-content">
@@ -98,9 +99,8 @@ export function Left({
             )}
           </div>
           <div
-            className={`chat-name w-full capitalize font-semibold ${
-              mode === "dark" ? "text-white" : "text-black"
-            }`}
+            className={`chat-name w-full capitalize font-semibold ${mode === "dark" ? "text-white" : "text-black"
+              }`}
           >
             {!isDisabled && message.sender?.username}
           </div>

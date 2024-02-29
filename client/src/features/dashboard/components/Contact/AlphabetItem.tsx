@@ -1,12 +1,11 @@
 import { Avatar, Button } from "@mui/material";
+import { onSelectedConversation, selectMode } from "../../dashboardSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/store";
 
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { UserProfile } from "../../../../models";
 import { contactOptions } from "../../../../constants";
-import { fetchConversation } from "../../dashboardThunk";
-import { selectMode } from "../../dashboardSlice";
 import { selectUser } from "../../../auth/authSlice";
 
 export interface IAlphabetItemProps {
@@ -26,7 +25,7 @@ export function AlphabetItem({ itemsByLetter, userList }: IAlphabetItemProps) {
   const fetchConversations = (friend: UserProfile) => {
     const conversation = user?.room?.find((cons) => friend.room?.some((item) => item._id === cons._id))
     if (conversation) {
-      dispatch(fetchConversation(conversation!._id!));
+      dispatch(onSelectedConversation(conversation._id));
     }
   };
 

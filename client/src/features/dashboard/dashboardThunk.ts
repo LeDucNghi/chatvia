@@ -1,4 +1,10 @@
-import { EditContactType, Language, Message, Mode } from "../../models";
+import {
+  Conversation,
+  EditContactType,
+  Language,
+  Message,
+  Mode,
+} from "../../models";
 import {
   addNewMessage,
   disabledConversation,
@@ -9,7 +15,6 @@ import {
   fetchGroupListSuccess,
   fetchPartnerProfileSuccess,
   fetchRecentList,
-  fetchingConversation,
   fetchingRecentList,
   onBlockedStatusChange,
   onLanguagesChange,
@@ -58,17 +63,15 @@ export const sendMsg =
   };
 
 export const fetchConversation =
-  (id: string): AppThunk =>
+  (res: Conversation): AppThunk =>
   async (dispatch, getState) => {
-    dispatch(fetchingConversation());
+    console.log("🚀 ~ res:", res);
 
     const user = getState().auth.user;
 
     try {
-      const res = await conversationService.getConversation(id);
-
-      if (res && res.data) {
-        res.data.messages.forEach((cons) => {
+      if (res) {
+        res.messages.forEach((cons) => {
           const { sender } = cons;
 
           if (sender?._id !== user?._id) {
@@ -76,18 +79,16 @@ export const fetchConversation =
           }
         });
 
-        dispatch(fetchConversationSuccess(res.data));
+        dispatch(fetchConversationSuccess(res));
 
-        if (res.data.isGroup === true) {
-          dispatch(fetchGroupInformationSuccess(res.data.group!));
+        if (res.isGroup === true) {
+          dispatch(fetchGroupInformationSuccess(res.group!));
         }
 
-        const friend = res.data.participant.find(
-          (part) => user!._id !== part._id
-        );
+        const friend = res.participant.find((part) => user!._id !== part._id);
 
         dispatch(fetchPartnerProfileSuccess(friend!));
-        dispatch(fetchConversationSuccess(res.data));
+        dispatch(fetchConversationSuccess(res));
       }
 
       dispatch(disabledConversation(false));

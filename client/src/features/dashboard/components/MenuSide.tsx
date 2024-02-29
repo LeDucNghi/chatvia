@@ -84,7 +84,9 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   };
 
   const handleChangeLanguage = (language: Language) => {
-    if (language) {
+    if (typeof language !== "string") {
+      return
+    } else {
       i18n.changeLanguage(language);
       dispatch(onLanguagesChange(language));
       dispatch(handleUpdateSettings(mode, language));
@@ -171,11 +173,11 @@ export function SideMenu({ setSide }: ISideMenuProps) {
       />
 
       {windowInnerWidth > BREAK_POINTS_NUMBER.md && (
-        <div className="side-menu-pills w-full flex flex-col">
+        <div className="side-menu-pills w-full flex flex-col ">
           {sideMenu.slice(6, 8).map((menu, key) => {
             return (
               <Tooltip
-                className="pills-item w-8 h-12 mx-auto my-4"
+                className="pills-item w-8 h-12 mx-auto"
                 arrow
                 key={key}
                 title={t(menu.title)}
@@ -185,7 +187,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                 sx={{ color: mode === "dark" ? "#a6b0cf" : "#000" }}
 
               >
-                <>
+                <Button variant="text">
                   {menu.id === 7 ? (
                     <CustomMenu
                       onChange={handleChangeLanguage}
@@ -198,14 +200,12 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                       menu={languageList}
                     />
                   ) :
-                    <Button
-                      onClick={handleChangeMode}
-                      sx={{ color: "black" }}>
+                    <>
                       {mode === "dark"
-                        ? <Icon>{menu.icon}</Icon>
-                        : <WbSunnyIcon fontSize="small" />}
-                    </Button>}
-                </>
+                        ? <Icon onClick={handleChangeMode}>{menu.icon}</Icon>
+                        : <WbSunnyIcon onClick={handleChangeMode} fontSize="small" />}
+                    </>}
+                </Button>
               </Tooltip>
             );
           })}

@@ -26,10 +26,6 @@ export function ChatItem({
   isTyping,
   hasImages,
 }: IChatItemProps) {
-  // check id nếu thằng sau trùng thằng trước
-  // thì thằng tin nhắn trc sẽ bị ẩn tên và avatar
-
-  // const filter = messagesList.filter(cons => cons.id === message.id)
   const user = useAppSelector(selectUser);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +35,10 @@ export function ChatItem({
     setIsOpen(true);
     setImg(img);
   };
+
+  // const handleDeleteChatItem = () => {
+
+  // }
 
   return (
     <>

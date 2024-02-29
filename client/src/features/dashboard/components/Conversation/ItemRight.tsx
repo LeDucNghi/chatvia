@@ -1,9 +1,10 @@
+import { Images, messageOptions } from "../../../../constants";
+
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import { Loader } from "../../../../components/common/Loader/BaseLoader";
 import { Message } from "../../../../models";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import { messageOptions } from "../../../../constants";
 import moment from "moment";
 import { selectMode } from "../../dashboardSlice";
 import { useAppSelector } from "../../../../app/store";
@@ -46,13 +47,6 @@ export function Right({
               </div>
             )}
             <div className="chat-text-content">
-              {/* <p className="chat-text">{message.message}</p>
-
-              <p className="chat-time flex items-center justify-start">
-                <AccessAlarmsOutlinedIcon fontSize="small" />
-                {moment(message.timeStamp).format("LT")}
-              </p> */}
-
               {isTyping ? (
                 <p className="chat-text flex items-end">
                   {" "}
@@ -91,7 +85,7 @@ export function Right({
 
               {!isTyping && (
                 <p className="chat-time flex items-center justify-start">
-                  <AccessAlarmsOutlinedIcon fontSize="small" />
+                  <AccessAlarmsOutlinedIcon fontSize="small" />{" "}
                   {moment(message.timeStamp).format("LT")}
                 </p>
               )}
@@ -100,9 +94,8 @@ export function Right({
 
           {!isDisabled && (
             <div
-              className={`chat-name w-full capitalize font-semibold ${
-                mode === "dark" ? "text-white" : "text-black"
-              }`}
+              className={`chat-name w-full capitalize font-semibold ${mode === "dark" ? "text-white" : "text-black"
+                }`}
             >
               {message.sender?.username}
             </div>
@@ -111,7 +104,7 @@ export function Right({
       </div>
 
       <div className="chat-avatar ml-3">
-        {!isDisabled && <img src={`${message.sender?.avatar}`} alt="avatar" />}
+        {!isDisabled && <img src={`${message!.sender!.avatar ? message.sender?.avatar : Images.user}`} alt="avatar" />}
       </div>
     </div>
   );

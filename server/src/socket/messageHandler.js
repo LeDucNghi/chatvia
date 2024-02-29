@@ -19,7 +19,7 @@ module.exports = (io, socket) => {
           _id: new mongoose.Types.ObjectId(),
           message: message,
           sender: data.user._id,
-          conversation: new mongoose.Types.ObjectId(),
+          conversation: conversation._id,
           isRead: false,
           isSent: true,
         });
@@ -45,5 +45,58 @@ module.exports = (io, socket) => {
     }
   };
 
+  const removeMessage = async (data) => {
+    const { consId, messageId } = data;
+
+    try {
+      const conversation = await Conversation.findOne({ _id: consId });
+      if (conversation) {
+        const deletedMessage = await Message.deleteOne({ _id: consId });
+
+        const updatedConversation = await Conversation.updateOne(
+          { _id: conversation._id },
+          { $pull: { messages: { $in: [messageId] } } }
+        );
+      }
+    } catch (error) {
+      return socket.emit("alert", {
+        status: 500,
+        message: "Infernal server error",
+      });
+    }
+  };
+
+  const fetchConversation = async (data) => {
+    const _id = data.id;
+
+    try {
+      const conversation = await Conversation.findOne({
+        _id,
+      })
+        .populate({
+          path: "messages",
+          populate: {
+            path: "sender",
+            select: "-password -friends -__v -messages",
+          },
+        })
+        .populate(
+          "participant group",
+          "-password -friends -__v -groups -blocked -messages"
+        );
+
+      return socket.emit("conversation", {
+        ...conversation._doc,
+      });
+    } catch (error) {
+      return socket.emit("alert", {
+        status: 500,
+        message: "Infernal server error",
+      });
+    }
+  };
+
   socket.on("send-message", sendMessage);
+  socket.on("remove-message", removeMessage);
+  socket.on("fetchConversation", fetchConversation);
 };

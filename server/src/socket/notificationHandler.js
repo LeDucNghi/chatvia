@@ -22,7 +22,7 @@ module.exports = (io, socket) => {
 
       return socket.emit("alert", {
         status: 200,
-        message: "You have sent a friend request!!",
+        message: `${data.content}`,
       });
     } catch (error) {
       return socket.emit("alert", {
