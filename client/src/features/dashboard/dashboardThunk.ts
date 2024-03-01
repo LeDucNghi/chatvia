@@ -62,11 +62,41 @@ export const sendMsg =
     }
   };
 
+export const removeMessage =
+  (messageId: string, consId: string): AppThunk =>
+  async (dispatch, getState) => {
+    const conversation = getState().dashboard.conversations;
+
+    const conversationClone = { ...conversation };
+
+    try {
+      socket.emit("remove-message", {
+        consId,
+        messageId,
+      });
+
+      if (conversation?._id === consId) {
+        const newMessages = conversationClone.messages?.filter(
+          (msg) => msg._id !== messageId
+        );
+
+        conversationClone.messages = newMessages;
+
+        dispatch(fetchConversationSuccess(Object.assign(conversationClone)));
+      }
+    } catch (error) {
+      console.log("🚀 ~ error:", error);
+      alert({
+        content: "Something went wrong 🤔",
+        position: "top-center",
+        type: "error",
+      });
+    }
+  };
+
 export const fetchConversation =
   (res: Conversation): AppThunk =>
   async (dispatch, getState) => {
-    console.log("🚀 ~ res:", res);
-
     const user = getState().auth.user;
 
     try {

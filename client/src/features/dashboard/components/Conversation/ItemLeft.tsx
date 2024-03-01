@@ -3,6 +3,7 @@ import "./Conversation.scss";
 import { Images, messageOptions } from "../../../../constants";
 
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
+import { Button } from "@mui/material";
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import { Loader } from "../../../../components/common/Loader/BaseLoader";
 import { Message } from "../../../../models";
@@ -19,6 +20,7 @@ export interface ILeftProps {
   hasImages?: boolean;
 
   image: (value: string) => void;
+  onClick: (value: string, id: string) => void
 }
 
 export function Left({
@@ -27,12 +29,17 @@ export function Left({
   isTyping,
   hasImages,
   image,
+  onClick
 }: ILeftProps) {
   const mode = useAppSelector(selectMode);
 
   const handleOpenImage = (img: string) => {
     image(img);
   };
+
+  const onMenuChange = (value: string, id: string) => {
+    onClick(value, id)
+  }
 
   return (
     <div className="chat-item-wrapper relative w-full flex items-end py-4">
@@ -89,13 +96,14 @@ export function Left({
             </div>
 
             {!isTyping && (
-              <div className="chat-text-option">
+              <Button className="chat-text-option">
                 <CustomMenu
+                  onChange={(value: string) => onMenuChange(value, message!._id!)}
                   menu={messageOptions}
                   direction="rtl"
                   icon={<MoreVertOutlinedIcon />}
                 />
-              </div>
+              </Button>
             )}
           </div>
           <div

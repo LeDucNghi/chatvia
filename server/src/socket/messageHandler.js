@@ -51,9 +51,9 @@ module.exports = (io, socket) => {
     try {
       const conversation = await Conversation.findOne({ _id: consId });
       if (conversation) {
-        const deletedMessage = await Message.deleteOne({ _id: consId });
+        await Message.deleteOne({ _id: messageId });
 
-        const updatedConversation = await Conversation.updateOne(
+        await Conversation.updateOne(
           { _id: conversation._id },
           { $pull: { messages: { $in: [messageId] } } }
         );

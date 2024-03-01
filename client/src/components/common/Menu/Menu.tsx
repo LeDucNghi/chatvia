@@ -47,7 +47,6 @@ export function CustomMenu({
   };
 
   const handleClose = (value: string) => {
-    console.log("🚀 ~ handleClose ~ value:", value)
     setAnchorEl(null);
     if (onChange && value) {
       onChange(value);

@@ -1,6 +1,7 @@
 import { Images, messageOptions } from "../../../../constants";
 
 import AccessAlarmsOutlinedIcon from "@mui/icons-material/AccessAlarmsOutlined";
+import { Button } from "@mui/material";
 import { CustomMenu } from "../../../../components/common/Menu/Menu";
 import { Loader } from "../../../../components/common/Loader/BaseLoader";
 import { Message } from "../../../../models";
@@ -17,6 +18,7 @@ export interface IRightProps {
   hasImages?: boolean;
 
   image: (value: string) => void;
+  onClick: (value: string, id: string) => void
 }
 
 export function Right({
@@ -25,6 +27,7 @@ export function Right({
   isTyping,
   hasImages,
   image,
+  onClick
 }: IRightProps) {
   const mode = useAppSelector(selectMode);
 
@@ -32,19 +35,24 @@ export function Right({
     image(img);
   };
 
+  const onMenuChange = (value: string, id: string) => {
+    onClick(value, id)
+  }
+
   return (
     <div className="chat-item-wrapper right relative w-full flex items-end py-4">
       <div className="chat-content">
         <div className="w-full flex flex-wrap">
           <div className="chat-text-wrap flex justify-end mb-3">
             {!isTyping && (
-              <div className="chat-text-option">
+              <Button className="chat-text-option">
                 <CustomMenu
+                  onChange={(value: string) => onMenuChange(value, message!._id!)}
                   menu={messageOptions}
                   direction="rtl"
                   icon={<MoreVertOutlinedIcon />}
                 />
-              </div>
+              </Button>
             )}
             <div className="chat-text-content">
               {isTyping ? (
