@@ -4,45 +4,50 @@ const { default: mongoose } = require("mongoose");
 
 module.exports = (io, socket) => {
   const sendMessage = async (data) => {
-    const { message, consId } = await data;
+    const { message, consId, image } = await data;
+    console.log("🚀 ~ sendMessage ~ { message, consId, image }:", {
+      message,
+      consId,
+      image,
+    });
 
-    if (!data.user._id) {
-      socket.emit("alert", {
-        status: 404,
-        message: "Something is missing!!",
-      });
-    } else {
-      try {
-        const conversation = await Conversation.findOne({ _id: consId });
+    // if (!data.user._id) {
+    //   socket.emit("alert", {
+    //     status: 404,
+    //     message: "Something is missing!!",
+    //   });
+    // } else {
+    //   try {
+    //     const conversation = await Conversation.findOne({ _id: consId });
 
-        const newMessage = await Message.create({
-          _id: new mongoose.Types.ObjectId(),
-          message: message,
-          sender: data.user._id,
-          conversation: conversation._id,
-          isRead: false,
-          isSent: true,
-        });
+    //     const newMessage = await Message.create({
+    //       _id: new mongoose.Types.ObjectId(),
+    //       message: message,
+    //       sender: data.user._id,
+    //       conversation: conversation._id,
+    //       isRead: false,
+    //       isSent: true,
+    //     });
 
-        await newMessage.save();
+    //     await newMessage.save();
 
-        const updatedConversation = await Conversation.findOneAndUpdate(
-          {
-            _id: conversation._id,
-          },
-          { $push: { messages: newMessage._id } }
-        );
+    //     const updatedConversation = await Conversation.findOneAndUpdate(
+    //       {
+    //         _id: conversation._id,
+    //       },
+    //       { $push: { messages: newMessage._id } }
+    //     );
 
-        await updatedConversation.save();
+    //     await updatedConversation.save();
 
-        socket.broadcast.to(data.consId).emit("receive-message", newMessage);
-      } catch (error) {
-        return socket.emit("alert", {
-          status: 500,
-          message: "Infernal server error",
-        });
-      }
-    }
+    //     socket.broadcast.to(data.consId).emit("receive-message", newMessage);
+    //   } catch (error) {
+    //     return socket.emit("alert", {
+    //       status: 500,
+    //       message: "Infernal server error",
+    //     });
+    //   }
+    // }
   };
 
   const removeMessage = async (data) => {

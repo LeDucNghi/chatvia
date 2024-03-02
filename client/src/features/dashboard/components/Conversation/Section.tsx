@@ -163,7 +163,7 @@ export function Section() {
             placeholder="Your Message..."
             className="textfield"
             autoComplete="off"
-            value={msg}
+            value={`${msg} ${files.map((file) => file.name).join(', ')}`}
             disabled={fetching.isConversation ? true : false}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleMsgChange(e)

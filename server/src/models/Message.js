@@ -10,6 +10,8 @@ const MessageSchema = new Schema({
 
   sender: { type: Schema.Types.ObjectId, ref: "User" },
 
+  // hasFile : Boolean,
+
   timeStamp: {
     type: Date,
     default: Date.now,

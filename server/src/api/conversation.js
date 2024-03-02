@@ -15,7 +15,8 @@ const {
   leaveGroup,
   addUserToGroup,
 } = require("../controller/conversation");
-const { uploadImage, upload } = require("../utils/cloudinary");
+const { upload } = require("../middleware/multer");
+const { uploadImage } = require("../utils/cloundinary");
 
 const router = express.Router();
 
@@ -55,14 +56,19 @@ router.post("/groupConversation", verifyToken, createGroupConversation);
 // ADD USER TO GROUP
 router.post("/addUser/:id", addUserToGroup);
 
+// LEAVE GROUP
 router.post("/leaveGroup/:id", verifyToken, leaveGroup);
 
-router.post("/uploadImg", upload, async (req, res) => {
-  const { imgPath } = await req.body;
+router.post("/uploadfile", async (req, res) => {
+  res.setHeader("Content-Type", "multipart/form-data");
 
-  const img = await uploadImage(imgPath);
+  try {
+    const img = await uploadImage(req, res);
 
-  return res.status(200).send({ img });
+    return res.status(200).send({ img });
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 });
 
 module.exports = router;

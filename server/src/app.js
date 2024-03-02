@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 const errorHandler = require("./middleware/errorHandler");
 const http = require("http");
 const api = require("./api");
-const multer = require("multer");
-const upload = multer();
 const { Server } = require("socket.io");
 
 const registerFriendRequest = require("./socket/friendHandler");
@@ -15,6 +13,7 @@ const registerMessage = require("./socket/messageHandler");
 const registerNotifications = require("./socket/notificationHandler");
 
 require("dotenv").config();
+require("./config/cloudinaryConfig");
 
 const app = express();
 const server = http.createServer(app);
@@ -23,7 +22,6 @@ const io = new Server(server, {
 });
 
 app.use(helmet());
-app.use(upload.array());
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
@@ -33,8 +31,6 @@ app.use("/api", api);
 
 app.use(errorHandler.notFound);
 app.use(errorHandler.errorHandler);
-
-global.onlineUsers = new Map();
 
 io.on("connection", async (socket) => {
   registerFriendRequest(io, socket);

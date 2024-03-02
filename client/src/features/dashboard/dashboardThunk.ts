@@ -30,20 +30,21 @@ import { socket } from "../../constants";
 export const sendMsg =
   (values: Message): AppThunk =>
   async (dispatch, getState) => {
+    console.log("🚀 ~ values:", values)
     try {
       const user = getState().auth.user;
 
-      socket.emit("send-message", {
-        user,
-        ...values,
-      });
+      // socket.emit("send-message", {
+      //   user,
+      //   ...values,
+      // });
 
-      socket.emit("notifications", {
-        room: values.consId,
-        user: user,
-        content: `${user?.username} has sent to you a message`,
-        type: "newMsg",
-      });
+      // socket.emit("notifications", {
+      //   room: values.consId,
+      //   user: user,
+      //   content: `${user?.username} has sent to you a message`,
+      //   type: "newMsg",
+      // });
 
       dispatch(
         addNewMessage({
