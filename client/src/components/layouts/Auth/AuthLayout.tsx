@@ -47,10 +47,10 @@ export function AuthLayout({
         }}
       />
       <div
-        className="w-full flex-center container auth-layout"
-        style={{ ...style, height: "100vh" }}
+        className="w-full h-screen flex justify-center items-center auth-layout"
+        style={{ ...style }}
       >
-        <div className="w-4/5 flex-center wrapper font-bold">
+        <div className="w-4/5 flex justify-center items-center wrapper font-bold">
           <Card
             className="text-black w-2/4 rounded-md auth-card"
             elevation={10}
