@@ -50,6 +50,9 @@ module.exports = (io, socket) => {
 
     try {
       const conversation = await Conversation.findOne({ _id: consId });
+
+      const conversationClone = { ...conversation };
+
       if (conversation) {
         await Message.deleteOne({ _id: messageId });
 
@@ -57,6 +60,16 @@ module.exports = (io, socket) => {
           { _id: conversation._id },
           { $pull: { messages: { $in: [messageId] } } }
         );
+
+        const newMessage = conversationClone.messages.filter(
+          (msg) => msg._id !== messageId
+        );
+
+        conversationClone.messages = newMessage;
+
+        socket.broadcast.to(data.consId).emit("conversation", {
+          ...conversationClone._doc,
+        });
       }
     } catch (error) {
       return socket.emit("alert", {
