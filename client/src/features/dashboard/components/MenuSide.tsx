@@ -39,7 +39,6 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const languages = useAppSelector(selectLanguage);
   const notifications = useAppSelector(selectNotify)
   const friendRequest = useAppSelector(selectFriendRequest)
-  console.log("🚀 ~ SideMenu ~ friendRequest:", friendRequest)
   const user = useAppSelector(selectUser)
   const { i18n, t } = useTranslation();
   const { windowInnerWidth } = useWindowSize();
