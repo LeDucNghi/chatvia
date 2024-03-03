@@ -35,7 +35,7 @@ export function Carousel({ option, isFetching }: ICarouselProps) {
 
   return (
     <Swiper
-      spaceBetween={15}
+      spaceBetween={10}
       slidesPerView={3}
       onSlideChange={() => console.log("slide change")}
       // onSwiper={(swiper) => console.log(swiper)}

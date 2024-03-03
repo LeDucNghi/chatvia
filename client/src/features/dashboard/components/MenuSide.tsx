@@ -25,6 +25,7 @@ import { Images } from "../../../constants";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { cookies } from "../../../utils";
 import { handleUpdateSettings } from "../dashboardThunk";
+import { selectUser } from "../../auth/authSlice";
 import { useTranslation } from "react-i18next";
 import { useWindowSize } from "../../../hooks/useWindow";
 
@@ -38,13 +39,14 @@ export function SideMenu({ setSide }: ISideMenuProps) {
   const languages = useAppSelector(selectLanguage);
   const notifications = useAppSelector(selectNotify)
   const friendRequest = useAppSelector(selectFriendRequest)
+  console.log("🚀 ~ SideMenu ~ friendRequest:", friendRequest)
+  const user = useAppSelector(selectUser)
   const { i18n, t } = useTranslation();
   const { windowInnerWidth } = useWindowSize();
 
   const [isSelected, setIsSelected] = React.useState<Sides>("chat");
   const [language, setLanguage] = React.useState<Language>(languages);
   const [notifyType, setNotifyType] = React.useState<Notify | null>(null);
-  // const [friendRequest, setFriendRequest] = React.useState<number[]>([]);
   const [newMsg, setNewMsg] = React.useState<number[]>([]);
 
   React.useEffect(() => {
@@ -142,7 +144,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
                 ) : (
                   <Badge color="error" badgeContent={
                     menu.id === 5 ? notifications.length
-                      : menu.id === 4 && notifyType === "friendRequest"
+                      : menu.id === 4
                         ? friendRequest.length
                         : menu.id === 2 && notifyType === "newMsg"
                           ? newMsg.length : 0
@@ -217,7 +219,7 @@ export function SideMenu({ setSide }: ISideMenuProps) {
               color: "#7a7f9a",
             }}
             menu={userMenu}
-            img={Images.avatar1}
+            img={user && user.avatar ? user.avatar : Images.user}
           />
         </div>
       )}
